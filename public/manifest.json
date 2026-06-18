@@ -1,0 +1,16 @@
+{
+  "name": "Cesar's Gym",
+  "short_name": "Cesars Gym",
+  "description": "Sistema de gestión para Cesar's Gym",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#161d17",
+  "theme_color": "#2eaa3e",
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "192x192 512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

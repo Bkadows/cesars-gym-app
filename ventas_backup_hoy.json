@@ -1,0 +1,21 @@
+[
+  {
+    "date": "2026-06-18",
+    "payDate": "2026-06-18",
+    "status": "paid",
+    "id": "qr_1781805568415",
+    "customer": "OSMAR GONZALES",
+    "total": 0,
+    "items": [
+      {
+        "id": "entrada-socio-qr",
+        "cat": "ENTRADA",
+        "name": "Entrada Socio (QR)",
+        "qty": 1,
+        "price": 0
+      }
+    ],
+    "method": "QR",
+    "datetime": "2026-06-18T17:59:28.417Z"
+  }
+]
