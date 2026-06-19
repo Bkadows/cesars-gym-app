@@ -1203,9 +1203,82 @@ input:focus, select:focus, textarea:focus {
 .toast.ok .toast-progress { background: var(--green); }
 .toast.err .toast-progress { background: var(--red); }
 .toast.warn .toast-progress { background: var(--amber); }
+
+/* Heatmap Attendance Grid Styles */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(17, 1fr);
+  gap: 4px;
+  align-items: center;
+}
+.heatmap-header-cell {
+  font-size: 0.62rem;
+  color: var(--text3);
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 0;
+}
+.heatmap-day-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: capitalize;
+}
+.heatmap-cell {
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.heatmap-cell:hover {
+  transform: scale(1.06);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  z-index: 5;
+}
+
+/* Public Carnet Page View styling */
+body.public-carnet-mode {
+  overflow: auto;
+  background: var(--bg);
+}
+body.public-carnet-mode .layout {
+  display: none !important;
+}
+body.public-carnet-mode .bottom-nav {
+  display: none !important;
+}
+body.public-carnet-mode .mobile-header {
+  display: none !important;
+}
+body.public-carnet-mode .modal-overlay {
+  display: none !important;
+}
+#public-carnet-view {
+  min-height: 100vh;
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+body.public-carnet-mode #public-carnet-view {
+  display: flex !important;
+}
 </style>
 </head>
 <body>
+<div id="public-carnet-view"></div>
 <div class="layout">
 
 <!-- SIDEBAR -->
@@ -1370,6 +1443,31 @@ input:focus, select:focus, textarea:focus {
     <div class="card" style="display:flex; flex-direction:column;">
       <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.75rem">Análisis de Socios</h4>
       <div class="mini-list" id="dash-partner-stats" style="margin-bottom:0.75rem"></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: MAPA DE CALOR DE ASISTENCIAS -->
+  <div class="card" style="margin-bottom:1.25rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+      <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;display:inline-flex;align-items:center;">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Distribución de Asistencias (Mapa de Calor)
+      </h4>
+      <div style="display:flex; gap:0.25rem; align-items:center; font-size: 0.7rem; color: var(--text3);">
+        <span>Menos</span>
+        <div style="width:10px; height:10px; background:var(--bg3); border:1px solid var(--border); border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:rgba(46,170,62,0.25); border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:rgba(46,170,62,0.5); border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:rgba(46,170,62,0.75); border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:rgba(46,170,62,1); border-radius:2px;"></div>
+        <span>Más</span>
+      </div>
+    </div>
+    
+    <div class="table-wrap" style="overflow-x:auto; padding-bottom: 4px;">
+      <div id="attendance-heatmap-grid" style="min-width: 780px;">
+        <!-- Generado dinámicamente -->
+      </div>
     </div>
   </div>
 
@@ -2186,14 +2284,7 @@ function initCarnetTilt() {
   const shine = document.querySelector('.carnet-shine');
   if (!card || !shine) return;
 
-  const isHoverSupported = window.matchMedia('(hover: hover)').matches;
-  if (!isHoverSupported) return;
-
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
+  const handleMove = (x, y, rect) => {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
@@ -2205,12 +2296,33 @@ function initCarnetTilt() {
     const pctX = (x / rect.width) * 100;
     const pctY = (y / rect.height) * 100;
     shine.style.background = `radial-gradient(circle at ${pctX}% ${pctY}%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 65%)`;
-  });
+  };
 
-  card.addEventListener('mouseleave', () => {
+  const handleReset = () => {
     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
     shine.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%)`;
+  };
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    handleMove(x, y, rect);
   });
+
+  card.addEventListener('mouseleave', handleReset);
+
+  card.addEventListener('touchmove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    const clampX = Math.max(0, Math.min(x, rect.width));
+    const clampY = Math.max(0, Math.min(y, rect.height));
+    handleMove(clampX, clampY, rect);
+  });
+
+  card.addEventListener('touchend', handleReset);
 }
 
 const CATS = ['TODOS','ENTRADA','BEBIDA','SUPLEMENTO','PRE-ENTRENO','ADICIONAL'];
@@ -2298,8 +2410,14 @@ function scheduleRender() {
 
   clearTimeout(renderDebounceTimer);
   renderDebounceTimer = setTimeout(() => {
-    const activePage = document.querySelector('.page.active');
-    if(activePage) goTo(activePage.id.replace('page-',''));
+    const urlParams = new URLSearchParams(window.location.search);
+    const carnetToken = urlParams.get('carnet');
+    if (carnetToken) {
+      showPublicCarnet(carnetToken);
+    } else {
+      const activePage = document.querySelector('.page.active');
+      if(activePage) goTo(activePage.id.replace('page-',''));
+    }
   }, 300); // espera 300ms antes de re-renderizar para agrupar múltiples updates
 }
 
@@ -4767,7 +4885,70 @@ function renderDashboard(){
       });
     }
   }
+  
+  renderAttendanceHeatmap();
+}
 
+function renderAttendanceHeatmap() {
+  const container = document.getElementById('attendance-heatmap-grid');
+  if (!container) return;
+
+  const asistencias = LS.get(K_ASISTENCIAS) || [];
+  const hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+  const matrix = Array.from({ length: 7 }, () => Array(hours.length).fill(0));
+  
+  asistencias.forEach(a => {
+    if (!a.timestamp) return;
+    const d = new Date(a.timestamp);
+    let dayIndex = d.getDay() - 1; // Monday=0, Sunday=6
+    if (dayIndex === -1) dayIndex = 6;
+    
+    const hour = d.getHours();
+    const hourIdx = hours.indexOf(hour);
+    
+    if (dayIndex >= 0 && dayIndex < 7 && hourIdx !== -1) {
+      matrix[dayIndex][hourIdx]++;
+    }
+  });
+  
+  let maxCount = 0;
+  for (let d = 0; d < 7; d++) {
+    for (let h = 0; h < hours.length; h++) {
+      if (matrix[d][h] > maxCount) {
+        maxCount = matrix[d][h];
+      }
+    }
+  }
+  
+  const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  let html = '';
+  
+  html += `<div class="heatmap-header-cell"></div>`;
+  hours.forEach(h => {
+    html += `<div class="heatmap-header-cell">${String(h).padStart(2, '0')}:00</div>`;
+  });
+  
+  for (let d = 0; d < 7; d++) {
+    html += `<div class="heatmap-day-label">${dayNames[d]}</div>`;
+    for (let h = 0; h < hours.length; h++) {
+      const count = matrix[d][h];
+      let bgStyle = '';
+      let textStyle = 'color: var(--text3); font-weight: 500; font-size: 0.65rem;';
+      
+      if (count > 0) {
+        const opacity = 0.2 + 0.8 * (count / maxCount);
+        bgStyle = `background-color: rgba(46, 170, 62, ${opacity}); border-color: rgba(46, 170, 62, 0.4);`;
+        textStyle = opacity > 0.65 ? 'color: #fff;' : 'color: var(--text);';
+      } else {
+        bgStyle = 'background-color: var(--bg3);';
+      }
+      
+      const tooltip = `${dayNames[d]} ${String(hours[h]).padStart(2, '0')}:00 — ${count} asistencia${count !== 1 ? 's' : ''}`;
+      html += `<div class="heatmap-cell" style="${bgStyle} ${textStyle}" title="${tooltip}">${count > 0 ? count : ''}</div>`;
+    }
+  }
+  
+  container.innerHTML = html;
 }
 
 
@@ -6024,9 +6205,123 @@ function preloadPDFFonts() {
 }
 
 // ═══════════════════════════════════════════════
+// PUBLIC CARNET DISPLAY
+// ═══════════════════════════════════════════════
+function showPublicCarnet(token) {
+  const members = LS.get(K_MEMBERS) || [];
+  const member = members.find(m => m.qrToken === token || m.codigo === token || m.id === token);
+  
+  // Activate public carnet view body class (hides sidebar, bottom nav, mobile header)
+  document.body.classList.add('public-carnet-mode');
+  
+  const publicView = document.getElementById('public-carnet-view');
+  if (!publicView) return;
+  
+  if (!member) {
+    publicView.innerHTML = `
+      <div style="max-width:400px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem 2rem;box-shadow:0 10px 30px rgba(0,0,0,0.15);text-align:center;width:100%;">
+        <div style="font-size:3.5rem;margin-bottom:1rem;color:var(--red);display:flex;justify-content:center;">${getIconHTML('CLOSE', 60, 2.0)}</div>
+        <h2 style="margin-bottom:0.5rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:1.8rem;color:var(--red)">Pase no encontrado</h2>
+        <p style="color:var(--text2);font-size:0.9rem;line-height:1.5;">El enlace de carnet digital no es válido o el socio ya no existe en el sistema.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  const status = memberStatus(member);
+  const statusClass = status === 'active' ? 'active' : (status === 'expiring' ? 'expiring' : 'expired');
+  const statusLabel = status === 'active' ? 'Activo' : (status === 'expiring' ? 'Por Vencer' : 'Vencido');
+  
+  const avatarHTML = member.foto 
+    ? `<img src="${member.foto}" alt="Foto Socio">` 
+    : `<span>${initials(member.name)}</span>`;
+    
+  publicView.innerHTML = `
+    <div style="width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <div class="carnet-card-v2 ${statusClass}">
+        <div class="carnet-shine"></div>
+  
+        <!-- HEADER: logo real del gym -->
+        <div class="carnet-header-v2">
+          <div class="carnet-logo-mark-v2">
+            <img src="/logo.jpg" alt="Cesar's Gym Logo">
+          </div>
+          <div class="carnet-gym-info-v2">
+            <div class="carnet-gym-name-v2">CESAR'S GYM</div>
+            <div class="carnet-gym-slogan-v2">SOLO LOS MAS FUERTES</div>
+          </div>
+        </div>
+  
+        <!-- BODY: centrado -->
+        <div class="carnet-body-v2">
+          <div class="carnet-avatar-block-v2">
+            <div class="carnet-avatar-v2 ${statusClass}">
+              ${avatarHTML}
+            </div>
+          </div>
+  
+          <div class="carnet-member-info-v2">
+            <div class="carnet-member-name-v2">${member.name}</div>
+            <div class="carnet-member-code-v2">${member.codigo}</div>
+            <div class="carnet-badge-v2 ${statusClass}">${statusLabel}</div>
+          </div>
+        </div>
+  
+        <!-- QR: grande y centrado -->
+        <div class="carnet-qr-section-v2">
+          <div class="carnet-qr-wrap-v2" id="public-carnet-qr-code">
+            <!-- QR generado dinámicamente -->
+          </div>
+        </div>
+  
+        <!-- FOOTER: barra oscura con fechas -->
+        <div class="carnet-footer-v2">
+          <div class="carnet-footer-col">
+            <span class="carnet-footer-label">INICIO</span>
+            <span class="carnet-footer-date">${fmtDate(member.start)}</span>
+          </div>
+          <div class="carnet-footer-col">
+            <span class="carnet-footer-label">VENCE</span>
+            <span class="carnet-footer-date">${fmtDate(member.end)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Generar el código QR
+  setTimeout(() => {
+    const qrContainer = document.getElementById("public-carnet-qr-code");
+    if (qrContainer) {
+      qrContainer.innerHTML = '';
+      new QRCode(qrContainer, {
+        text: member.qrToken || member.codigo || member.id,
+        width: 132,
+        height: 132,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.M
+      });
+    }
+  }, 50);
+  
+  // Activar efectos 3D/spotlight
+  initCarnetTilt();
+}
+
+// ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
-(function(){ preloadPDFFonts(); goTo('dashboard'); })();
+(function(){
+  preloadPDFFonts();
+  const urlParams = new URLSearchParams(window.location.search);
+  const carnetToken = urlParams.get('carnet');
+  if (carnetToken) {
+    showPublicCarnet(carnetToken);
+  } else {
+    goTo('dashboard');
+  }
+})();
 </script>
 
 <!-- BOTTOM NAVIGATION BAR (Mobile Only) -->
