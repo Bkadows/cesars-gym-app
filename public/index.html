@@ -1204,35 +1204,36 @@ input:focus, select:focus, textarea:focus {
 .toast.err .toast-progress { background: var(--red); }
 .toast.warn .toast-progress { background: var(--amber); }
 
-/* Heatmap Attendance Grid Styles */
+/* Heatmap Attendance Grid Styles (Compact & Beautiful) */
 .heatmap-grid {
   display: grid;
-  grid-template-columns: 80px repeat(17, 1fr);
-  gap: 4px;
+  grid-template-columns: 65px repeat(17, 1fr);
+  gap: 2px;
   align-items: center;
 }
 .heatmap-header-cell {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   color: var(--text3);
   text-align: center;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 .heatmap-day-label {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: var(--text2);
   text-transform: capitalize;
+  padding-right: 4px;
 }
 .heatmap-cell {
-  height: 32px;
-  border-radius: 4px;
+  height: 20px;
+  border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--text);
   border: 1px solid var(--border);
@@ -1240,45 +1241,13 @@ input:focus, select:focus, textarea:focus {
   user-select: none;
 }
 .heatmap-cell:hover {
-  transform: scale(1.06);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  transform: scale(1.12);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   z-index: 5;
-}
-
-/* Public Carnet Page View styling */
-body.public-carnet-mode {
-  overflow: auto;
-  background: var(--bg);
-}
-body.public-carnet-mode .layout {
-  display: none !important;
-}
-body.public-carnet-mode .bottom-nav {
-  display: none !important;
-}
-body.public-carnet-mode .mobile-header {
-  display: none !important;
-}
-body.public-carnet-mode .modal-overlay {
-  display: none !important;
-}
-#public-carnet-view {
-  min-height: 100vh;
-  width: 100%;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  padding: 1.5rem;
-  box-sizing: border-box;
-}
-body.public-carnet-mode #public-carnet-view {
-  display: flex !important;
 }
 </style>
 </head>
 <body>
-<div id="public-carnet-view"></div>
 <div class="layout">
 
 <!-- SIDEBAR -->
@@ -1465,7 +1434,7 @@ body.public-carnet-mode #public-carnet-view {
     </div>
     
     <div class="table-wrap" style="overflow-x:auto; padding-bottom: 4px;">
-      <div id="attendance-heatmap-grid" style="min-width: 780px;">
+      <div id="attendance-heatmap-grid" class="heatmap-grid" style="min-width: 780px;">
         <!-- Generado dinámicamente -->
       </div>
     </div>
@@ -2410,14 +2379,8 @@ function scheduleRender() {
 
   clearTimeout(renderDebounceTimer);
   renderDebounceTimer = setTimeout(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const carnetToken = urlParams.get('carnet');
-    if (carnetToken) {
-      showPublicCarnet(carnetToken);
-    } else {
-      const activePage = document.querySelector('.page.active');
-      if(activePage) goTo(activePage.id.replace('page-',''));
-    }
+    const activePage = document.querySelector('.page.active');
+    if(activePage) goTo(activePage.id.replace('page-',''));
   }, 300); // espera 300ms antes de re-renderizar para agrupar múltiples updates
 }
 
@@ -6205,123 +6168,9 @@ function preloadPDFFonts() {
 }
 
 // ═══════════════════════════════════════════════
-// PUBLIC CARNET DISPLAY
-// ═══════════════════════════════════════════════
-function showPublicCarnet(token) {
-  const members = LS.get(K_MEMBERS) || [];
-  const member = members.find(m => m.qrToken === token || m.codigo === token || m.id === token);
-  
-  // Activate public carnet view body class (hides sidebar, bottom nav, mobile header)
-  document.body.classList.add('public-carnet-mode');
-  
-  const publicView = document.getElementById('public-carnet-view');
-  if (!publicView) return;
-  
-  if (!member) {
-    publicView.innerHTML = `
-      <div style="max-width:400px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem 2rem;box-shadow:0 10px 30px rgba(0,0,0,0.15);text-align:center;width:100%;">
-        <div style="font-size:3.5rem;margin-bottom:1rem;color:var(--red);display:flex;justify-content:center;">${getIconHTML('CLOSE', 60, 2.0)}</div>
-        <h2 style="margin-bottom:0.5rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:1.8rem;color:var(--red)">Pase no encontrado</h2>
-        <p style="color:var(--text2);font-size:0.9rem;line-height:1.5;">El enlace de carnet digital no es válido o el socio ya no existe en el sistema.</p>
-      </div>
-    `;
-    return;
-  }
-  
-  const status = memberStatus(member);
-  const statusClass = status === 'active' ? 'active' : (status === 'expiring' ? 'expiring' : 'expired');
-  const statusLabel = status === 'active' ? 'Activo' : (status === 'expiring' ? 'Por Vencer' : 'Vencido');
-  
-  const avatarHTML = member.foto 
-    ? `<img src="${member.foto}" alt="Foto Socio">` 
-    : `<span>${initials(member.name)}</span>`;
-    
-  publicView.innerHTML = `
-    <div style="width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <div class="carnet-card-v2 ${statusClass}">
-        <div class="carnet-shine"></div>
-  
-        <!-- HEADER: logo real del gym -->
-        <div class="carnet-header-v2">
-          <div class="carnet-logo-mark-v2">
-            <img src="/logo.jpg" alt="Cesar's Gym Logo">
-          </div>
-          <div class="carnet-gym-info-v2">
-            <div class="carnet-gym-name-v2">CESAR'S GYM</div>
-            <div class="carnet-gym-slogan-v2">SOLO LOS MAS FUERTES</div>
-          </div>
-        </div>
-  
-        <!-- BODY: centrado -->
-        <div class="carnet-body-v2">
-          <div class="carnet-avatar-block-v2">
-            <div class="carnet-avatar-v2 ${statusClass}">
-              ${avatarHTML}
-            </div>
-          </div>
-  
-          <div class="carnet-member-info-v2">
-            <div class="carnet-member-name-v2">${member.name}</div>
-            <div class="carnet-member-code-v2">${member.codigo}</div>
-            <div class="carnet-badge-v2 ${statusClass}">${statusLabel}</div>
-          </div>
-        </div>
-  
-        <!-- QR: grande y centrado -->
-        <div class="carnet-qr-section-v2">
-          <div class="carnet-qr-wrap-v2" id="public-carnet-qr-code">
-            <!-- QR generado dinámicamente -->
-          </div>
-        </div>
-  
-        <!-- FOOTER: barra oscura con fechas -->
-        <div class="carnet-footer-v2">
-          <div class="carnet-footer-col">
-            <span class="carnet-footer-label">INICIO</span>
-            <span class="carnet-footer-date">${fmtDate(member.start)}</span>
-          </div>
-          <div class="carnet-footer-col">
-            <span class="carnet-footer-label">VENCE</span>
-            <span class="carnet-footer-date">${fmtDate(member.end)}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  // Generar el código QR
-  setTimeout(() => {
-    const qrContainer = document.getElementById("public-carnet-qr-code");
-    if (qrContainer) {
-      qrContainer.innerHTML = '';
-      new QRCode(qrContainer, {
-        text: member.qrToken || member.codigo || member.id,
-        width: 132,
-        height: 132,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.M
-      });
-    }
-  }, 50);
-  
-  // Activar efectos 3D/spotlight
-  initCarnetTilt();
-}
-
-// ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
-(function(){
-  preloadPDFFonts();
-  const urlParams = new URLSearchParams(window.location.search);
-  const carnetToken = urlParams.get('carnet');
-  if (carnetToken) {
-    showPublicCarnet(carnetToken);
-  } else {
-    goTo('dashboard');
-  }
-})();
+(function(){ preloadPDFFonts(); goTo('dashboard'); })();
 </script>
 
 <!-- BOTTOM NAVIGATION BAR (Mobile Only) -->
