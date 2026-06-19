@@ -2020,9 +2020,8 @@ body.dark .member-premium-card:hover {
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
     <span>Carnet / QR</span>
   </div>
-  <div class="sidebar-footer">
-    <span class="ver">v2.1 · Cesar's Gym</span>
-    <div style="display:flex; gap: 6px; margin-top: 8px; align-items:center;">
+  <div class="sidebar-footer" style="padding-top: 0.5rem;">
+    <div style="display:flex; gap: 6px; align-items:center;">
       <button onclick="exportarDashboardCSV()" class="btn btn-ghost" style="padding:0; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border: 1px solid var(--border);" title="Exportar CSV">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       </button>
@@ -2072,12 +2071,7 @@ body.dark .member-premium-card:hover {
 
 <!-- ══════════ DASHBOARD ══════════ -->
 <div id="page-dashboard" class="page active">
-  <div class="page-header">
-    <div class="page-header-left">
-      <h2>Panel de Control</h2>
-      <p>Resumen general y métricas del gimnasio</p>
-    </div>
-  </div>
+
 
   <!-- KPI Cards -->
   <div class="stat-grid" id="dash-stats-kpis"></div>
@@ -4214,20 +4208,66 @@ function saveStockModal(){
 // ═══════════════════════════════════════════════
 // GLOBAL SEARCH
 // ═══════════════════════════════════════════════
+function selectGlobalMember(id) {
+  const m = (LS.get(K_MEMBERS) || []).find(x => x.id === id);
+  if (!m) return;
+  goTo('members');
+  const searchInput = document.getElementById('member-search');
+  if (searchInput) {
+    searchInput.value = m.name;
+    renderMembers();
+  }
+}
+
 function renderGlobalSearch(){
   const q=(document.getElementById('global-search-input')?.value||'').trim().toLowerCase();
   const resEl=document.getElementById('global-results');
   if(!q||q.length<2){ resEl.classList.remove('open'); return; }
-  const members=LS.get(K_MEMBERS).filter(m=>m.name.toLowerCase().includes(q)||(m.dni||'').includes(q));
-  const ventas=LS.get(K_VENTAS).filter(v=>(v.customer||'').toLowerCase().includes(q));
+  
+  const members=LS.get(K_MEMBERS).filter(m=>m.name.toLowerCase().includes(q)||(m.dni||'').includes(q)||(m.phone||'').includes(q));
+  const ventas=LS.get(K_VENTAS).filter(v=>(v.customer||'').toLowerCase().includes(q) || v.id.includes(q));
   const prods=(LS.get(K_CATALOG)||[]).filter(p=>p.name.toLowerCase().includes(q));
+  
   let html='';
-  members.slice(0,3).forEach(m=>{ html+=`<div class="global-result" onclick="goTo('members');closeGlobalSearch()"><span>${esc(m.name)}</span><small>Miembro · ${m.plan}</small></div>`; });
-  ventas.slice(0,3).forEach(v=>{ html+=`<div class="global-result" onclick="goTo('caja');closeGlobalSearch()"><span>${esc(v.customer)}</span><small>Venta · S/${Number(v.total||0).toFixed(2)} · ${fmtDate(v.date)}</small></div>`; });
-  prods.slice(0,3).forEach(p=>{ html+=`<div class="global-result" onclick="addToTicket('${p.id}');goTo('caja');closeGlobalSearch()"><span>${esc(p.name)}</span><small>${p.cat} · S/${p.price}</small></div>`; });
-  if(!html) html='<div class="global-result" style="color:var(--text3)">Sin resultados</div>';
-  resEl.innerHTML=html; resEl.classList.add('open');
+  
+  if (members.length > 0) {
+    html += `<div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:1px; color:var(--text3); font-weight:700; padding:6px 12px; background:var(--bg3); border-bottom:1px solid var(--border)">👤 Miembros</div>`;
+    members.slice(0,5).forEach(m=>{
+      html+=`<div class="global-result" onclick="selectGlobalMember('${m.id}');closeGlobalSearch()">
+        <span>${esc(m.name)}</span>
+        <small style="color:var(--green)">Miembro · ${esc(m.plan)}</small>
+      </div>`;
+    });
+  }
+  
+  if (ventas.length > 0) {
+    html += `<div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:1px; color:var(--text3); font-weight:700; padding:6px 12px; background:var(--bg3); border-bottom:1px solid var(--border)">💵 Ventas</div>`;
+    ventas.slice(0,5).forEach(v=>{
+      html+=`<div class="global-result" onclick="goTo('caja');loadVentaToTicket('${v.id}');closeGlobalSearch()">
+        <span>${esc(v.customer)}</span>
+        <small>Venta · S/ ${Number(v.total||0).toFixed(2)} · ${fmtDate(v.date)}</small>
+      </div>`;
+    });
+  }
+  
+  if (prods.length > 0) {
+    html += `<div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:1px; color:var(--text3); font-weight:700; padding:6px 12px; background:var(--bg3); border-bottom:1px solid var(--border)">📦 Catálogo</div>`;
+    prods.slice(0,5).forEach(p=>{
+      html+=`<div class="global-result" onclick="addToTicket('${p.id}');goTo('caja');closeGlobalSearch()">
+        <span>${esc(p.name)}</span>
+        <small style="color:var(--amber)">${esc(p.cat)} · S/ ${p.price.toFixed(2)}</small>
+      </div>`;
+    });
+  }
+  
+  if(!html) {
+    html='<div class="global-result" style="color:var(--text3); justify-content:center;">Sin resultados</div>';
+  }
+  
+  resEl.innerHTML=html;
+  resEl.classList.add('open');
 }
+
 function closeGlobalSearch(){ document.getElementById('global-results').classList.remove('open'); document.getElementById('global-search-input').value=''; }
 document.addEventListener('click',e=>{
   if(!e.target.closest('.global-search')) document.getElementById('global-results').classList.remove('open');
