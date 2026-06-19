@@ -4857,11 +4857,42 @@ function renderAttendanceHeatmap() {
   if (!container) return;
 
   const asistencias = LS.get(K_ASISTENCIAS) || [];
+  const ventas = LS.get(K_VENTAS) || [];
   const hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
   const matrix = Array.from({ length: 7 }, () => Array(hours.length).fill(0));
   
+  // 1. Process all ENTRADA items in Caja Diaria sales of all days
+  ventas.forEach(v => {
+    const entries = (v.items || []).filter(i => i.cat === 'ENTRADA');
+    if (entries.length === 0) return;
+    
+    const qty = entries.reduce((s, i) => s + Number(i.qty || 0), 0);
+    if (qty <= 0) return;
+    
+    const dateStr = v.datetime || (v.date ? (v.date + 'T09:00:00') : null);
+    if (!dateStr) return;
+    
+    const d = new Date(dateStr);
+    let dayIndex = d.getDay() - 1; // Monday=0, Sunday=6
+    if (dayIndex === -1) dayIndex = 6;
+    
+    const hour = d.getHours();
+    const hourIdx = hours.indexOf(hour);
+    
+    if (dayIndex >= 0 && dayIndex < 7 && hourIdx !== -1) {
+      matrix[dayIndex][hourIdx] += qty;
+    }
+  });
+  
+  // 2. Process historical QR check-ins that do not have a matching sale in K_VENTAS (to prevent duplicates)
+  const qrSaleIds = new Set(
+    ventas.filter(v => typeof v.id === 'string' && v.id.startsWith('qr_')).map(v => v.id.substring(3))
+  );
+  
   asistencias.forEach(a => {
+    if (!a.id || qrSaleIds.has(a.id)) return; // skip if already counted via K_VENTAS
     if (!a.timestamp) return;
+    
     const d = new Date(a.timestamp);
     let dayIndex = d.getDay() - 1; // Monday=0, Sunday=6
     if (dayIndex === -1) dayIndex = 6;
