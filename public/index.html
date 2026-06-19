@@ -75,11 +75,12 @@ body.dark .nav-item.active{background:linear-gradient(90deg, rgba(16,185,129,0.1
 .global-search input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:.65rem 1.2rem .65rem 2.4rem;color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif;outline:none;box-shadow:0 4px 14px rgba(0,0,0,.03);transition:border-color .2s,box-shadow .2s}
 .global-search input:focus{border-color:var(--green);box-shadow:0 4px 14px rgba(16,185,129,.1)}
 .global-search svg{position:absolute;left:.75rem;top:.72rem;color:var(--text3)}
-.global-results{position:absolute;top:calc(100% + .35rem);left:0;right:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 12px 32px rgba(31,45,31,.14);z-index:120;display:none;overflow:hidden}
+.global-results{position:absolute;top:calc(100% + .35rem);left:0;right:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 12px 32px rgba(31,45,31,.14);z-index:120;display:none;overflow-y:auto;max-height:380px}
 .global-results.open{display:block}
-.global-result{display:flex;justify-content:space-between;gap:.75rem;padding:.65rem .8rem;border-bottom:1px solid var(--border);cursor:pointer;font-size:.8rem}
+.global-result{display:flex;justify-content:space-between;gap:.75rem;padding:.65rem .8rem;border-bottom:1px solid var(--border);cursor:pointer;font-size:.8rem;transition:background .1s,border-left .1s}
 .global-result:last-child{border-bottom:none}
-.global-result:hover{background:var(--bg3)}
+.global-result:hover, .global-result.selected{background:var(--bg3)}
+.global-result.selected{border-left:3px solid var(--green);padding-left:calc(.8rem - 3px)}
 .global-result small{color:var(--text3);white-space:nowrap}
 .page-header{margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem}
 .page-header-left h2{font-size:2rem;color:var(--text);font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-0.02em}
@@ -390,12 +391,14 @@ body.dark .cat-tab{background:rgba(255,255,255,.035)}
   .sale-card{align-items:flex-start!important;gap:.65rem!important;padding:.75rem!important}
   .caja-pay-pill{flex:1;justify-content:center}
 }
-.close-summary{display:none;margin-top:.75rem;border:1px solid var(--green-border);background:var(--green-bg);border-radius:var(--radius);padding:.75rem}
+.close-summary{display:none;margin-top:1.25rem;border:1.5px solid var(--green-border);background:var(--bg2);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:0 12px 30px rgba(0,0,0,0.03);position:relative}
 .close-summary.open{display:block}
-.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.55rem}
-.summary-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .7rem}
-.summary-item .lbl{font-size:.62rem;text-transform:uppercase;color:var(--text3);letter-spacing:1px}
-.summary-item .val{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--text);line-height:1}
+body.dark .close-summary{box-shadow:0 12px 40px rgba(0,0,0,0.25)}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem}
+.summary-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 0.9rem;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;justify-content:center}
+.summary-item:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.03)}
+.summary-item .lbl{font-size:.65rem;text-transform:uppercase;color:var(--text3);letter-spacing:1px;font-weight:600;margin-bottom:4px}
+.summary-item .val{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.4rem;color:var(--text);line-height:1.2}
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:1rem}
 .dash-grid-top{display:grid;grid-template-columns:2fr 1.2fr 1.2fr;gap:.9rem;margin-bottom:1rem}
 .dash-grid-two-cols{display:grid;grid-template-columns:2fr 1.2fr;gap:.9rem;margin-bottom:1rem}
@@ -825,7 +828,18 @@ body:not(.dark) .pay-method-btn.active[data-method="Plin"] { color: #2563eb; }
 
   /* Rediseño Radical iOS */
   .sidebar { display: none !important; }
-  .topbar { display: none !important; }
+  .topbar {
+    display: flex !important;
+    padding: 0.75rem 1rem 0.5rem;
+    margin-bottom: 0;
+    justify-content: center;
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .global-search {
+    width: 100%;
+    max-width: 100%;
+  }
   .main { margin-left: 0 !important; width: 100% !important; max-width: 100% !important; padding: calc(52px + env(safe-area-inset-top, 0px)) 0 calc(80px + env(safe-area-inset-bottom, 0px)) 0 !important; }
   .layout { display: block !important; }
   .page { padding: 1rem; }
@@ -3481,33 +3495,91 @@ function renderCaja() {
     const diffSign = diff >= 0 ? '+' : '';
     const diffColor = diff >= 0 ? 'var(--green)' : 'var(--red)';
     el.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap">
-        <div>
-          <strong>🔒 Cierre de caja ${fmtDate(cajaDate)}</strong>
-          <span class="badge bg" style="margin-left:.5rem;font-size:.65rem">Cerrado</span>
+      <!-- Header Row -->
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.25rem; flex-wrap:wrap; border-bottom:1px solid var(--border); padding-bottom:1rem;">
+        <div style="display:flex; align-items:center; gap:0.65rem;">
+          <div style="width:36px; height:36px; border-radius:50%; background:var(--green-bg); display:flex; align-items:center; justify-content:center; color:var(--green); border:1px solid var(--green-border); flex-shrink:0;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Outfit',sans-serif; font-size:1.15rem; font-weight:700; color:var(--text); letter-spacing:-0.01em; display:flex; align-items:center; gap:8px; line-height:1.2;">
+              Cierre de Caja
+              <span class="badge" style="background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); font-weight:700; font-size:0.6rem; padding:2px 8px; border-radius:30px; letter-spacing:0.5px;">CERRADO</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text3); margin-top:2px;">Fecha del cierre: ${fmtDate(cajaDate)}</div>
+          </div>
         </div>
-        <div style="display:flex;gap:.5rem">
-          <button class="btn btn-ghost btn-xs" onclick="copySummary()">📋 Copiar</button>
-          <button class="btn btn-danger btn-xs" onclick="reopenCaja()">🔓 Reabrir</button>
-          <button class="btn btn-ghost btn-xs" onclick="this.closest('.close-summary').classList.remove('open')">Ocultar</button>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="copySummary()" style="gap:6px; font-weight:600; padding:6px 12px; height:32px; font-size:11px; display:inline-flex; align-items:center; justify-content:center;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copiar Resumen
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="reopenCaja()" style="gap:6px; font-weight:600; padding:6px 12px; height:32px; font-size:11px; display:inline-flex; align-items:center; justify-content:center; background:var(--red-bg); color:var(--red); border:1px solid var(--red-border);">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+            Reabrir Caja
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="this.closest('.close-summary').classList.remove('open')" style="padding:6px 12px; height:32px; font-size:11px; color:var(--text3); font-weight:500;">
+            Ocultar
+          </button>
         </div>
       </div>
-      <div class="summary-grid">
-        <div class="summary-item"><div class="lbl">Total del Día</div><div class="val">S/ ${liveSum.total.toFixed(2)}</div></div>
-        <div class="summary-item"><div class="lbl">Entradas</div><div class="val">${liveSum.entradas}</div></div>
-        <div class="summary-item"><div class="lbl">💵 Efectivo</div><div class="val" style="color:#2eaa3e">S/ ${(liveSum.methods.Efectivo||0).toFixed(2)}</div></div>
-        <div class="summary-item"><div class="lbl">📱 Yape</div><div class="val" style="color:#7c3aed">S/ ${(liveSum.methods.Yape||0).toFixed(2)}</div></div>
-        <div class="summary-item"><div class="lbl">📲 Plin</div><div class="val" style="color:#0ea5e9">S/ ${(liveSum.methods.Plin||0).toFixed(2)}</div></div>
-        <div class="summary-item"><div class="lbl">🏦 Transferencia</div><div class="val" style="color:#f59e0b">S/ ${(liveSum.methods.Transferencia||0).toFixed(2)}</div></div>
+
+      <!-- Summary Grid -->
+      <div class="summary-grid" style="margin-bottom:1.25rem;">
+        <div class="summary-item" style="border-left: 4px solid var(--green); background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);">
+          <div class="lbl">Total del Día</div>
+          <div class="val" style="color:var(--green); font-size:1.6rem; font-weight:800; font-family:'Outfit',sans-serif;">S/ ${liveSum.total.toFixed(2)}</div>
+        </div>
+        <div class="summary-item" style="border-left: 4px solid var(--text2);">
+          <div class="lbl">Entradas</div>
+          <div class="val" style="font-family:'Outfit',sans-serif; font-weight:700; font-size:1.5rem;">${liveSum.entradas} <span style="font-size:0.8rem; color:var(--text3); font-weight:500;">personas</span></div>
+        </div>
+        <div class="summary-item" style="border-left: 4px solid #2eaa3e;">
+          <div class="lbl">💵 Efectivo</div>
+          <div class="val" style="color:#2eaa3e; font-family:'Outfit',sans-serif; font-weight:700; font-size:1.5rem;">S/ ${(liveSum.methods.Efectivo||0).toFixed(2)}</div>
+        </div>
+        <div class="summary-item" style="border-left: 4px solid #7c3aed;">
+          <div class="lbl">📱 Yape</div>
+          <div class="val" style="color:#7c3aed; font-family:'Outfit',sans-serif; font-weight:700; font-size:1.5rem;">S/ ${(liveSum.methods.Yape||0).toFixed(2)}</div>
+        </div>
+        <div class="summary-item" style="border-left: 4px solid #0ea5e9;">
+          <div class="lbl">📲 Plin</div>
+          <div class="val" style="color:#0ea5e9; font-family:'Outfit',sans-serif; font-weight:700; font-size:1.5rem;">S/ ${(liveSum.methods.Plin||0).toFixed(2)}</div>
+        </div>
+        <div class="summary-item" style="border-left: 4px solid #f59e0b;">
+          <div class="lbl">🏦 Transferencia</div>
+          <div class="val" style="color:#f59e0b; font-family:'Outfit',sans-serif; font-weight:700; font-size:1.5rem;">S/ ${(liveSum.methods.Transferencia||0).toFixed(2)}</div>
+        </div>
       </div>
+
+      <!-- Deudas / Pendientes Section -->
       ${deudas.length > 0 ? `
-      <div style="margin-top:.65rem;padding:.6rem .85rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px">
-        <div style="font-size:.72rem;color:var(--red);font-weight:600;margin-bottom:.35rem">🕒 Deudas pendientes (${deudas.length}): S/ ${totalPendiente.toFixed(2)}</div>
-        ${deudas.map(d=>`<div style="font-size:.75rem;color:var(--text2);display:flex;justify-content:space-between"><span>${esc(d.customer||'Cliente')}</span><strong style="color:var(--red)">S/ ${Number(d.total||0).toFixed(2)}</strong></div>`).join('')}
-      </div>` : `<div style="margin-top:.5rem;font-size:.75rem;color:var(--green)">✅ Sin deudas pendientes</div>`}
-      <div style="margin-top:.6rem;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--text2)">
-        <span>Productos: ${top.length?top.map(([n,q])=>`${esc(n)} (${q})`).join(', '):'—'}</span>
-        <span style="color:${diffColor};font-weight:600">${diffSign}S/ ${Math.abs(diff).toFixed(2)} vs ayer</span>
+      <div style="margin-top:1rem; padding:0.85rem 1.1rem; background:var(--red-bg); border:1px solid var(--red-border); border-radius:12px; margin-bottom:1.25rem;">
+        <div style="font-size:0.82rem; color:var(--red); font-weight:700; margin-bottom:0.5rem; display:flex; align-items:center; gap:6px;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Deudas pendientes (${deudas.length}): S/ ${totalPendiente.toFixed(2)}
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          ${deudas.map(d=>`<div style="font-size:0.78rem; color:var(--text2); display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed var(--border); padding-bottom:4px; margin-bottom:2px;">
+            <span>${esc(d.customer||'Cliente')}</span>
+            <strong style="color:var(--red)">S/ ${Number(d.total||0).toFixed(2)}</strong>
+          </div>`).join('')}
+        </div>
+      </div>` : `
+      <div style="margin-top:0.75rem; font-size:0.8rem; color:var(--green); display:flex; align-items:center; gap:6px; margin-bottom:1.25rem; font-weight:600;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Sin deudas pendientes en este cierre
+      </div>`}
+
+      <!-- Footer Info (Products and vs yesterday comparison) -->
+      <div style="border-top:1px solid var(--border); padding-top:1rem; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:var(--text2); flex-wrap:wrap; gap:0.75rem;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="font-weight:700; color:var(--text3); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px;">Productos vendidos:</span>
+          ${top.length ? top.map(([n,q])=>`<span class="badge" style="background:var(--bg3); color:var(--text2); border:1px solid var(--border); border-radius:30px; padding:3px 8px; font-size:0.7rem; font-weight:600; display:inline-flex; align-items:center; gap:4px;">${esc(n)} <strong style="color:var(--text); font-weight:800;">${q}</strong></span>`).join('') : '<span style="color:var(--text3);">—</span>'}
+        </div>
+        <div class="badge" style="background:${diff >= 0 ? 'var(--green-bg)' : 'var(--red-bg)'}; color:${diffColor}; border:1px solid ${diff >= 0 ? 'var(--green-border)' : 'var(--red-border)'}; padding:6px 12px; font-weight:700; border-radius:30px; display:inline-flex; align-items:center; gap:6px; font-size:0.75rem;">
+          ${diff >= 0 ? '📈' : '📉'} ${diffSign}S/ ${Math.abs(diff).toFixed(2)} vs ayer
+        </div>
       </div>`;
   } else {
     el.classList.remove('open');
@@ -4208,6 +4280,8 @@ function saveStockModal(){
 // ═══════════════════════════════════════════════
 // GLOBAL SEARCH
 // ═══════════════════════════════════════════════
+let globalSearchActiveIndex = -1;
+
 function selectGlobalMember(id) {
   const m = (LS.get(K_MEMBERS) || []).find(x => x.id === id);
   if (!m) return;
@@ -4217,16 +4291,71 @@ function selectGlobalMember(id) {
     searchInput.value = m.name;
     renderMembers();
   }
+  openMemberModal(id);
+}
+
+function selectGlobalPayment(memberId) {
+  if (!memberId) return;
+  goTo('members');
+  openPersonHistory(memberId);
+}
+
+function setupGlobalSearchEvents() {
+  const input = document.getElementById('global-search-input');
+  if (!input) return;
+  input.addEventListener('keydown', e => {
+    const resEl = document.getElementById('global-results');
+    if (!resEl || !resEl.classList.contains('open')) return;
+    const items = Array.from(resEl.querySelectorAll('.global-result:not([style*="justify-content:center"])'));
+    if (items.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      globalSearchActiveIndex++;
+      if (globalSearchActiveIndex >= items.length) globalSearchActiveIndex = 0;
+      updateActiveSearchResult(items);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      globalSearchActiveIndex--;
+      if (globalSearchActiveIndex < 0) globalSearchActiveIndex = items.length - 1;
+      updateActiveSearchResult(items);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const idx = globalSearchActiveIndex >= 0 ? globalSearchActiveIndex : 0;
+      const activeItem = items[idx];
+      if (activeItem) {
+        activeItem.click();
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      closeGlobalSearch();
+      input.blur();
+    }
+  });
+}
+
+function updateActiveSearchResult(items) {
+  items.forEach((item, idx) => {
+    if (idx === globalSearchActiveIndex) {
+      item.classList.add('selected');
+      item.scrollIntoView({ block: 'nearest' });
+    } else {
+      item.classList.remove('selected');
+    }
+  });
 }
 
 function renderGlobalSearch(){
   const q=(document.getElementById('global-search-input')?.value||'').trim().toLowerCase();
   const resEl=document.getElementById('global-results');
+  globalSearchActiveIndex = -1; // Reset active index on typing
+  
   if(!q||q.length<2){ resEl.classList.remove('open'); return; }
   
   const members=LS.get(K_MEMBERS).filter(m=>m.name.toLowerCase().includes(q)||(m.dni||'').includes(q)||(m.phone||'').includes(q));
   const ventas=LS.get(K_VENTAS).filter(v=>(v.customer||'').toLowerCase().includes(q) || v.id.includes(q));
   const prods=(LS.get(K_CATALOG)||[]).filter(p=>p.name.toLowerCase().includes(q));
+  const pays=(LS.get(K_PAYMENTS)||[]).filter(p=>(p.memberName||'').toLowerCase().includes(q) || (p.plan||'').toLowerCase().includes(q) || (p.note||'').toLowerCase().includes(q) || p.id.includes(q));
   
   let html='';
   
@@ -4236,6 +4365,16 @@ function renderGlobalSearch(){
       html+=`<div class="global-result" onclick="selectGlobalMember('${m.id}');closeGlobalSearch()">
         <span>${esc(m.name)}</span>
         <small style="color:var(--green)">Miembro · ${esc(m.plan)}</small>
+      </div>`;
+    });
+  }
+  
+  if (pays.length > 0) {
+    html += `<div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:1px; color:var(--text3); font-weight:700; padding:6px 12px; background:var(--bg3); border-bottom:1px solid var(--border)">💳 Pagos de Membresía</div>`;
+    pays.slice(0,5).forEach(p=>{
+      html+=`<div class="global-result" onclick="selectGlobalPayment('${p.memberId}');closeGlobalSearch()">
+        <span>${esc(p.memberName)} - S/ ${Number(p.amount||0).toFixed(2)}</span>
+        <small style="color:var(--blue)">Pago · ${esc(p.plan)} · ${fmtDate(p.date)}</small>
       </div>`;
     });
   }
@@ -4261,14 +4400,14 @@ function renderGlobalSearch(){
   }
   
   if(!html) {
-    html='<div class="global-result" style="color:var(--text3); justify-content:center;">Sin resultados</div>';
+    html='<div class="global-result" style="color:var(--text3); justify-content:center; cursor:default;">Sin resultados</div>';
   }
   
   resEl.innerHTML=html;
   resEl.classList.add('open');
 }
 
-function closeGlobalSearch(){ document.getElementById('global-results').classList.remove('open'); document.getElementById('global-search-input').value=''; }
+function closeGlobalSearch(){ document.getElementById('global-results').classList.remove('open'); document.getElementById('global-search-input').value=''; globalSearchActiveIndex = -1; }
 document.addEventListener('click',e=>{
   if(!e.target.closest('.global-search')) document.getElementById('global-results').classList.remove('open');
   if(!e.target.closest('.ticket-customer-wrap')) document.getElementById('member-suggestions')?.classList.remove('open');
@@ -7467,7 +7606,7 @@ function preloadPDFFonts() {
 // ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
-(function(){ verifyAndMigrateCatalog(true); preloadPDFFonts(); goTo('dashboard'); })();
+(function(){ verifyAndMigrateCatalog(true); preloadPDFFonts(); setupGlobalSearchEvents(); goTo('dashboard'); })();
 </script>
 
 <!-- Floating Action Button for Mobile QR Scanner -->
