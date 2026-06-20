@@ -5775,6 +5775,9 @@ function exportarDashboardCSV() {
   const active = members.filter(m => memberStatus(m) !== 'expired').length;
   const thisMonthSales = ventas.filter(v => (v.payDate || v.date).startsWith(ym));
   const sumMes = thisMonthSales.reduce((a,v)=>a+(Number(v.total)||0),0);
+  const yearPrefix = String(now.getFullYear());
+  const thisYearSales = ventas.filter(v => (v.payDate || v.date).startsWith(yearPrefix));
+  const sumAnio = thisYearSales.reduce((a,v)=>a+(Number(v.total)||0),0);
   const totalStockValue = catalog.filter(productUsesStock).reduce((sum, p) => sum + (p.price * (stock[p.id] || 0)), 0);
   
   let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
@@ -5783,6 +5786,7 @@ function exportarDashboardCSV() {
   csvContent += "METRICA;VALOR\n";
   csvContent += `Socios Activos;${active}\n`;
   csvContent += `Ingresos del Mes (S/);${sumMes.toFixed(2)}\n`;
+  csvContent += `Ingresos del Año (S/);${sumAnio.toFixed(2)}\n`;
   csvContent += `Socios Registrados Totales;${members.length}\n`;
   csvContent += `Membresias Vencidas;${members.filter(m=>daysLeft(m.end)<0).length}\n`;
   csvContent += `Membresias Por Vencer (7d);${members.filter(m=>{const dl=daysLeft(m.end);return dl>=0&&dl<=7;}).length}\n`;
@@ -5829,6 +5833,27 @@ function renderDashboard(){
     return pd.startsWith(pastYM);
   });
   const sumPastMes = ventasPastMes.reduce((a,v)=>a+(Number(v.total)||0),0);
+
+  // Ingresos del Año
+  const yearPrefix = String(now.getFullYear());
+  const ventasAnio = ventas.filter(v => {
+    const pd = v.payDate || v.date;
+    return pd.startsWith(yearPrefix);
+  });
+  const sumAnio = ventasAnio.reduce((a,v)=>a+(Number(v.total)||0),0);
+
+  const pastYearPrefix = String(now.getFullYear() - 1);
+  const ventasPastAnio = ventas.filter(v => {
+    const pd = v.payDate || v.date;
+    return pd.startsWith(pastYearPrefix);
+  });
+  const sumPastAnio = ventasPastAnio.reduce((a,v)=>a+(Number(v.total)||0),0);
+
+  let yearGrowth = 0;
+  if(sumPastAnio > 0) yearGrowth = ((sumAnio - sumPastAnio) / sumPastAnio) * 100;
+  const yearGrowthBadge = yearGrowth >= 0 
+    ? `<span style="color:var(--green); font-size: 0.72rem; font-weight:700;">▲ +${yearGrowth.toFixed(0)}%</span>` 
+    : `<span style="color:var(--red); font-size: 0.72rem; font-weight:700;">▼ ${Math.abs(yearGrowth).toFixed(0)}%</span>`;
 
   // Meta Mensual
   const meta = getDashMeta();
@@ -5878,6 +5903,11 @@ function renderDashboard(){
       <div class="sub">${monthGrowthBadge} vs mes anterior</div>
     </div>
     <div class="stat-card">
+      <div class="lbl">Ingresos del Año</div>
+      <div class="val" id="kpi-anio-val" style="color:var(--amber)">S/ 0.00</div>
+      <div class="sub">${yearGrowthBadge} vs año anterior</div>
+    </div>
+    <div class="stat-card">
       <div class="lbl">Miembros Activos</div>
       <div class="val" id="kpi-activos-val" style="color:var(--blue)">0</div>
       <div class="sub">${activeDiffBadge} vs fin mes anterior (${activePast})</div>
@@ -5919,6 +5949,7 @@ function renderDashboard(){
 
   animateCount(document.getElementById('kpi-hoy-val'), 0, totalHoy, 800, true);
   animateCount(document.getElementById('kpi-mes-val'), 0, sumMes, 800, true);
+  animateCount(document.getElementById('kpi-anio-val'), 0, sumAnio, 800, true);
   animateCount(document.getElementById('kpi-activos-val'), 0, active, 800, false);
   animateCount(document.getElementById('summary-hoy-val'), 0, totalHoy, 800, true);
   animateCount(document.getElementById('summary-entradas-val'), 0, entradasHoy, 800, false);
