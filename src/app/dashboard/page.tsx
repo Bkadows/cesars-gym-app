@@ -250,9 +250,9 @@ export default function DashboardPage() {
     return (
       <div className="space-y-8 animate-pulse">
         <div className="h-36 bg-white border border-slate-200 rounded-lg" />
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-32 bg-white border border-slate-200 rounded-lg" />
+            <div key={i} className="h-[102px] bg-white border border-slate-200 rounded-lg" />
           ))}
         </div>
       </div>
@@ -318,24 +318,24 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* ── 2. KPI CARDS PREMIUM CON SPARKLINES ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((kpi) => (
           <motion.div
             key={kpi.title}
-            whileHover={{ scale: 1.02, y: -4 }}
+            whileHover={{ scale: 1.02, y: -2 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-6 shadow-premium hover:shadow-premium-hover flex flex-col justify-between h-36 transition-all duration-300 relative overflow-hidden group"
+            className="bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-4 shadow-premium hover:shadow-premium-hover flex flex-col justify-between h-[102px] transition-all duration-300 relative overflow-hidden group"
           >
             {/* KPI Header */}
             <div className="flex justify-between items-start">
               <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">{kpi.title}</span>
-              <div className={`w-8 h-8 rounded-lg border flex items-center justify-center ${kpi.color}`}>
-                <kpi.icon className="w-4 h-4 mx-auto" />
+              <div className={`w-[26px] h-[26px] rounded-md border flex items-center justify-center ${kpi.color}`}>
+                <kpi.icon className="w-3.5 h-3.5 mx-auto" />
               </div>
             </div>
 
             {/* Sparkline chart embedded as card background */}
-            <div className="absolute bottom-0 left-0 right-0 h-11 overflow-hidden pointer-events-none opacity-40 group-hover:opacity-75 transition-opacity">
+            <div className="absolute bottom-0 left-0 right-0 h-[30px] overflow-hidden pointer-events-none opacity-40 group-hover:opacity-75 transition-opacity">
               <Chart
                 options={getSparkOptions(kpi.isPositive ? '#16A34A' : '#EF4444')}
                 series={[{ data: kpi.sparkData }]}
@@ -346,9 +346,9 @@ export default function DashboardPage() {
             </div>
 
             {/* KPI Value & Growth */}
-            <div className="mt-1 z-10">
+            <div className="mt-0.5 z-10">
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-slate-900 leading-none tracking-tight">
+                <span className="text-[1.45rem] font-black text-slate-900 leading-none tracking-tight">
                   <AnimatedCounter 
                     value={kpi.val} 
                     decimals={kpi.title.includes('Miembros') ? 0 : 2} 
@@ -360,7 +360,7 @@ export default function DashboardPage() {
                   {kpi.pct}
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 font-semibold mt-1.5 leading-none">{kpi.sub}</p>
+              <p className="text-[10px] text-slate-400 font-semibold mt-1 leading-none">{kpi.sub}</p>
             </div>
           </motion.div>
         ))}

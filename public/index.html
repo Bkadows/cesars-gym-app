@@ -2012,17 +2012,37 @@ body.dark .member-premium-card:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 140px;
+  height: 102px; /* Reduced from 140px */
+  padding: 0.8rem 1rem !important; /* Compact padding */
 }
 .premium-kpi-card:hover {
-  transform: translateY(-4px) scale(1.02) !important;
-  box-shadow: 0 12px 30px -4px rgba(15,23,42,0.12) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 10px 24px -4px rgba(15,23,42,0.08) !important;
   border-color: var(--border2) !important;
 }
+.premium-kpi-card .val {
+  font-size: 1.45rem !important; /* Reduced from 2rem */
+  font-weight: 850 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1 !important;
+}
+.premium-kpi-card .lbl {
+  font-size: 0.58rem !important;
+  color: var(--text3) !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase !important;
+}
+.premium-kpi-card .sub {
+  font-size: 0.65rem !important;
+  color: var(--text2) !important;
+  margin-top: 0.15rem !important;
+  font-weight: 600 !important;
+}
 .kpi-icon-wrapper {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 26px; /* Reduced from 36px */
+  height: 26px; /* Reduced from 36px */
+  border-radius: 6px;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -2033,13 +2053,13 @@ body.dark .member-premium-card:hover {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 40px;
+  height: 30px; /* Reduced from 40px */
   pointer-events: none;
   opacity: 0.35;
   transition: opacity 0.3s ease;
 }
 .premium-kpi-card:hover .kpi-sparkline-canvas {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 /* Executive Summary (Efecto WOW) */
@@ -6009,7 +6029,7 @@ function renderSparkline(elementId, data, color) {
   const options = {
     chart: {
       type: 'line',
-      height: 40,
+      height: 30, // Reduced from 40 to fit compact KPI cards
       sparkline: { enabled: true },
       animations: { enabled: true, speed: 800 }
     },
@@ -6160,10 +6180,10 @@ function renderDashboard(){
   // 2. RENDER PREMIUM KPI CARDS
   const kpiHTML = `
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
         <span class="lbl" style="margin-bottom:0;">Ingresos Hoy</span>
         <div class="kpi-icon-wrapper text-emerald-600 bg-emerald-50 border-emerald-100">
-          ${getIconHTML('EFECTIVO', 15, 2.2)}
+          ${getIconHTML('EFECTIVO', 12, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6171,15 +6191,15 @@ function renderDashboard(){
           <span class="val" id="kpi-hoy-val" style="color:var(--text)">S/ 0.00</span>
           ${todayGrowthBadge}
         </div>
-        <p class="sub" style="margin-top:0.25rem;">vs ayer (S/ ${totalYesterday.toFixed(0)})</p>
+        <p class="sub" style="margin-top:0.15rem;">vs ayer (S/ ${totalYesterday.toFixed(0)})</p>
       </div>
       <div id="sparkline-hoy" class="kpi-sparkline-canvas"></div>
     </div>
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
         <span class="lbl" style="margin-bottom:0;">Ingresos del Mes</span>
         <div class="kpi-icon-wrapper text-green-600 bg-green-50 border-green-100">
-          ${getIconHTML('EXPORTAR', 15, 2.2)}
+          ${getIconHTML('EXPORTAR', 12, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6187,15 +6207,15 @@ function renderDashboard(){
           <span class="val" id="kpi-mes-val" style="color:var(--green)">S/ 0.00</span>
           ${monthGrowthBadge}
         </div>
-        <p class="sub" style="margin-top:0.25rem;">vs mes anterior (S/ ${sumPastMes.toFixed(0)})</p>
+        <p class="sub" style="margin-top:0.15rem;">vs mes anterior (S/ ${sumPastMes.toFixed(0)})</p>
       </div>
       <div id="sparkline-mes" class="kpi-sparkline-canvas"></div>
     </div>
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
         <span class="lbl" style="margin-bottom:0;">Ingresos del Año</span>
         <div class="kpi-icon-wrapper text-amber-600 bg-amber-50 border-amber-100">
-          ${getIconHTML('CALENDAR', 15, 2.2)}
+          ${getIconHTML('CALENDAR', 12, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6203,15 +6223,15 @@ function renderDashboard(){
           <span class="val" id="kpi-anio-val" style="color:var(--amber)">S/ 0.00</span>
           ${yearGrowthBadge}
         </div>
-        <p class="sub" style="margin-top:0.25rem;">vs año anterior (S/ ${sumPastAnio.toFixed(0)})</p>
+        <p class="sub" style="margin-top:0.15rem;">vs año anterior (S/ ${sumPastAnio.toFixed(0)})</p>
       </div>
       <div id="sparkline-anio" class="kpi-sparkline-canvas"></div>
     </div>
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
         <span class="lbl" style="margin-bottom:0;">Miembros Activos</span>
         <div class="kpi-icon-wrapper text-blue-600 bg-blue-50 border-blue-100">
-          ${getIconHTML('MEMBRESIA', 15, 2.2)}
+          ${getIconHTML('MEMBRESIA', 12, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6219,7 +6239,7 @@ function renderDashboard(){
           <span class="val" id="kpi-activos-val" style="color:var(--blue)">0</span>
           ${activeDiffBadge}
         </div>
-        <p class="sub" style="margin-top:0.25rem;">vs fin mes anterior (${activePast})</p>
+        <p class="sub" style="margin-top:0.15rem;">vs fin mes anterior (${activePast})</p>
       </div>
       <div id="sparkline-activos" class="kpi-sparkline-canvas"></div>
     </div>
