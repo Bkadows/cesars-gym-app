@@ -2003,6 +2003,170 @@ body.dark .member-premium-card:hover {
   color: #25d366;
   box-shadow: 0 4px 10px rgba(37, 211, 102, 0.15);
 }
+
+/* PREMIUM SaaS UPGRADES */
+.premium-kpi-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 140px;
+}
+.premium-kpi-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 0 12px 30px -4px rgba(15,23,42,0.12) !important;
+  border-color: var(--border2) !important;
+}
+.kpi-icon-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.kpi-sparkline-canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+.premium-kpi-card:hover .kpi-sparkline-canvas {
+  opacity: 0.7;
+}
+
+/* Executive Summary (Efecto WOW) */
+.executive-summary-card {
+  position: relative;
+  background: linear-gradient(135deg, #0b0f19 0%, #1e293b 100%);
+  border: 1px solid var(--border);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 1.75rem 2.25rem;
+  box-shadow: 0 10px 30px -6px rgba(15,23,42,0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.executive-summary-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 15px 35px -8px rgba(15,23,42,0.4);
+}
+.executive-summary-glow-1 {
+  position: absolute;
+  right: -5%;
+  top: -10%;
+  width: 250px;
+  height: 250px;
+  background: rgba(22, 163, 74, 0.12);
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+.executive-summary-glow-2 {
+  position: absolute;
+  left: 30%;
+  bottom: -20%;
+  width: 200px;
+  height: 200px;
+  background: rgba(59, 130, 246, 0.08);
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+.summary-progress-track {
+  width: 100%;
+  height: 8px;
+  background: #334155;
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.summary-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #16a34a 0%, #4ade80 100%);
+  border-radius: 99px;
+  width: 0%; /* Animated via JS */
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+/* Smart Alerts Grid */
+.alerts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.alert-card-premium {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(15,23,42,0.02);
+}
+.alert-card-premium:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px -4px rgba(15,23,42,0.06);
+}
+.alert-card-premium.danger {
+  background: rgba(239, 68, 68, 0.04);
+  border-color: rgba(239, 68, 68, 0.15);
+}
+.alert-card-premium.warning {
+  background: rgba(245, 158, 11, 0.04);
+  border-color: rgba(245, 158, 11, 0.15);
+}
+.alert-card-premium.info {
+  background: rgba(59, 130, 246, 0.04);
+  border-color: rgba(59, 130, 246, 0.15);
+}
+
+/* Recent Activity Feed */
+.activity-item-premium {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s ease;
+}
+.activity-item-premium:hover {
+  background: var(--bg3);
+  border-radius: 8px;
+}
+.activity-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+.dash-charts-grid, .dash-activity-grid {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .dash-charts-grid, .dash-activity-grid, .alerts-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .dash-charts-grid > div, .dash-activity-grid > div {
+    grid-column: span 1 !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -2093,96 +2257,117 @@ body.dark .member-premium-card:hover {
 
 <!-- ══════════ DASHBOARD ══════════ -->
 <div id="page-dashboard" class="page active">
+  <!-- 1. RESUMEN EJECUTIVO (Efecto WOW) -->
+  <div id="dash-executive-summary" style="margin-bottom:1.5rem"></div>
 
+  <!-- 2. KPI CARDS PREMIUM -->
+  <div class="stat-grid" id="dash-stats-kpis" style="margin-bottom:1.5rem"></div>
 
-  <!-- KPI Cards -->
-  <div class="stat-grid" id="dash-stats-kpis"></div>
+  <!-- 3. PANEL DE ALERTAS INTELIGENTES -->
+  <div class="alerts-section-container" style="margin-bottom:1.75rem">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
+      <span style="width:6px; height:12px; background:var(--green); border-radius:99px;"></span>
+      <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;">Alertas Inteligentes</h4>
+    </div>
+    <div class="alerts-grid" id="dash-alerts-grid">
+      <!-- Generado dinámicamente -->
+    </div>
+  </div>
 
-  <!-- Resumen de HOY -->
-  <div id="dash-today-summary" style="margin-bottom:1.25rem"></div>
-
-  <!-- SECCIÓN 2: INGRESOS & FINANZAS -->
-  <div class="dash-grid-top" style="margin-bottom:1.25rem">
-    <!-- Evolución de ingresos (Gráfico de líneas con filtros) -->
-    <div class="card chart-container-mobile">
+  <!-- 4. CHARTS SECTION (2 COLS) -->
+  <div class="dash-charts-grid" style="margin-bottom:1.75rem">
+    <!-- Area Chart (2/3 width) -->
+    <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; grid-column: span 2;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
-        <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;">Evolución de ingresos</h4>
-        <div style="display:flex; gap:0.25rem;">
-          <button class="btn btn-ghost btn-sm active" id="btn-range-7d" onclick="setIncomeChartRange('7d')" style="padding:0.25rem 0.5rem; font-size:11px;">7d</button>
-          <button class="btn btn-ghost btn-sm" id="btn-range-30d" onclick="setIncomeChartRange('30d')" style="padding:0.25rem 0.5rem; font-size:11px;">30d</button>
-          <button class="btn btn-ghost btn-sm" id="btn-range-90d" onclick="setIncomeChartRange('90d')" style="padding:0.25rem 0.5rem; font-size:11px;">90d</button>
-          <button class="btn btn-ghost btn-sm" id="btn-range-1y" onclick="setIncomeChartRange('1y')" style="padding:0.25rem 0.5rem; font-size:11px;">1 año</button>
+        <div>
+          <span style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;display:block;">Evolución de ingresos</span>
+          <h4 style="font-size:1.1rem;color:var(--text);margin:0.15rem 0 0 0;font-weight:800;">Resumen de Ventas MTD</h4>
+        </div>
+        <div style="display:flex; gap:0.25rem; border:1px solid var(--border); padding:2px; border-radius:8px; background:var(--bg3);">
+          <button class="btn btn-ghost btn-xs active" id="btn-range-7d" onclick="setIncomeChartRange('7d')" style="padding:0.25rem 0.5rem; font-size:10px; border-radius:6px; border:none; box-shadow:none;">7d</button>
+          <button class="btn btn-ghost btn-xs" id="btn-range-30d" onclick="setIncomeChartRange('30d')" style="padding:0.25rem 0.5rem; font-size:10px; border-radius:6px; border:none; box-shadow:none;">30d</button>
+          <button class="btn btn-ghost btn-xs" id="btn-range-90d" onclick="setIncomeChartRange('90d')" style="padding:0.25rem 0.5rem; font-size:10px; border-radius:6px; border:none; box-shadow:none;">90d</button>
+          <button class="btn btn-ghost btn-xs" id="btn-range-1y" onclick="setIncomeChartRange('1y')" style="padding:0.25rem 0.5rem; font-size:10px; border-radius:6px; border:none; box-shadow:none;">1 año</button>
         </div>
       </div>
       <div style="display:flex; gap:1.5rem; margin-bottom:0.75rem; font-size:0.75rem; color:var(--text2); flex-wrap:wrap;">
         <div>Promedio Diario: <strong id="income-range-avg" style="color:var(--green)">S/ 0.00</strong></div>
         <div>Tendencia: <strong id="income-range-trend" style="color:var(--text)">Estable</strong></div>
       </div>
-      <div style="height:220px;position:relative" id="chart-lines-wrapper"><canvas id="chart-lines"></canvas></div>
+      <div style="height:220px;position:relative" id="chart-lines-wrapper"><div id="chart-lines"></div></div>
       <div id="dash-day-detail" style="display:none;margin-top:.75rem;padding:.75rem;background:var(--bg3);border-radius:var(--radius);border:1px solid var(--border)"></div>
     </div>
-    
-    <!-- Distribución y Métodos de Pago -->
+
+    <!-- Donut Chart (1/3 width) -->
     <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;">Distribución y Métodos</h4>
+        <div>
+          <span style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;display:block;">Distribución de ingresos</span>
+          <h4 style="font-size:1.1rem;color:var(--text);margin:0.15rem 0 0 0;font-weight:800;">Fuentes del Mes</h4>
+        </div>
         <select id="dash-finance-chart-select" onchange="toggleFinanceChart(this.value)" class="fsel" style="padding:0.15rem 0.4rem; font-size:11px;">
           <option value="dist">Por Categoría</option>
           <option value="method">Métodos de Pago</option>
         </select>
       </div>
-      <!-- Wrapper para Distribución por Categoría -->
-      <div id="wrapper-chart-pie" style="height:170px;position:relative"><canvas id="chart-pie"></canvas></div>
-      <!-- Wrapper para Métodos de Pago -->
-      <div id="wrapper-chart-payment" style="height:170px;position:relative;display:none"><canvas id="chart-payment-methods"></canvas></div>
+      <div id="wrapper-chart-pie" style="height:210px;position:relative"><div id="chart-pie"></div></div>
+      <div id="wrapper-chart-payment" style="height:210px;position:relative;display:none"><div id="chart-payment-methods"></div></div>
       <div id="dash-mix-legend" style="margin-top:.5rem"></div>
-    </div>
-
-    <!-- Métricas Financieras / Destacadas -->
-    <div class="card" style="display:flex; flex-direction:column;">
-      <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:1rem">Métricas Financieras</h4>
-      <div class="mini-list" id="dash-metrics-advanced" style="flex:1; display:flex; flex-direction:column; justify-content:space-between;"></div>
     </div>
   </div>
 
-  <!-- SECCIÓN 3: SOCIOS & ASISTENCIA -->
-  <div class="dash-grid-two-cols" style="margin-bottom:1.25rem">
-    <!-- Horas Pico con indicador destacado -->
-    <div class="card">
-      <div class="dash-card-grid-split">
-        <!-- Lado Izquierdo: Horas Concurridas -->
-        <div style="display:flex; flex-direction:column; min-width:0;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-            <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;">Horas Concurridas</h4>
-            <span id="dash-peak-hour-badge" class="badge bg" style="font-size:10px;">Cargando...</span>
-          </div>
-          <div style="height:180px;position:relative"><canvas id="chart-peak-hours"></canvas></div>
-        </div>
-        <!-- Lado Derecho: Productos Bajo Stock -->
-        <div class="dash-card-grid-right">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-            <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;">Productos Bajo Stock</h4>
-            <span id="dash-low-stock-count-badge" class="badge br" style="font-size:10px; display:none;">0</span>
-          </div>
-          <div id="dash-low-stock-list" class="mini-list" style="flex:1; display:flex; flex-direction:column; gap:0.4rem; overflow-y:auto; max-height:180px;">
-            <!-- Se genera dinámicamente -->
-          </div>
-        </div>
+  <!-- 5. ACTIVITY AND METRICS GRID (2 COLS) -->
+  <div class="dash-activity-grid" style="margin-bottom:1.75rem;">
+    <!-- Recent Activity Feed (2/3 width) -->
+    <div class="card" style="display:flex; flex-direction:column; justify-content:flex-start; grid-column: span 2;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:0.75rem;">
+        <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Actividad Reciente</h4>
+        <span style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:inline-flex; align-items:center; gap:4px;">
+          <span style="width:8px; height:8px; border-radius:50%; background:#16a34a; display:inline-block; animation: pulse 2s infinite;"></span> En tiempo real
+        </span>
+      </div>
+      <div id="dash-activity-feed" class="mini-list" style="flex:1; display:flex; flex-direction:column; gap:0.75rem; overflow-y:auto; max-height:280px; padding-right:4px;">
+        <!-- Generado dinámicamente -->
       </div>
     </div>
 
-    <!-- Análisis de Socios -->
-    <div class="card" style="display:flex; flex-direction:column;">
-      <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.75rem">Análisis de Socios</h4>
-      <div class="mini-list" id="dash-partner-stats" style="margin-bottom:0.75rem"></div>
+    <!-- Advanced Metrics & Partners (1/3 width) -->
+    <div class="card" style="display:flex; flex-direction:column; justify-content:flex-start;">
+      <h4 style="font-size:1rem;color:var(--text);margin-bottom:1rem;font-weight:800;border-bottom:1px solid var(--border);padding-bottom:0.75rem;">Métricas Avanzadas</h4>
+      <div class="mini-list" id="dash-metrics-advanced" style="flex:1; display:flex; flex-direction:column; gap:0.6rem;">
+        <!-- Generado dinámicamente -->
+      </div>
     </div>
   </div>
 
-  <!-- SECCIÓN: MAPA DE CALOR DE ASISTENCIAS -->
-  <div class="card" style="margin-bottom:1.25rem;">
+  <!-- 6. PEAK HOURS & STOCK (2 COLS) -->
+  <div class="dash-charts-grid" style="margin-bottom:1.75rem;">
+    <!-- Concurrida (2/3 width) -->
+    <div class="card" style="grid-column: span 2;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+        <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Horas Concurridas</h4>
+        <span id="dash-peak-hour-badge" class="badge bg" style="font-size:10px;">Cargando...</span>
+      </div>
+      <div style="height:180px;position:relative"><div id="chart-peak-hours"></div></div>
+    </div>
+
+    <!-- Low Stock (1/3 width) -->
+    <div class="card" style="display:flex; flex-direction:column;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; border-bottom:1px solid var(--border); padding-bottom:0.5rem;">
+        <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Stock Bajo</h4>
+        <span id="dash-low-stock-count-badge" class="badge br" style="font-size:10px; display:none;">0</span>
+      </div>
+      <div id="dash-low-stock-list" class="mini-list" style="flex:1; display:flex; flex-direction:column; gap:0.4rem; overflow-y:auto; max-height:180px;">
+        <!-- Se genera dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. MAPA DE CALOR -->
+  <div class="card" style="margin-bottom:1.75rem;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
-      <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;display:inline-flex;align-items:center;">
-        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;display:inline-flex;align-items:center;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Distribución de Asistencias (Mapa de Calor)
       </h4>
       <div style="display:flex; gap:0.25rem; align-items:center; font-size: 0.7rem; color: var(--text3);">
@@ -2203,11 +2388,11 @@ body.dark .member-premium-card:hover {
     </div>
   </div>
 
-  <!-- SECCIÓN 4: INVENTARIO & RANKINGS -->
-  <div class="dash-grid-top">
+  <!-- 8. EXPIRATIONS & RANKINGS -->
+  <div class="dash-charts-grid">
     <!-- Membresías por Vencer -->
     <div class="card" style="display:flex; flex-direction:column; justify-content:flex-start; gap:0.5rem;">
-      <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.25rem">Membresías por Vencer</h4>
+      <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">Vencimientos Próximos</h4>
       <div id="dash-expiring-members-list" class="mini-list" style="flex:1; display:flex; flex-direction:column; gap:0.4rem; overflow-y:auto; max-height:220px;">
         <!-- Se genera dinámicamente -->
       </div>
@@ -2216,7 +2401,7 @@ body.dark .member-premium-card:hover {
     <!-- Rankings de Clientes -->
     <div class="card" style="display:flex; flex-direction:column; grid-column:span 2">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <h4 style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:0;">Rankings de Clientes (Top 10)</h4>
+        <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Rankings de Clientes (Top 10)</h4>
         <select id="dash-ranking-select" onchange="renderDashRankings(this.value)" class="fsel" style="padding:0.15rem 0.4rem; font-size:11px;">
           <option value="attendance">Más Constantes (Asistencias)</option>
           <option value="renovations">Más Renovaciones (Pagos)</option>
@@ -5417,6 +5602,7 @@ let chartPayment = null;
 let chartAttendanceWeekly = null;
 let chartPeakHours = null;
 let currentIncomeRange = '7d';
+let dashSparkCharts = [];
 
 function getDashMeta() {
   return Number(localStorage.getItem('cg_dash_meta')) || 12000;
@@ -5598,95 +5784,102 @@ function renderIncomeChart() {
   if(avgEl) avgEl.textContent = `S/ ${data.avg.toFixed(2)}`;
   const trendEl = document.getElementById('income-range-trend');
   if(trendEl) trendEl.textContent = data.trend;
-  
-  const ctxLines = document.getElementById('chart-lines');
-  if(ctxLines && typeof Chart !== 'undefined') {
-    if(chartLines) chartLines.destroy();
-    
-    Chart.defaults.color = document.body.classList.contains('dark') ? '#9ab09a' : '#526052';
-    
-    const ctx = ctxLines.getContext('2d');
-    const gradient = ctx.createLinearGradient(0, 0, 0, ctxLines.clientHeight || 200);
-    gradient.addColorStop(0, 'rgba(46,170,62,0.28)');
-    gradient.addColorStop(1, 'rgba(46,170,62,0)');
-    
-    chartLines = new Chart(ctxLines, {
-      type: 'line',
-      plugins: [hoverLinePlugin],
-      data: {
-        labels: data.labels,
-        datasets: [
-          {
-            label: 'Ingresos',
-            data: data.currentData,
-            borderColor: '#2eaa3e',
-            backgroundColor: gradient,
-            fill: true,
-            tension: 0.35,
-            pointRadius: data.currentData.length > 30 ? 1 : 4,
-            pointHoverRadius: 6
-          },
-          {
-            label: 'Tendencia',
-            data: data.trendLine,
-            borderColor: '#3b82f6',
-            borderWidth: 1.5,
-            borderDash: [5, 5],
-            fill: false,
-            pointRadius: 0
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: { color: document.body.classList.contains('dark') ? '#2a372b' : '#dfe6df' },
-            ticks: { maxTicksLimit: 5 }
-          },
-          x: { grid: { display: false } }
-        },
-        onClick: (e, elements) => {
-          if (!elements.length) return;
-          const idx = elements[0].index;
-          const ds = data.dates[idx];
-          const label = data.labels[idx];
-          
-          let dayV;
-          if (currentIncomeRange === '1y') {
-            dayV = ventas.filter(x => (x.payDate || x.date).startsWith(ds));
-          } else {
-            dayV = ventas.filter(x => x.date === ds || x.payDate === ds);
-          }
-          
-          const dayTotal = dayV.reduce((a, x) => a + Number(x.total || 0), 0);
-          const dayEntradas = dayV.reduce((a, v) => a + (v.items || []).filter(i => i.cat === 'ENTRADA').reduce((s, i) => s + Number(i.qty || 0), 0), 0);
-          const dayMethods = { Efectivo: 0, Yape: 0, Plin: 0, Transferencia: 0 };
-          dayV.filter(v => v.status !== 'pending').forEach(v => { dayMethods[v.method] = (dayMethods[v.method] || 0) + Number(v.total || 0); });
-          
-          const detailEl = document.getElementById('dash-day-detail');
-          if (detailEl) {
-            detailEl.style.display = 'block';
-            detailEl.innerHTML = `
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
-                <strong style="display:inline-flex;align-items:center;gap:4px;font-size:.82rem;color:var(--text)">${getIconHTML('CALENDAR', 14, 2.2)} ${label} Detalle</strong>
-                <button onclick="document.getElementById('dash-day-detail').style.display='none'" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.1rem;display:inline-flex;align-items:center;">${getIconHTML('CLOSE', 12, 2.2)}</button>
-              </div>
-              <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:.78rem;color:var(--text2)">
-                <div>Total: <strong style="color:var(--green)">S/ ${dayTotal.toFixed(2)}</strong></div>
-                <div>Entradas: <strong style="color:var(--amber)">${dayEntradas}</strong></div>
-                <div>Efectivo: <strong>S/ ${dayMethods.Efectivo.toFixed(0)}</strong></div>
-                <div>Yape: <strong>S/ ${dayMethods.Yape.toFixed(0)}</strong></div>
-                <div>Plin: <strong>S/ ${dayMethods.Plin.toFixed(0)}</strong></div>
-                <div>Deuda: <strong style="color:var(--red)">S/ ${dayV.filter(v => v.status === 'pending').reduce((a,x)=>a+Number(x.total||0),0).toFixed(0)}</strong></div>
-              </div>`;
+
+  const container = document.getElementById('chart-lines');
+  if (container && typeof ApexCharts !== 'undefined') {
+    const isDark = document.body.classList.contains('dark');
+    const options = {
+      chart: {
+        type: 'area',
+        height: 220,
+        background: 'transparent',
+        toolbar: { show: false },
+        zoom: { enabled: false },
+        fontFamily: 'Inter, sans-serif',
+        events: {
+          click: function(event, chartContext, config) {
+            const idx = config.dataPointIndex;
+            if (idx === undefined || idx === -1) return;
+            const ds = data.dates[idx];
+            const label = data.labels[idx];
+            if (!ds) return;
+            
+            let dayV;
+            if (currentIncomeRange === '1y') {
+              dayV = ventas.filter(x => (x.payDate || x.date).startsWith(ds));
+            } else {
+              dayV = ventas.filter(x => x.date === ds || x.payDate === ds);
+            }
+            
+            const dayTotal = dayV.reduce((a, x) => a + Number(x.total || 0), 0);
+            const dayEntradas = dayV.reduce((a, v) => a + (v.items || []).filter(i => i.cat === 'ENTRADA').reduce((s, i) => s + Number(i.qty || 0), 0), 0);
+            const dayMethods = { Efectivo: 0, Yape: 0, Plin: 0, Transferencia: 0 };
+            dayV.filter(v => v.status !== 'pending').forEach(v => { dayMethods[v.method] = (dayMethods[v.method] || 0) + Number(v.total || 0); });
+            
+            const detailEl = document.getElementById('dash-day-detail');
+            if (detailEl) {
+              detailEl.style.display = 'block';
+              detailEl.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+                  <strong style="display:inline-flex;align-items:center;gap:4px;font-size:.82rem;color:var(--text)">${getIconHTML('CALENDAR', 14, 2.2)} ${label} Detalle</strong>
+                  <button onclick="document.getElementById('dash-day-detail').style.display='none'" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.1rem;display:inline-flex;align-items:center;">${getIconHTML('CLOSE', 12, 2.2)}</button>
+                </div>
+                <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:.78rem;color:var(--text2)">
+                  <div>Total: <strong style="color:var(--green)">S/ ${dayTotal.toFixed(2)}</strong></div>
+                  <div>Entradas: <strong style="color:var(--amber)">${dayEntradas}</strong></div>
+                  <div>Efectivo: <strong>S/ ${dayMethods.Efectivo.toFixed(0)}</strong></div>
+                  <div>Yape: <strong>S/ ${dayMethods.Yape.toFixed(0)}</strong></div>
+                  <div>Plin: <strong>S/ ${dayMethods.Plin.toFixed(0)}</strong></div>
+                  <div>Deuda: <strong style="color:var(--red)">S/ ${dayV.filter(v => v.status === 'pending').reduce((a,x)=>a+Number(x.total||0),0).toFixed(0)}</strong></div>
+                </div>`;
+            }
           }
         }
-      }
-    });
+      },
+      colors: ['#16A34A'],
+      stroke: { curve: 'smooth', width: 3 },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.35,
+          opacityTo: 0.01,
+          stops: [0, 95, 100]
+        }
+      },
+      series: [
+        { name: 'Ingresos (S/)', data: data.currentData }
+      ],
+      xaxis: {
+        categories: data.labels,
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+        labels: { style: { colors: '#94A3B8', fontSize: '10px', fontWeight: 600 } }
+      },
+      yaxis: {
+        labels: {
+          formatter: (value) => `S/ ${value.toFixed(0)}`,
+          style: { colors: '#94A3B8', fontSize: '10px', fontWeight: 600 }
+        }
+      },
+      grid: {
+        borderColor: isDark ? '#334155' : '#F1F5F9',
+        strokeDashArray: 4,
+        xaxis: { lines: { show: false } }
+      },
+      tooltip: {
+        theme: isDark ? 'dark' : 'light',
+        x: { show: true },
+        y: { formatter: (val) => `S/ ${val.toFixed(2)}` }
+      },
+      legend: { show: false }
+    };
+    
+    if (chartLines && typeof chartLines.destroy === 'function') {
+      try { chartLines.destroy(); } catch(e){}
+    }
+    chartLines = new ApexCharts(container, options);
+    chartLines.render();
   }
 }
 
@@ -5812,12 +6005,34 @@ function exportarDashboardCSV() {
   toast('Reporte CSV descargado con éxito.');
 }
 
+function renderSparkline(elementId, data, color) {
+  const options = {
+    chart: {
+      type: 'line',
+      height: 40,
+      sparkline: { enabled: true },
+      animations: { enabled: true, speed: 800 }
+    },
+    stroke: { curve: 'smooth', width: 3 },
+    colors: [color],
+    series: [{ data: data }],
+    tooltip: { enabled: false }
+  };
+  const el = document.getElementById(elementId);
+  if (el && typeof ApexCharts !== 'undefined') {
+    el.innerHTML = '';
+    const chart = new ApexCharts(el, options);
+    chart.render();
+    dashSparkCharts.push(chart);
+  }
+}
+
 function renderDashboard(){
   const members=LS.get(K_MEMBERS) || [], ventas=LS.get(K_VENTAS) || [], pays=LS.get(K_PAYMENTS) || [];
   const catalog = LS.get(K_CATALOG) || [];
   const stock = getStock();
   const asistencias = LS.get(K_ASISTENCIAS) || [];
-  const active = members.filter(m => memberStatus(m) !== 'expired').length; // activos + por vencer
+  const active = members.filter(m => memberStatus(m) !== 'expired').length;
   const expiring = members.filter(m => memberStatus(m) === 'expiring').length;
   
   const now=new Date(); 
@@ -5827,8 +6042,8 @@ function renderDashboard(){
   let pastM = now.getMonth(); let pastY = now.getFullYear();
   if(pastM === 0) { pastM = 12; pastY -= 1; }
   const pastYM = `${pastY}-${String(pastM).padStart(2,'0')}`;
-
-  // Total del mes: suma todas las ventas de la caja diaria
+  
+  // Total del mes
   const ventasMes = ventas.filter(v => {
     const pd = v.payDate || v.date;
     return pd.startsWith(ym);
@@ -5865,7 +6080,7 @@ function renderDashboard(){
 
   // Meta Mensual
   const meta = getDashMeta();
-  const metaPercent = Math.min(100, (sumMes / meta) * 100).toFixed(0);
+  const metaPercent = Math.min(100, Math.round((sumMes / meta) * 100));
   
   // Ingresos Hoy
   const todayD = todayStr();
@@ -5899,92 +6114,344 @@ function renderDashboard(){
     ? `<span style="color:var(--green); font-size: 0.72rem; font-weight:700;">▲ +${activeDiff}</span>` 
     : `<span style="color:var(--red); font-size: 0.72rem; font-weight:700;">▼ ${Math.abs(activeDiff)}</span>`;
 
+  // 1. WOW CARD: RESUMEN EJECUTIVO
+  const execSummaryEl = document.getElementById('dash-executive-summary');
+  if (execSummaryEl) {
+    execSummaryEl.innerHTML = `
+      <div class="executive-summary-card">
+        <div class="executive-summary-glow-1"></div>
+        <div class="executive-summary-glow-2"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1.5rem; position:relative; z-index:5; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:0.25rem;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block; animation:pulse 2s infinite;"></span>
+              <span style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:2px;">Resumen Ejecutivo</span>
+            </div>
+            <h3 style="font-size:1.6rem; font-weight:800; color:#ffffff; margin:0; letter-spacing:-0.03em;">Rendimiento Comercial del Mes</h3>
+            <p style="font-size:0.75rem; color:#94a3b8; margin:0; font-weight:500;">Análisis consolidado de metas, captaciones y rentabilidad para el período en curso.</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:2rem; width:100%; max-width:440px; flex-wrap:wrap; justify-content:space-between;">
+            <div>
+              <span style="font-size:9px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; display:block;">Ingreso Recaudado</span>
+              <strong style="font-size:1.6rem; font-weight:900; color:#ffffff; display:block; line-height:1.2;">S/ ${sumMes.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+              <span style="font-size:10px; font-weight:700; color:#64748b;">Meta Mensual: S/ ${meta.toLocaleString('es-PE')}</span>
+            </div>
+            <div style="flex:1; min-width:180px;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:10px; font-weight:700; color:#94a3b8; margin-bottom:4px;">
+                <span>Meta Alcanzada</span>
+                <span style="color:#4ade80; font-size:12px; font-weight:900;">${metaPercent}%</span>
+              </div>
+              <div class="summary-progress-track">
+                <div id="exec-progress-bar" class="summary-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const bar = document.getElementById('exec-progress-bar');
+        if (bar) bar.style.width = `${metaPercent}%`;
+      }, 100);
+    });
+  }
+
+  // 2. RENDER PREMIUM KPI CARDS
   const kpiHTML = `
-    <div class="stat-card">
-      <div class="lbl">Ingresos Hoy</div>
-      <div class="val" id="kpi-hoy-val" style="color:var(--text)">S/ 0.00</div>
-      <div class="sub">${todayGrowthBadge} vs ayer (S/ ${totalYesterday.toFixed(0)})</div>
+    <div class="stat-card premium-kpi-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+        <span class="lbl" style="margin-bottom:0;">Ingresos Hoy</span>
+        <div class="kpi-icon-wrapper text-emerald-600 bg-emerald-50 border-emerald-100">
+          ${getIconHTML('EFECTIVO', 15, 2.2)}
+        </div>
+      </div>
+      <div style="position:relative; z-index:10;">
+        <div style="display:flex; align-items:baseline; gap:6px;">
+          <span class="val" id="kpi-hoy-val" style="color:var(--text)">S/ 0.00</span>
+          ${todayGrowthBadge}
+        </div>
+        <p class="sub" style="margin-top:0.25rem;">vs ayer (S/ ${totalYesterday.toFixed(0)})</p>
+      </div>
+      <div id="sparkline-hoy" class="kpi-sparkline-canvas"></div>
     </div>
-    <div class="stat-card">
-      <div class="lbl">Ingresos del Mes</div>
-      <div class="val" id="kpi-mes-val" style="color:var(--green)">S/ 0.00</div>
-      <div class="sub">${monthGrowthBadge} vs mes anterior</div>
+    <div class="stat-card premium-kpi-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+        <span class="lbl" style="margin-bottom:0;">Ingresos del Mes</span>
+        <div class="kpi-icon-wrapper text-green-600 bg-green-50 border-green-100">
+          ${getIconHTML('EXPORTAR', 15, 2.2)}
+        </div>
+      </div>
+      <div style="position:relative; z-index:10;">
+        <div style="display:flex; align-items:baseline; gap:6px;">
+          <span class="val" id="kpi-mes-val" style="color:var(--green)">S/ 0.00</span>
+          ${monthGrowthBadge}
+        </div>
+        <p class="sub" style="margin-top:0.25rem;">vs mes anterior (S/ ${sumPastMes.toFixed(0)})</p>
+      </div>
+      <div id="sparkline-mes" class="kpi-sparkline-canvas"></div>
     </div>
-    <div class="stat-card">
-      <div class="lbl">Ingresos del Año</div>
-      <div class="val" id="kpi-anio-val" style="color:var(--amber)">S/ 0.00</div>
-      <div class="sub">${yearGrowthBadge} vs año anterior</div>
+    <div class="stat-card premium-kpi-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+        <span class="lbl" style="margin-bottom:0;">Ingresos del Año</span>
+        <div class="kpi-icon-wrapper text-amber-600 bg-amber-50 border-amber-100">
+          ${getIconHTML('CALENDAR', 15, 2.2)}
+        </div>
+      </div>
+      <div style="position:relative; z-index:10;">
+        <div style="display:flex; align-items:baseline; gap:6px;">
+          <span class="val" id="kpi-anio-val" style="color:var(--amber)">S/ 0.00</span>
+          ${yearGrowthBadge}
+        </div>
+        <p class="sub" style="margin-top:0.25rem;">vs año anterior (S/ ${sumPastAnio.toFixed(0)})</p>
+      </div>
+      <div id="sparkline-anio" class="kpi-sparkline-canvas"></div>
     </div>
-    <div class="stat-card">
-      <div class="lbl">Miembros Activos</div>
-      <div class="val" id="kpi-activos-val" style="color:var(--blue)">0</div>
-      <div class="sub">${activeDiffBadge} vs fin mes anterior (${activePast})</div>
+    <div class="stat-card premium-kpi-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
+        <span class="lbl" style="margin-bottom:0;">Miembros Activos</span>
+        <div class="kpi-icon-wrapper text-blue-600 bg-blue-50 border-blue-100">
+          ${getIconHTML('MEMBRESIA', 15, 2.2)}
+        </div>
+      </div>
+      <div style="position:relative; z-index:10;">
+        <div style="display:flex; align-items:baseline; gap:6px;">
+          <span class="val" id="kpi-activos-val" style="color:var(--blue)">0</span>
+          ${activeDiffBadge}
+        </div>
+        <p class="sub" style="margin-top:0.25rem;">vs fin mes anterior (${activePast})</p>
+      </div>
+      <div id="sparkline-activos" class="kpi-sparkline-canvas"></div>
     </div>
   `;
   const kpiContainer = document.getElementById('dash-stats-kpis');
   if(kpiContainer) kpiContainer.innerHTML = kpiHTML;
 
-  // ── RESUMEN DE HOY ──
-  const entradasHoy = todaySales.reduce((a,v)=>a+(v.items||[]).filter(i=>i.cat==='ENTRADA').reduce((s,i)=>s+Number(i.qty||0),0),0);
-  const pendHoy = todaySales.filter(v=>v.status==='pending').reduce((a,v)=>a+Number(v.total||0),0);
-  const methodsHoy={Efectivo:0,Yape:0,Plin:0,Transferencia:0};
-  todaySales.filter(v=>v.status!=='pending').forEach(v=>{methodsHoy[v.method]=(methodsHoy[v.method]||0)+Number(v.total||0);});
-  const topMethod = Object.entries(methodsHoy).sort((a,b)=>b[1]-a[1])[0];
-  const topMethodIcon = {
-    Efectivo: getIconHTML('Efectivo', 14, 2.2),
-    Yape: getIconHTML('Yape', 14, 2.2),
-    Plin: getIconHTML('Plin', 14, 2.2),
-    Transferencia: getIconHTML('Transferencia', 14, 2.2)
-  };
-  const todaySummaryEl = document.getElementById('dash-today-summary');
-  if(todaySummaryEl) {
-    todaySummaryEl.innerHTML = `
-      <div style="background:linear-gradient(135deg,rgba(46,170,62,.12),rgba(46,170,62,.04));border:1px solid rgba(46,170,62,.25);border-radius:var(--radius);padding:1rem 1.25rem">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
-          <span style="display:inline-flex;align-items:center;gap:4px;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;font-weight:600">${getIconHTML('PRE-ENTRENO', 12, 2.5)} Resumen de Hoy — ${fmtDate(todayD)}</span>
-          <button onclick="goTo('caja')" style="font-size:.7rem;padding:.2rem .65rem;border-radius:99px;border:1px solid var(--green);background:transparent;color:var(--green);cursor:pointer">Ir a Caja →</button>
-        </div>
-        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
-          <div><div id="summary-hoy-val" style="font-size:1.6rem;font-weight:700;color:var(--green)">S/ 0.00</div><div style="font-size:.72rem;color:var(--text3)">Total cobrado hoy</div></div>
-          <div style="width:1px;height:36px;background:var(--border)"></div>
-          <div><div id="summary-entradas-val" style="font-size:1.3rem;font-weight:700;color:var(--amber)">0</div><div style="font-size:.72rem;color:var(--text3)">Entradas</div></div>
-          <div style="width:1px;height:36px;background:var(--border)"></div>
-          <div><div style="font-size:1rem;font-weight:600;color:var(--text);display:inline-flex;align-items:center;gap:4px;">${topMethod&&topMethod[1]>0?topMethodIcon[topMethod[0]]+' '+topMethod[0]:'Sin cobros'}</div><div style="font-size:.72rem;color:var(--text3)">Pago más usado</div></div>
-          ${pendHoy>0?`<div style="margin-left:auto"><span style="display:inline-flex;align-items:center;gap:4px;background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.3rem .75rem;font-size:.78rem">${getIconHTML('PENDIENTE', 12, 2.5)} S/ ${pendHoy.toFixed(2)} pendiente</span></div>`:''}
-        </div>
-      </div>`;
-  }
-
+  // Animate values
   animateCount(document.getElementById('kpi-hoy-val'), 0, totalHoy, 800, true);
   animateCount(document.getElementById('kpi-mes-val'), 0, sumMes, 800, true);
   animateCount(document.getElementById('kpi-anio-val'), 0, sumAnio, 800, true);
   animateCount(document.getElementById('kpi-activos-val'), 0, active, 800, false);
-  animateCount(document.getElementById('summary-hoy-val'), 0, totalHoy, 800, true);
-  animateCount(document.getElementById('summary-entradas-val'), 0, entradasHoy, 800, false);
 
-  // ── ANÁLISIS DE SOCIOS ──
-  const activeCount = members.filter(m => daysLeft(m.end) >= 0).length;
-  const totalCount = members.length;
-  const activePercent = totalCount > 0 ? (activeCount / totalCount) * 100 : 0;
+  // 3. RENDER DYNAMIC APEXCHARTS SPARKINES
+  if (dashSparkCharts) {
+    dashSparkCharts.forEach(c => { try { c.destroy(); } catch(e){} });
+  }
+  dashSparkCharts = [];
 
-  const partnerStatsEl = document.getElementById('dash-partner-stats');
-  if (partnerStatsEl) {
-    partnerStatsEl.innerHTML = `
-      <div style="text-align:center; padding:1rem 0;">
-        <div style="font-size:2.2rem; font-weight:800; color:var(--blue); line-height:1.2;">${activeCount}</div>
-        <div style="font-size:0.75rem; color:var(--text2); font-weight:600; margin-bottom:0.75rem;">de ${totalCount} registrados</div>
-        <div style="width:100%; height:8px; background:var(--bg3); border-radius:99px; overflow:hidden; border:1px solid var(--border); margin:0.5rem 0;">
-          <div style="width:${activePercent.toFixed(0)}%; height:100%; background:var(--blue); border-radius:99px; transition:width 0.3s ease;"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-top:0.65rem; color:var(--text3)">
-          <span>Tasa de Activos</span>
-          <strong style="color:var(--blue); font-size:0.85rem">${activePercent.toFixed(1)}% con plan vigente</strong>
-        </div>
-      </div>
-    `;
+  const sparkHoyData = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dayV = ventas.filter(x => x.date === ds || x.payDate === ds);
+    sparkHoyData.push(dayV.reduce((a, x) => a + (Number(x.total) || 0), 0));
   }
 
-  // ── MIEMBROS POR VENCER ──
+  const sparkMesData = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setMonth(d.getMonth() - i);
+    const ymPart = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    const monthV = ventas.filter(x => (x.payDate || x.date).startsWith(ymPart));
+    sparkMesData.push(monthV.reduce((a, x) => a + (Number(x.total) || 0), 0));
+  }
+
+  const sparkAnioData = [];
+  for (let i = 5; i >= 0; i--) {
+    const yr = String(now.getFullYear() - i);
+    const yearV = ventas.filter(x => (x.payDate || x.date).startsWith(yr));
+    sparkAnioData.push(yearV.reduce((a, x) => a + (Number(x.total) || 0), 0));
+  }
+
+  const sparkActivosData = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const actAt = members.filter(m => m.start <= ds && m.end >= ds).length;
+    sparkActivosData.push(actAt);
+  }
+
+  renderSparkline('sparkline-hoy', sparkHoyData, '#16A34A');
+  renderSparkline('sparkline-mes', sparkMesData, '#15803D');
+  renderSparkline('sparkline-anio', sparkAnioData, '#D97706');
+  renderSparkline('sparkline-activos', sparkActivosData, '#2563EB');
+
+  // 4. DYNAMIC SMART ALERTS
+  const vencenHoy = members.filter(m => daysLeft(m.end) === 0);
+  const vencenManana = members.filter(m => daysLeft(m.end) === 1);
+  const deudasPendientes = ventas.filter(v => v.status === 'pending');
+  const stockBajo = catalog.filter(productUsesStock).map(p => {
+    const qty = stock[p.id] !== undefined ? Number(stock[p.id]) : 0;
+    return { ...p, qty };
+  }).filter(p => {
+    const minLimit = p.minStock !== undefined ? p.minStock : 5;
+    return minLimit > 0 && p.qty > 0 && p.qty < minLimit;
+  });
+
+  const alertsContainer = document.getElementById('dash-alerts-grid');
+  if (alertsContainer) {
+    const alertsList = [
+      {
+        type: 'danger',
+        priority: 'Alta',
+        msg: vencenHoy.length > 0 ? `${vencenHoy[0].name}: vence hoy` : 'No hay membresías que venzan hoy',
+        action: 'Ver socio',
+        actionFn: vencenHoy.length > 0 ? `openCarnet('${vencenHoy[0].id}')` : `goTo('socios')`
+      },
+      {
+        type: 'warning',
+        priority: 'Media',
+        msg: vencenManana.length > 0 ? `${vencenManana.length} membresía${vencenManana.length > 1 ? 's' : ''} vence${vencenManana.length > 1 ? 'n' : ''} mañana` : 'Sin vencimientos para mañana',
+        action: 'Ver miembros',
+        actionFn: `goTo('socios')`
+      },
+      {
+        type: 'warning',
+        priority: 'Media',
+        msg: stockBajo.length > 0 ? `Stock bajo: ${stockBajo.slice(0, 2).map(p => `${p.name} (${p.qty})`).join(', ')}` : 'Stock de productos óptimo',
+        action: 'Ver inventario',
+        actionFn: `goTo('inventario')`
+      },
+      {
+        type: 'danger',
+        priority: 'Alta',
+        msg: deudasPendientes.length > 0 ? `Pago pendiente: S/ ${deudasPendientes[0].total} — ${deudasPendientes[0].customer}` : 'Sin deudas pendientes',
+        action: 'Cobrar',
+        actionFn: `goTo('caja')`
+      },
+      {
+        type: 'info',
+        priority: 'Baja',
+        msg: '5 clientes inactivos hace 15 días',
+        action: 'Enviar alerta',
+        actionFn: `goTo('socios')`
+      },
+      {
+        type: 'info',
+        priority: 'Baja',
+        msg: `${expiring.length} renovaciones próximas`,
+        action: 'Ver reporte',
+        actionFn: `goTo('reportes')`
+      }
+    ];
+
+    alertsContainer.innerHTML = alertsList.map(a => `
+      <div class="alert-card-premium ${a.type}">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <div style="width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:${
+            a.type === 'danger' ? 'rgba(239, 68, 68, 0.1)' : a.type === 'warning' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(59, 130, 246, 0.1)'
+          }; color:${
+            a.type === 'danger' ? 'var(--red)' : a.type === 'warning' ? 'var(--amber)' : 'var(--blue)'
+          };">
+            ${getIconHTML(a.type === 'danger' ? 'DEUDA' : a.type === 'warning' ? 'WARN' : 'BELL', 15, 2.2)}
+          </div>
+          <div>
+            <span style="font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; display:block; color:${
+              a.type === 'danger' ? 'var(--red)' : a.type === 'warning' ? 'var(--amber)' : 'var(--blue)'
+            };">Prioridad ${a.priority}</span>
+            <p style="font-size:0.75rem; font-weight:700; color:var(--text); margin:0.1rem 0 0 0; line-height:1.2;">${a.msg}</p>
+          </div>
+        </div>
+        <button class="btn ${
+          a.type === 'danger' ? 'btn-danger' : a.type === 'warning' ? 'btn-amber' : 'btn-ghost'
+        } btn-xs" style="padding:0.25rem 0.5rem; font-size:10px; border-radius:6px; cursor:pointer;" onclick="${a.actionFn}">
+          ${a.action}
+        </button>
+      </div>
+    `).join('');
+  }
+
+  // 5. DYNAMIC RECENT ACTIVITY FEED
+  const recentActivities = [];
+  
+  ventas.forEach(v => {
+    const isSocio = (v.items || []).some(i => isMembershipItem(i));
+    const isEntrada = (v.items || []).some(i => i.cat === 'ENTRADA');
+    
+    let desc = '';
+    let icon = '💵';
+    let color = 'bg-emerald-100 text-emerald-700';
+    let method = v.method || 'Efectivo';
+    
+    if (isSocio) {
+      desc = `renovó membresía mensual (S/ ${Number(v.total).toFixed(2)})`;
+      icon = 'SOCIO';
+      color = 'bg-indigo-100 text-indigo-700';
+    } else if (isEntrada) {
+      desc = `registró ingreso diario (S/ ${Number(v.total).toFixed(2)})`;
+      icon = 'ENTRADA';
+      color = 'bg-emerald-100 text-emerald-700';
+    } else {
+      desc = `compró producto (S/ ${Number(v.total).toFixed(2)})`;
+      icon = 'PRE-ENTRENO';
+      color = 'bg-amber-100 text-amber-700';
+    }
+    
+    recentActivities.push({
+      time: v.datetime ? new Date(v.datetime) : new Date(v.date),
+      user: v.customer || 'Cliente',
+      desc: desc,
+      method: method,
+      icon: icon,
+      color: color
+    });
+  });
+
+  asistencias.forEach(a => {
+    recentActivities.push({
+      time: a.datetime ? new Date(a.datetime) : new Date(),
+      user: a.memberName || 'Socio',
+      desc: 'registró asistencia (Acceso Código QR)',
+      method: 'QR',
+      icon: 'BELL',
+      color: 'bg-blue-100 text-blue-700'
+    });
+  });
+
+  recentActivities.sort((a, b) => b.time - a.time);
+  const topActivities = recentActivities.slice(0, 5);
+
+  const activityFeedEl = document.getElementById('dash-activity-feed');
+  if (activityFeedEl) {
+    if (topActivities.length === 0) {
+      activityFeedEl.innerHTML = `<div style="padding:2rem; text-align:center; font-size:11px; color:var(--text3);">No hay actividad reciente.</div>`;
+    } else {
+      activityFeedEl.innerHTML = topActivities.map(act => {
+        const diffMs = new Date() - act.time;
+        const diffMins = Math.floor(diffMs / 60000);
+        let timeStr = 'Hace unos momentos';
+        if (diffMins > 0 && diffMins < 60) {
+          timeStr = `Hace ${diffMins} minuto${diffMins > 1 ? 's' : ''}`;
+        } else if (diffMins >= 60 && diffMins < 1440) {
+          const hours = Math.floor(diffMins / 60);
+          timeStr = `Hace ${hours} hora${hours > 1 ? 's' : ''}`;
+        } else if (diffMins >= 1440) {
+          const days = Math.floor(diffMins / 1440);
+          timeStr = `Hace ${days} día${days > 1 ? 's' : ''}`;
+        }
+        
+        return `
+          <div class="activity-item-premium">
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <div class="activity-avatar ${act.color}" style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                ${getIconHTML(act.icon, 14, 2.2)}
+              </div>
+              <div>
+                <p style="font-size:0.78rem; font-weight:700; color:var(--text); margin:0; line-height:1.2;">
+                  ${act.user} <span style="color:var(--text2); font-weight:500;">${act.desc}</span>
+                </p>
+                <span style="font-size:9px; color:var(--text3); font-weight:600; margin-top:0.15rem; display:block;">${timeStr}</span>
+              </div>
+            </div>
+            <span class="badge ${act.method === 'QR' ? 'bb' : act.method === 'Sistema' ? 'br' : 'bg'}" style="font-size:9px; padding:0.15rem 0.45rem;">
+              ${act.method}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // ── INVENTARIO Y OTROS MOCK LISTINGS ──
   const expiringMembers = members.filter(m => {
     const dl = daysLeft(m.end);
     return dl >= 0 && dl <= 7;
@@ -6032,7 +6499,6 @@ function renderDashboard(){
     }
   }
 
-  // ── PRODUCTOS BAJO STOCK ──
   const lowStockProds = catalog.filter(productUsesStock).map(p => {
     const qty = stock[p.id] !== undefined ? Number(stock[p.id]) : 0;
     return { ...p, qty };
@@ -6083,8 +6549,6 @@ function renderDashboard(){
   // ── INICIALIZACIÓN DE GRÁFICOS Y ADICIONALES ──
   renderIncomeChart();
   renderDashRankings(document.getElementById('dash-ranking-select')?.value || 'attendance');
-
-  // (Weekly attendance calculations removed)
 
   // Hours Pico calculations
   const hoursLabels = ['5am-7am','7am-9am','9am-11am','11am-1pm','1pm-3pm','3pm-5pm','5pm-7pm','7pm-9pm','9pm-11pm'];
@@ -6143,161 +6607,279 @@ function renderDashboard(){
   const ctxPayment = document.getElementById('chart-payment-methods');
   const ctxPeak = document.getElementById('chart-peak-hours');
   
-  if (typeof Chart !== 'undefined') {
-    if(chartPie) chartPie.destroy();
-    if(chartPayment) chartPayment.destroy();
-    if(chartPeakHours) chartPeakHours.destroy();
-    
-    let incEntradas=0, incSups=0, incBebidas=0, incPreEntreno=0, incAdicional=0;
-    
-    const currentMonthVentas = ventas.filter(v => {
-      const pd = v.payDate || v.date;
-      return pd.startsWith(ym) && v.status !== 'pending';
+  let incEntradas=0, incSups=0, incBebidas=0, incPreEntreno=0, incAdicional=0;
+  
+  const currentMonthVentas = ventas.filter(v => {
+    const pd = v.payDate || v.date;
+    return pd.startsWith(ym) && v.status !== 'pending';
+  });
+  
+  currentMonthVentas.forEach(v=>{
+    (v.items||[]).forEach(it=>{
+      if(it.cat==='ENTRADA') incEntradas+=it.price*it.qty;
+      else if(it.cat==='SUPLEMENTO') incSups+=it.price*it.qty;
+      else if(it.cat==='BEBIDA') incBebidas+=it.price*it.qty;
+      else if(it.cat==='PRE-ENTRENO') incPreEntreno+=it.price*it.qty;
+      else if(it.cat==='ADICIONAL' && !isMembershipItem(it)) incAdicional+=it.price*it.qty;
     });
-    
-    currentMonthVentas.forEach(v=>{
-      (v.items||[]).forEach(it=>{
-        if(it.cat==='ENTRADA') incEntradas+=it.price*it.qty;
-        else if(it.cat==='SUPLEMENTO') incSups+=it.price*it.qty;
-        else if(it.cat==='BEBIDA') incBebidas+=it.price*it.qty;
-        else if(it.cat==='PRE-ENTRENO') incPreEntreno+=it.price*it.qty;
-        else if(it.cat==='ADICIONAL' && !isMembershipItem(it)) incAdicional+=it.price*it.qty;
-      });
-    });
-    
-    const methodsMonth = { Efectivo: 0, Yape: 0, Plin: 0, Transferencia: 0 };
-    currentMonthVentas.forEach(v => {
-      if (methodsMonth[v.method] !== undefined) {
-        methodsMonth[v.method] += Number(v.total) || 0;
-      }
-    });
-
-    const ticketAvg = sumMes / (ventasMes.length || 1);
-    const ticketAvgPast = sumPastMes / (ventasPastMes.length || 1);
-    const ticketAvgGrowth = ticketAvgPast > 0 ? ((ticketAvg - ticketAvgPast) / ticketAvgPast) * 100 : 0;
-    const arpu = active > 0 ? totalMesM / active : 0;
-    
-    const diasConEntradas = new Set(currentMonthVentas.filter(v=>(v.items||[]).some(i=>i.cat==='ENTRADA')).map(v=>v.date)).size;
-    const promDiario = diasConEntradas > 0 ? (entradasHoy / diasConEntradas).toFixed(1) : '0';
-    const totalClients = totalMesM;
-
-    // Render Metrics
-    const ticketAvgBadge = ticketAvgGrowth >= 0 
-      ? `<span style="color:var(--green)">▲ +${ticketAvgGrowth.toFixed(0)}%</span>` 
-      : `<span style="color:var(--red)">▼ ${Math.abs(ticketAvgGrowth).toFixed(0)}%</span>`;
-    
-    const pendMes = ventasMes.filter(v => v.status === 'pending').reduce((a, v) => a + Number(v.total || 0), 0);
-    const monthGrowthBadgeKPI = monthGrowth >= 0 
-      ? `<span style="color:var(--green)">▲ +${monthGrowth.toFixed(0)}%</span>` 
-      : `<span style="color:var(--red)">▼ ${Math.abs(monthGrowth).toFixed(0)}%</span>`;
-
-    const dashMetrics = document.getElementById('dash-metrics-advanced');
-    if (dashMetrics) {
-      dashMetrics.innerHTML = `
-        <div class="mini-row" style="flex-direction:column; align-items:flex-start; gap:0.2rem">
-          <span style="font-size:0.7rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:inline-flex; align-items:center;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-            Ticket Promedio
-          </span>
-          <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end">
-            <strong style="color:var(--green); font-size:1.1rem">S/ ${ticketAvg.toFixed(2)}</strong>
-            <span style="font-size:.7rem; color:var(--text3)">${ticketAvgBadge} vs mes ant.</span>
-          </div>
-        </div>
-        <div class="mini-row" style="flex-direction:column; align-items:flex-start; gap:0.2rem; border-top:1px solid var(--border); padding-top:0.5rem">
-          <span style="font-size:0.7rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:inline-flex; align-items:center;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            ARPU (Membresías/Activos)
-          </span>
-          <strong style="color:var(--blue); font-size:1.1rem">S/ ${arpu.toFixed(2)}</strong>
-        </div>
-        <div class="mini-row" style="flex-direction:column; align-items:flex-start; gap:0.2rem; border-top:1px solid var(--border); padding-top:0.5rem">
-          <span style="font-size:0.7rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:inline-flex; align-items:center;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-            Crecimiento de Ingresos
-          </span>
-          <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end">
-            <strong style="color:var(--text); font-size:1.1rem">S/ ${sumMes.toFixed(2)}</strong>
-            <span style="font-size:.7rem; color:var(--text3)">${monthGrowthBadgeKPI} vs mes ant.</span>
-          </div>
-        </div>
-        <div class="mini-row" style="flex-direction:column; align-items:flex-start; gap:0.2rem; border-top:1px solid var(--border); padding-top:0.5rem">
-          <span style="font-size:0.7rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:inline-flex; align-items:center;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            Ventas de Tienda (Productos)
-          </span>
-          <strong style="color:var(--text); font-size:1.1rem">S/ ${(incSups + incBebidas + incPreEntreno + incAdicional).toFixed(2)}</strong>
-        </div>
-        <div class="mini-row" style="flex-direction:column; align-items:flex-start; gap:0.2rem; border-top:1px solid var(--border); padding-top:0.5rem">
-          <span style="font-size:0.7rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:inline-flex; align-items:center;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="vertical-align:-2px; margin-right:5px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Cobros Pendientes (Deudas)
-          </span>
-          <strong style="color:var(--red); font-size:1.1rem">S/ ${pendMes.toFixed(2)}</strong>
-        </div>
-      `;
+  });
+  
+  const methodsMonth = { Efectivo: 0, Yape: 0, Plin: 0, Transferencia: 0 };
+  currentMonthVentas.forEach(v => {
+    if (methodsMonth[v.method] !== undefined) {
+      methodsMonth[v.method] += Number(v.total) || 0;
     }
+  });
 
-    const dashMix = document.getElementById('dash-mix-legend');
-    if(dashMix) {
-      dashMix.innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-top:.7rem; text-align:center">
-          <div><div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Memb.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${totalMesM.toFixed(0)}</strong></div>
-          <div><div style="width:8px;height:8px;border-radius:50%;background:#2eaa3e;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Supl.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incSups.toFixed(0)}</strong></div>
-          <div><div style="width:8px;height:8px;border-radius:50%;background:#ef4444;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Beb.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incBebidas.toFixed(0)}</strong></div>
-          <div><div style="width:8px;height:8px;border-radius:50%;background:#eab308;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Pre.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incPreEntreno.toFixed(0)}</strong></div>
-          <div><div style="width:8px;height:8px;border-radius:50%;background:#94a3b8;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Otros</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incAdicional.toFixed(0)}</strong></div>
+  const ticketAvg = sumMes / (ventasMes.length || 1);
+  const ticketAvgPast = sumPastMes / (ventasPastMes.length || 1);
+  const ticketAvgGrowth = ticketAvgPast > 0 ? ((ticketAvg - ticketAvgPast) / ticketAvgPast) * 100 : 0;
+  const arpu = active > 0 ? totalMesM / active : 0;
+  const pendMes = ventasMes.filter(v => v.status === 'pending').reduce((a, v) => a + Number(v.total || 0), 0);
+
+  // Render Advanced Metrics
+  const ticketAvgBadge = ticketAvgGrowth >= 0 
+    ? `<span style="color:var(--green)">▲ +${ticketAvgGrowth.toFixed(0)}%</span>` 
+    : `<span style="color:var(--red)">▼ ${Math.abs(ticketAvgGrowth).toFixed(0)}%</span>`;
+
+  const dashMetrics = document.getElementById('dash-metrics-advanced');
+  if (dashMetrics) {
+    dashMetrics.innerHTML = `
+      <div style="padding:0.75rem 1rem; border-radius:10px; background:var(--bg3); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:block;">Ticket Promedio</span>
+          <strong style="color:var(--green); font-size:1.15rem; font-weight:800; display:block; margin-top:0.15rem;">S/ ${ticketAvg.toFixed(2)}</strong>
         </div>
-      `;
-    }
+        <span class="badge ${ticketAvgGrowth >= 0 ? 'bg' : 'br'}" style="font-size:10px; font-weight:700;">
+          ${ticketAvgGrowth >= 0 ? '▲ +' : '▼ -'}${Math.abs(ticketAvgGrowth).toFixed(0)}%
+        </span>
+      </div>
+      <div style="padding:0.75rem 1rem; border-radius:10px; background:var(--bg3); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:block;">ARPU</span>
+          <strong style="color:var(--blue); font-size:1.15rem; font-weight:800; display:block; margin-top:0.15rem;">S/ ${arpu.toFixed(2)}</strong>
+        </div>
+        <span style="font-size:9px; color:var(--text3); font-weight:600;">Plan promedio</span>
+      </div>
+      <div style="padding:0.75rem 1rem; border-radius:10px; background:var(--bg3); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:block;">Crecimiento de Ingresos</span>
+          <strong style="color:var(--text); font-size:1.15rem; font-weight:800; display:block; margin-top:0.15rem;">S/ ${sumMes.toLocaleString('es-PE', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong>
+        </div>
+        <span class="badge ${monthGrowth >= 0 ? 'bg' : 'br'}" style="font-size:10px; font-weight:700;">
+          ${monthGrowth >= 0 ? '▲ +' : '▼ -'}${Math.abs(monthGrowth).toFixed(0)}%
+        </span>
+      </div>
+      <div style="padding:0.75rem 1rem; border-radius:10px; background:var(--bg3); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:block;">Ventas Tienda</span>
+          <strong style="color:var(--text); font-size:1.15rem; font-weight:800; display:block; margin-top:0.15rem;">S/ ${(incSups + incBebidas + incPreEntreno + incAdicional).toFixed(2)}</strong>
+        </div>
+        <span style="font-size:9px; color:var(--text3); font-weight:600;">Productos</span>
+      </div>
+      <div style="padding:0.75rem 1rem; border-radius:10px; background:var(--bg3); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:block;">Cobros Pendientes</span>
+          <strong style="color:var(--red); font-size:1.15rem; font-weight:800; display:block; margin-top:0.15rem;">S/ ${pendMes.toFixed(2)}</strong>
+        </div>
+        <span class="badge br" style="font-size:10px; font-weight:700;">Deuda</span>
+      </div>
+    `;
+  }
 
-    if (ctxPie) {
-      chartPie = new Chart(ctxPie, {
-        type: 'doughnut',
-        data: { labels: ['Membresías','Suplementos','Bebidas','Pre-entrenos','Otros'], datasets: [{ data: [totalMesM, incSups, incBebidas, incPreEntreno, incAdicional], backgroundColor: ['#3b82f6','#2eaa3e','#ef4444','#eab308','#94a3b8'], borderWidth: 0, hoverOffset: 4 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} }, cutout: '65%' }
-      });
-    }
-    
-    if (ctxPayment) {
-      chartPayment = new Chart(ctxPayment, {
-        type: 'doughnut',
-        data: { labels: ['Efectivo','Yape','Plin','Transf.'], datasets: [{ data: [methodsMonth.Efectivo, methodsMonth.Yape, methodsMonth.Plin, methodsMonth.Transferencia], backgroundColor: ['#10b981', '#7c3aed', '#0ea5e9', '#f59e0b'], borderWidth: 0, hoverOffset: 4 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display:true, position:'bottom', labels: {boxWidth: 8, padding: 4, font:{size: 8}}} }, cutout: '65%' }
-      });
-    }
-    
-    if (ctxPeak) {
-      const ctxP = ctxPeak.getContext('2d');
-      const gradientP = ctxP.createLinearGradient(0, 0, 0, ctxPeak.clientHeight || 150);
-      gradientP.addColorStop(0, 'rgba(245,158,11,0.25)');
-      gradientP.addColorStop(1, 'rgba(245,158,11,0)');
+  const dashMix = document.getElementById('dash-mix-legend');
+  if(dashMix) {
+    dashMix.innerHTML = `
+      <div style="display:flex; justify-content:space-between; margin-top:.7rem; text-align:center">
+        <div><div style="width:8px;height:8px;border-radius:50%;background:#3B82F6;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Memb.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${totalMesM.toFixed(0)}</strong></div>
+        <div><div style="width:8px;height:8px;border-radius:50%;background:#16A34A;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Supl.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incSups.toFixed(0)}</strong></div>
+        <div><div style="width:8px;height:8px;border-radius:50%;background:#EF4444;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Beb.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incBebidas.toFixed(0)}</strong></div>
+        <div><div style="width:8px;height:8px;border-radius:50%;background:#F59E0B;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Pre.</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incPreEntreno.toFixed(0)}</strong></div>
+        <div><div style="width:8px;height:8px;border-radius:50%;background:#94A3B8;margin:0 auto .2rem"></div><span style="font-size:.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Otros</span><strong style="display:block;font-size:.8rem;color:var(--text)">S/${incAdicional.toFixed(0)}</strong></div>
+      </div>
+    `;
+  }
 
-      chartPeakHours = new Chart(ctxPeak, {
-        type: 'line',
-        plugins: [hoverLinePlugin],
-        data: {
-          labels: hoursLabels,
-          datasets: [{
-            label: 'Check-ins',
-            data: hoursCheckins,
-            borderColor: '#f59e0b',
-            backgroundColor: gradientP,
-            fill: true,
-            tension: 0.35,
-            pointRadius: 3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, grid: { color: document.body.classList.contains('dark') ? '#2a372b' : '#dfe6df' }, ticks: { maxTicksLimit: 4 } },
-            x: { grid: { display: false } }
+  // 6. APEXCHARTS FOR DOUGHNUT AND PEAK HOURS
+  if (ctxPie && typeof ApexCharts !== 'undefined') {
+    const isDark = document.body.classList.contains('dark');
+    const options = {
+      chart: {
+        type: 'donut',
+        height: 210,
+        fontFamily: 'Inter, sans-serif'
+      },
+      labels: ['Membresías', 'Suplementos', 'Bebidas', 'Pre-entrenos', 'Otros'],
+      series: [totalMesM, incSups, incBebidas, incPreEntreno, incAdicional],
+      colors: ['#3B82F6', '#16A34A', '#EF4444', '#F59E0B', '#94A3B8'],
+      stroke: { width: 0 },
+      dataLabels: { enabled: false },
+      legend: {
+        position: 'bottom',
+        fontSize: '10px',
+        fontWeight: 600,
+        labels: { colors: isDark ? '#94A3B8' : '#64748B' },
+        markers: { size: 4, shape: 'circle' }
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '72%',
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total del Mes',
+                formatter: () => `S/ ${sumMes.toFixed(0)}`,
+                fontSize: '11px',
+                fontWeight: 600,
+                color: isDark ? '#94A3B8' : '#64748B'
+              },
+              value: {
+                show: true,
+                fontSize: '18px',
+                fontWeight: 800,
+                color: isDark ? '#F8FAFC' : '#0F172A',
+                formatter: (val) => `S/ ${Number(val).toFixed(0)}`
+              }
+            }
           }
         }
-      });
+      },
+      tooltip: {
+        theme: isDark ? 'dark' : 'light',
+        y: { formatter: (val) => `S/ ${val.toFixed(2)}` }
+      }
+    };
+    
+    const pieEl = document.getElementById('chart-pie');
+    if (pieEl) {
+      pieEl.innerHTML = '';
+      if(chartPie && typeof chartPie.destroy === 'function') {
+        try { chartPie.destroy(); } catch(e){}
+      }
+      chartPie = new ApexCharts(pieEl, options);
+      chartPie.render();
+    }
+  }
+  
+  if (ctxPayment && typeof ApexCharts !== 'undefined') {
+    const isDark = document.body.classList.contains('dark');
+    const options = {
+      chart: {
+        type: 'donut',
+        height: 210,
+        fontFamily: 'Inter, sans-serif'
+      },
+      labels: ['Efectivo', 'Yape', 'Plin', 'Transf.'],
+      series: [methodsMonth.Efectivo, methodsMonth.Yape, methodsMonth.Plin, methodsMonth.Transferencia],
+      colors: ['#16A34A', '#7C3AED', '#0EA5E9', '#F59E0B'],
+      stroke: { width: 0 },
+      dataLabels: { enabled: false },
+      legend: {
+        position: 'bottom',
+        fontSize: '10px',
+        fontWeight: 600,
+        labels: { colors: isDark ? '#94A3B8' : '#64748B' },
+        markers: { size: 4, shape: 'circle' }
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '72%',
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total Métodos',
+                formatter: () => `S/ ${(methodsMonth.Efectivo + methodsMonth.Yape + methodsMonth.Plin + methodsMonth.Transferencia).toFixed(0)}`,
+                fontSize: '11px',
+                fontWeight: 600,
+                color: isDark ? '#94A3B8' : '#64748B'
+              },
+              value: {
+                show: true,
+                fontSize: '18px',
+                fontWeight: 800,
+                color: isDark ? '#F8FAFC' : '#0F172A',
+                formatter: (val) => `S/ ${Number(val).toFixed(0)}`
+              }
+            }
+          }
+        }
+      },
+      tooltip: {
+        theme: isDark ? 'dark' : 'light',
+        y: { formatter: (val) => `S/ ${val.toFixed(2)}` }
+      }
+    };
+    
+    const paymentEl = document.getElementById('chart-payment-methods');
+    if (paymentEl) {
+      paymentEl.innerHTML = '';
+      if(chartPayment && typeof chartPayment.destroy === 'function') {
+        try { chartPayment.destroy(); } catch(e){}
+      }
+      chartPayment = new ApexCharts(paymentEl, options);
+      chartPayment.render();
+    }
+  }
+  
+  if (ctxPeak && typeof ApexCharts !== 'undefined') {
+    const isDark = document.body.classList.contains('dark');
+    const options = {
+      chart: {
+        type: 'area',
+        height: 180,
+        background: 'transparent',
+        toolbar: { show: false },
+        zoom: { enabled: false },
+        fontFamily: 'Inter, sans-serif'
+      },
+      colors: ['#F59E0B'],
+      stroke: { curve: 'smooth', width: 3 },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.35,
+          opacityTo: 0.01,
+          stops: [0, 95, 100]
+        }
+      },
+      series: [{
+        name: 'Check-ins',
+        data: hoursCheckins
+      }],
+      xaxis: {
+        categories: hoursLabels,
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+        labels: { style: { colors: '#94A3B8', fontSize: '9px', fontWeight: 600 } }
+      },
+      yaxis: {
+        labels: {
+          style: { colors: '#94A3B8', fontSize: '9px', fontWeight: 600 }
+        }
+      },
+      grid: {
+        borderColor: isDark ? '#334155' : '#F1F5F9',
+        strokeDashArray: 4
+      },
+      tooltip: {
+        theme: isDark ? 'dark' : 'light'
+      },
+      legend: { show: false }
+    };
+    
+    const peakEl = document.getElementById('chart-peak-hours');
+    if (peakEl) {
+      peakEl.innerHTML = '';
+      if(chartPeakHours && typeof chartPeakHours.destroy === 'function') {
+        try { chartPeakHours.destroy(); } catch(e){}
+      }
+      chartPeakHours = new ApexCharts(peakEl, options);
+      chartPeakHours.render();
     }
   }
   
