@@ -2319,7 +2319,7 @@ body.dark .member-premium-card:hover {
   <!-- 4. CHARTS SECTION (2 COLS) -->
   <div class="dash-charts-grid" style="margin-bottom:1.75rem">
     <!-- Area Chart (2/3 width) -->
-    <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; grid-column: span 2;">
+    <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
           <span style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;display:block;">Evolución de ingresos</span>
@@ -2361,7 +2361,7 @@ body.dark .member-premium-card:hover {
   <!-- 5. ACTIVITY AND METRICS GRID (2 COLS) -->
   <div class="dash-activity-grid" style="margin-bottom:1.75rem;">
     <!-- Recent Activity Feed (2/3 width) -->
-    <div class="card" style="display:flex; flex-direction:column; justify-content:flex-start; grid-column: span 2;">
+    <div class="card" style="display:flex; flex-direction:column; justify-content:flex-start;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:0.75rem;">
         <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Actividad Reciente</h4>
         <span style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; display:inline-flex; align-items:center; gap:4px;">
@@ -2385,7 +2385,7 @@ body.dark .member-premium-card:hover {
   <!-- 6. PEAK HOURS & STOCK (2 COLS) -->
   <div class="dash-charts-grid" style="margin-bottom:1.75rem;">
     <!-- Concurrida (2/3 width) -->
-    <div class="card" style="grid-column: span 2;">
+    <div class="card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
         <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Horas Concurridas</h4>
         <span id="dash-peak-hour-badge" class="badge bg" style="font-size:10px;">Cargando...</span>
@@ -2432,16 +2432,8 @@ body.dark .member-premium-card:hover {
 
   <!-- 8. EXPIRATIONS & RANKINGS -->
   <div class="dash-charts-grid">
-    <!-- Membresías por Vencer -->
-    <div class="card" style="display:flex; flex-direction:column; justify-content:flex-start; gap:0.5rem;">
-      <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">Vencimientos Próximos</h4>
-      <div id="dash-expiring-members-list" class="mini-list" style="flex:1; display:flex; flex-direction:column; gap:0.4rem; overflow-y:auto; max-height:220px;">
-        <!-- Se genera dinámicamente -->
-      </div>
-    </div>
-
     <!-- Rankings de Clientes -->
-    <div class="card" style="display:flex; flex-direction:column; grid-column:span 2">
+    <div class="card" style="display:flex; flex-direction:column;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
         <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Rankings de Clientes (Top 10)</h4>
         <select id="dash-ranking-select" onchange="renderDashRankings(this.value)" class="fsel" style="padding:0.15rem 0.4rem; font-size:11px;">
@@ -2451,6 +2443,14 @@ body.dark .member-premium-card:hover {
         </select>
       </div>
       <div id="dash-rankings-container" style="flex:1;"></div>
+    </div>
+
+    <!-- Membresías por Vencer -->
+    <div class="card" style="display:flex; flex-direction:column; justify-content:flex-start; gap:0.5rem;">
+      <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">Vencimientos Próximos</h4>
+      <div id="dash-expiring-members-list" class="mini-list" style="flex:1; display:flex; flex-direction:column; gap:0.4rem; overflow-y:auto; max-height:220px;">
+        <!-- Se genera dinámicamente -->
+      </div>
     </div>
   </div>
 </div>
