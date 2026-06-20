@@ -1,21 +1,503 @@
 [
   {
-    "date": "2026-06-18",
-    "payDate": "2026-06-18",
+    "datetime": "2026-06-19T08:15:00.000Z",
+    "method": "Efectivo",
+    "date": "2026-06-19",
     "status": "paid",
-    "id": "qr_1781805568415",
-    "customer": "OSMAR GONZALES",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "id": "entrada-socio",
+        "price": 0,
+        "name": "ENTRADA SOCIO",
+        "qty": 1
+      }
+    ],
+    "customer": "JHON CENA",
+    "id": "v_642",
+    "total": 0
+  },
+  {
+    "datetime": "2026-06-19T08:32:00.000Z",
+    "method": "Efectivo",
+    "date": "2026-06-19",
+    "status": "paid",
+    "items": [
+      {
+        "id": "entrada",
+        "qty": 1,
+        "name": "ENTRADA",
+        "price": 7,
+        "cat": "ENTRADA"
+      },
+      {
+        "cat": "PRE-ENTRENO",
+        "id": "nitraflex",
+        "qty": 1,
+        "price": 8,
+        "name": "NITRAFLEX"
+      },
+      {
+        "cat": "BEBIDA",
+        "id": "h2o",
+        "qty": 1,
+        "name": "H2O",
+        "price": 1.5
+      }
+    ],
+    "customer": "JULISSA",
+    "id": "v_643",
+    "total": 16.5
+  },
+  {
+    "datetime": "2026-06-19T08:50:00.000Z",
+    "method": "Efectivo",
+    "date": "2026-06-19",
+    "total": 7.5,
+    "id": "v_644",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "qty": 1,
+        "name": "ENTRADA MENOR",
+        "price": 5,
+        "id": "entrada-men"
+      },
+      {
+        "id": "h2om",
+        "qty": 1,
+        "price": 2.5,
+        "name": "H2OM",
+        "cat": "BEBIDA"
+      }
+    ],
+    "status": "paid",
+    "customer": "CHELY"
+  },
+  {
+    "method": "Efectivo",
+    "datetime": "2026-06-19T09:12:00.000Z",
+    "total": 8,
+    "id": "v_645",
+    "customer": "YOVANA",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "name": "ENTRADA SOCIO",
+        "price": 0,
+        "qty": 1,
+        "id": "entrada-socio"
+      },
+      {
+        "cat": "PRE-ENTRENO",
+        "price": 4,
+        "name": "XB",
+        "qty": 1,
+        "id": "xb"
+      },
+      {
+        "id": "h2om",
+        "qty": 1,
+        "price": 2.5,
+        "name": "H2OM",
+        "cat": "BEBIDA"
+      },
+      {
+        "qty": 1,
+        "name": "GOMITAS",
+        "price": 1.5,
+        "id": "gomitas",
+        "cat": "ADICIONAL"
+      }
+    ],
+    "status": "paid",
+    "date": "2026-06-19"
+  },
+  {
+    "method": "Efectivo",
+    "datetime": "2026-06-19T09:40:00.000Z",
+    "items": [
+      {
+        "id": "entrada",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1,
+        "cat": "ENTRADA"
+      }
+    ],
+    "customer": "JOSE",
+    "id": "v_646",
+    "status": "paid",
+    "total": 7,
+    "date": "2026-06-19"
+  },
+  {
+    "datetime": "2026-06-19T09:55:00.000Z",
+    "method": "Efectivo",
+    "date": "2026-06-19",
+    "total": 11,
+    "status": "paid",
+    "customer": "SAMAME",
+    "id": "v_647",
+    "items": [
+      {
+        "qty": 1,
+        "price": 7,
+        "name": "ENTRADA",
+        "id": "entrada",
+        "cat": "ENTRADA"
+      },
+      {
+        "qty": 1,
+        "price": 2.5,
+        "name": "NOX",
+        "id": "nox",
+        "cat": "PRE-ENTRENO"
+      },
+      {
+        "qty": 1,
+        "price": 1.5,
+        "name": "GOMITAS",
+        "id": "gomitas",
+        "cat": "ADICIONAL"
+      }
+    ]
+  },
+  {
+    "datetime": "2026-06-19T10:10:00.000Z",
+    "method": "Efectivo",
+    "date": "2026-06-19",
+    "total": 0,
+    "status": "paid",
+    "customer": "MIGUEL",
+    "id": "v_648",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "id": "entrada-socio",
+        "price": 0,
+        "name": "ENTRADA SOCIO",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "date": "2026-06-19",
+    "total": 7,
+    "id": "v_649",
+    "customer": "ERIKA",
+    "status": "paid",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1,
+        "id": "entrada"
+      }
+    ],
+    "datetime": "2026-06-19T10:30:00.000Z",
+    "method": "Efectivo"
+  },
+  {
+    "date": "2026-06-19",
+    "total": 7,
+    "id": "v_650",
+    "customer": "ARACELY",
+    "status": "paid",
+    "items": [
+      {
+        "id": "entrada",
+        "qty": 1,
+        "price": 7,
+        "name": "ENTRADA",
+        "cat": "ENTRADA"
+      }
+    ],
+    "datetime": "2026-06-19T10:45:00.000Z",
+    "method": "Efectivo"
+  },
+  {
+    "method": "Efectivo",
+    "datetime": "2026-06-19T11:15:00.000Z",
+    "customer": "MAGALY",
+    "id": "v_651",
+    "items": [
+      {
+        "qty": 1,
+        "price": 7,
+        "name": "ENTRADA",
+        "id": "entrada",
+        "cat": "ENTRADA"
+      },
+      {
+        "cat": "BEBIDA",
+        "name": "H2O",
+        "price": 1.5,
+        "qty": 1,
+        "id": "h2o"
+      }
+    ],
+    "status": "paid",
+    "total": 8.5,
+    "date": "2026-06-19"
+  },
+  {
+    "date": "2026-06-19",
+    "total": 7,
+    "id": "v_652",
+    "customer": "FRANK",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1,
+        "id": "entrada"
+      }
+    ],
+    "status": "paid",
+    "datetime": "2026-06-19T11:30:00.000Z",
+    "method": "Efectivo"
+  },
+  {
+    "method": "Efectivo",
+    "datetime": "2026-06-19T11:55:00.000Z",
+    "total": 15.5,
+    "status": "paid",
+    "customer": "OLINDA",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1,
+        "id": "entrada"
+      },
+      {
+        "cat": "PRE-ENTRENO",
+        "id": "nox",
+        "qty": 1,
+        "name": "NOX",
+        "price": 2.5
+      },
+      {
+        "name": "ISO",
+        "price": 6,
+        "qty": 1,
+        "id": "iso",
+        "cat": "SUPLEMENTO"
+      }
+    ],
+    "id": "v_653",
+    "date": "2026-06-19"
+  },
+  {
+    "datetime": "2026-06-19T12:15:00.000Z",
+    "method": "Efectivo",
+    "date": "2026-06-19",
+    "id": "v_654",
+    "customer": "IVANA",
+    "status": "paid",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "qty": 1,
+        "price": 7,
+        "name": "ENTRADA",
+        "id": "entrada"
+      },
+      {
+        "cat": "PRE-ENTRENO",
+        "qty": 1,
+        "name": "NOX",
+        "price": 2.5,
+        "id": "nox"
+      }
+    ],
+    "total": 9.5
+  },
+  {
+    "datetime": "2026-06-19T12:40:00.000Z",
+    "method": "Yape",
+    "date": "2026-06-19",
+    "total": 7.5,
+    "items": [
+      {
+        "id": "entrada-men",
+        "qty": 1,
+        "price": 5,
+        "name": "ENTRADA MENOR",
+        "cat": "ENTRADA"
+      },
+      {
+        "name": "NOX",
+        "price": 2.5,
+        "qty": 1,
+        "id": "nox",
+        "cat": "PRE-ENTRENO"
+      }
+    ],
+    "id": "v_655",
+    "customer": "JUDITH",
+    "status": "paid"
+  },
+  {
+    "total": 9,
+    "id": "v_656",
+    "items": [
+      {
+        "price": 5,
+        "name": "ENTRADA MENOR",
+        "qty": 1,
+        "id": "entrada-men",
+        "cat": "ENTRADA"
+      },
+      {
+        "name": "XB",
+        "price": 4,
+        "qty": 1,
+        "id": "xb",
+        "cat": "PRE-ENTRENO"
+      }
+    ],
+    "customer": "LIZ",
+    "status": "paid",
+    "date": "2026-06-19",
+    "method": "Yape",
+    "datetime": "2026-06-19T13:10:00.000Z"
+  },
+  {
     "total": 0,
     "items": [
       {
-        "id": "entrada-socio-qr",
-        "cat": "ENTRADA",
-        "name": "Entrada Socio (QR)",
+        "id": "entrada-socio",
+        "price": 0,
+        "name": "ENTRADA SOCIO",
         "qty": 1,
-        "price": 0
+        "cat": "ENTRADA"
       }
     ],
-    "method": "QR",
-    "datetime": "2026-06-18T17:59:28.417Z"
+    "status": "paid",
+    "customer": "ELVA ESPINOZA",
+    "id": "v_657",
+    "date": "2026-06-19",
+    "method": "Efectivo",
+    "datetime": "2026-06-19T13:30:00.000Z"
+  },
+  {
+    "date": "2026-06-19",
+    "total": 7,
+    "items": [
+      {
+        "qty": 1,
+        "name": "ENTRADA",
+        "price": 7,
+        "id": "entrada",
+        "cat": "ENTRADA"
+      }
+    ],
+    "status": "paid",
+    "id": "v_658",
+    "customer": "LUCERO",
+    "datetime": "2026-06-19T13:45:00.000Z",
+    "method": "Efectivo"
+  },
+  {
+    "datetime": "2026-06-19T14:05:00.000Z",
+    "method": "Efectivo",
+    "date": "2026-06-19",
+    "customer": "EDUARDO",
+    "items": [
+      {
+        "qty": 1,
+        "name": "MITAD NITRA",
+        "price": 4,
+        "id": "mitadnitra",
+        "cat": "PRE-ENTRENO"
+      }
+    ],
+    "status": "paid",
+    "id": "v_659",
+    "total": 4
+  },
+  {
+    "total": 7,
+    "id": "v_660",
+    "customer": "LADY",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "id": "entrada",
+        "name": "ENTRADA",
+        "price": 7,
+        "qty": 1
+      }
+    ],
+    "status": "paid",
+    "date": "2026-06-19",
+    "method": "Efectivo",
+    "datetime": "2026-06-19T14:20:00.000Z"
+  },
+  {
+    "method": "Efectivo",
+    "datetime": "2026-06-19T14:40:00.000Z",
+    "total": 0,
+    "id": "v_661",
+    "customer": "MARIA",
+    "status": "paid",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "id": "entrada-socio",
+        "name": "ENTRADA SOCIO",
+        "price": 0,
+        "qty": 1
+      }
+    ],
+    "date": "2026-06-19"
+  },
+  {
+    "method": "Efectivo",
+    "datetime": "2026-06-19T15:15:00.000Z",
+    "customer": "FIGUEROA",
+    "id": "v_662",
+    "status": "paid",
+    "items": [
+      {
+        "id": "entrada-socio",
+        "qty": 1,
+        "price": 0,
+        "name": "ENTRADA SOCIO",
+        "cat": "ENTRADA"
+      },
+      {
+        "id": "nox2",
+        "price": 5,
+        "name": "NOX X2",
+        "qty": 1,
+        "cat": "PRE-ENTRENO"
+      }
+    ],
+    "total": 5,
+    "date": "2026-06-19"
+  },
+  {
+    "method": "Plin",
+    "datetime": "2026-06-19T15:35:00.000Z",
+    "total": 5,
+    "id": "v_663",
+    "customer": "MARTIN",
+    "status": "paid",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "name": "ENTRADA MENOR",
+        "price": 5,
+        "qty": 1,
+        "id": "entrada-men"
+      }
+    ],
+    "date": "2026-06-19"
   }
 ]
