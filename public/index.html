@@ -2012,37 +2012,37 @@ body.dark .member-premium-card:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 102px; /* Reduced from 140px */
-  padding: 0.8rem 1rem !important; /* Compact padding */
+  height: 140px;
+  padding: 1.25rem 1.5rem !important;
 }
 .premium-kpi-card:hover {
-  transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 10px 24px -4px rgba(15,23,42,0.08) !important;
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 0 12px 30px -4px rgba(15,23,42,0.12) !important;
   border-color: var(--border2) !important;
 }
 .premium-kpi-card .val {
-  font-size: 1.45rem !important; /* Reduced from 2rem */
+  font-size: 2rem !important;
   font-weight: 850 !important;
   letter-spacing: -0.03em !important;
   line-height: 1 !important;
 }
 .premium-kpi-card .lbl {
-  font-size: 0.58rem !important;
+  font-size: 0.65rem !important;
   color: var(--text3) !important;
   font-weight: 700 !important;
   letter-spacing: 1.2px !important;
   text-transform: uppercase !important;
 }
 .premium-kpi-card .sub {
-  font-size: 0.65rem !important;
+  font-size: 0.72rem !important;
   color: var(--text2) !important;
-  margin-top: 0.15rem !important;
+  margin-top: 0.25rem !important;
   font-weight: 600 !important;
 }
 .kpi-icon-wrapper {
-  width: 26px; /* Reduced from 36px */
-  height: 26px; /* Reduced from 36px */
-  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -2053,13 +2053,13 @@ body.dark .member-premium-card:hover {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 30px; /* Reduced from 40px */
+  height: 40px;
   pointer-events: none;
   opacity: 0.35;
   transition: opacity 0.3s ease;
 }
 .premium-kpi-card:hover .kpi-sparkline-canvas {
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 /* Executive Summary (Efecto WOW) */
@@ -2068,9 +2068,9 @@ body.dark .member-premium-card:hover {
   background: linear-gradient(135deg, #0b0f19 0%, #1e293b 100%);
   border: 1px solid var(--border);
   color: #ffffff;
-  border-radius: 20px;
-  padding: 1.75rem 2.25rem;
-  box-shadow: 0 10px 30px -6px rgba(15,23,42,0.3);
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  box-shadow: 0 6px 20px -4px rgba(15,23,42,0.2);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .executive-summary-card:hover {
@@ -2186,6 +2186,28 @@ body.dark .member-premium-card:hover {
   .dash-charts-grid > div, .dash-activity-grid > div {
     grid-column: span 1 !important;
   }
+}
+
+/* Compact Dashboard Overrides */
+#page-dashboard .card {
+  padding: 1rem !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px -3px rgba(15,23,42,0.04) !important;
+}
+#page-dashboard .alerts-section-container {
+  margin-bottom: 1.25rem !important;
+}
+#page-dashboard .dash-charts-grid,
+#page-dashboard .dash-activity-grid {
+  gap: 1rem !important;
+  margin-bottom: 1.25rem !important;
+}
+#page-dashboard .alert-card-premium {
+  padding: 0.6rem 0.85rem !important;
+  border-radius: 8px !important;
+}
+#page-dashboard .activity-item-premium {
+  padding: 0.5rem 0.35rem !important;
 }
 </style>
 </head>
@@ -2314,7 +2336,7 @@ body.dark .member-premium-card:hover {
         <div>Promedio Diario: <strong id="income-range-avg" style="color:var(--green)">S/ 0.00</strong></div>
         <div>Tendencia: <strong id="income-range-trend" style="color:var(--text)">Estable</strong></div>
       </div>
-      <div style="height:220px;position:relative" id="chart-lines-wrapper"><div id="chart-lines"></div></div>
+      <div style="height:170px;position:relative" id="chart-lines-wrapper"><div id="chart-lines"></div></div>
       <div id="dash-day-detail" style="display:none;margin-top:.75rem;padding:.75rem;background:var(--bg3);border-radius:var(--radius);border:1px solid var(--border)"></div>
     </div>
 
@@ -2330,8 +2352,8 @@ body.dark .member-premium-card:hover {
           <option value="method">Métodos de Pago</option>
         </select>
       </div>
-      <div id="wrapper-chart-pie" style="height:210px;position:relative"><div id="chart-pie"></div></div>
-      <div id="wrapper-chart-payment" style="height:210px;position:relative;display:none"><div id="chart-payment-methods"></div></div>
+      <div id="wrapper-chart-pie" style="height:170px;position:relative"><div id="chart-pie"></div></div>
+      <div id="wrapper-chart-payment" style="height:170px;position:relative;display:none"><div id="chart-payment-methods"></div></div>
       <div id="dash-mix-legend" style="margin-top:.5rem"></div>
     </div>
   </div>
@@ -2368,7 +2390,7 @@ body.dark .member-premium-card:hover {
         <h4 style="font-size:1rem;color:var(--text);margin:0;font-weight:800;">Horas Concurridas</h4>
         <span id="dash-peak-hour-badge" class="badge bg" style="font-size:10px;">Cargando...</span>
       </div>
-      <div style="height:180px;position:relative"><div id="chart-peak-hours"></div></div>
+      <div style="height:140px;position:relative"><div id="chart-peak-hours"></div></div>
     </div>
 
     <!-- Low Stock (1/3 width) -->
@@ -5811,7 +5833,7 @@ function renderIncomeChart() {
     const options = {
       chart: {
         type: 'area',
-        height: 220,
+        height: 170,
         background: 'transparent',
         toolbar: { show: false },
         zoom: { enabled: false },
@@ -6029,7 +6051,7 @@ function renderSparkline(elementId, data, color) {
   const options = {
     chart: {
       type: 'line',
-      height: 30, // Reduced from 40 to fit compact KPI cards
+      height: 40,
       sparkline: { enabled: true },
       animations: { enabled: true, speed: 800 }
     },
@@ -6141,25 +6163,25 @@ function renderDashboard(){
       <div class="executive-summary-card">
         <div class="executive-summary-glow-1"></div>
         <div class="executive-summary-glow-2"></div>
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:1.5rem; position:relative; z-index:5; flex-wrap:wrap;">
-          <div style="display:flex; flex-direction:column; gap:0.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1.25rem; position:relative; z-index:5; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:0.2rem;">
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="width:6px; height:6px; border-radius:50%; background:#16a34a; display:inline-block; animation:pulse 2s infinite;"></span>
-              <span style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:2px;">Resumen Ejecutivo</span>
+              <span style="font-size:9px; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:1.5px;">Resumen Ejecutivo</span>
             </div>
-            <h3 style="font-size:1.6rem; font-weight:800; color:#ffffff; margin:0; letter-spacing:-0.03em;">Rendimiento Comercial del Mes</h3>
-            <p style="font-size:0.75rem; color:#94a3b8; margin:0; font-weight:500;">Análisis consolidado de metas, captaciones y rentabilidad para el período en curso.</p>
+            <h3 style="font-size:1.25rem; font-weight:800; color:#ffffff; margin:0; letter-spacing:-0.03em;">Rendimiento Comercial del Mes</h3>
+            <p style="font-size:0.68rem; color:#94a3b8; margin:0; font-weight:500;">Análisis consolidado de metas, captaciones y rentabilidad para el período en curso.</p>
           </div>
-          <div style="display:flex; align-items:center; gap:2rem; width:100%; max-width:440px; flex-wrap:wrap; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:1.5rem; width:100%; max-width:400px; flex-wrap:wrap; justify-content:space-between;">
             <div>
-              <span style="font-size:9px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; display:block;">Ingreso Recaudado</span>
-              <strong style="font-size:1.6rem; font-weight:900; color:#ffffff; display:block; line-height:1.2;">S/ ${sumMes.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
-              <span style="font-size:10px; font-weight:700; color:#64748b;">Meta Mensual: S/ ${meta.toLocaleString('es-PE')}</span>
+              <span style="font-size:8px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; display:block;">Ingreso Recaudado</span>
+              <strong style="font-size:1.3rem; font-weight:900; color:#ffffff; display:block; line-height:1.2;">S/ ${sumMes.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+              <span style="font-size:9px; font-weight:700; color:#64748b;">Meta Mensual: S/ ${meta.toLocaleString('es-PE')}</span>
             </div>
-            <div style="flex:1; min-width:180px;">
-              <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:10px; font-weight:700; color:#94a3b8; margin-bottom:4px;">
+            <div style="flex:1; min-width:165px;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:9px; font-weight:700; color:#94a3b8; margin-bottom:4px;">
                 <span>Meta Alcanzada</span>
-                <span style="color:#4ade80; font-size:12px; font-weight:900;">${metaPercent}%</span>
+                <span style="color:#4ade80; font-size:11px; font-weight:900;">${metaPercent}%</span>
               </div>
               <div class="summary-progress-track">
                 <div id="exec-progress-bar" class="summary-progress-fill"></div>
@@ -6180,10 +6202,10 @@ function renderDashboard(){
   // 2. RENDER PREMIUM KPI CARDS
   const kpiHTML = `
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
         <span class="lbl" style="margin-bottom:0;">Ingresos Hoy</span>
         <div class="kpi-icon-wrapper text-emerald-600 bg-emerald-50 border-emerald-100">
-          ${getIconHTML('EFECTIVO', 12, 2.2)}
+          ${getIconHTML('EFECTIVO', 15, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6191,15 +6213,15 @@ function renderDashboard(){
           <span class="val" id="kpi-hoy-val" style="color:var(--text)">S/ 0.00</span>
           ${todayGrowthBadge}
         </div>
-        <p class="sub" style="margin-top:0.15rem;">vs ayer (S/ ${totalYesterday.toFixed(0)})</p>
+        <p class="sub" style="margin-top:0.25rem;">vs ayer (S/ ${totalYesterday.toFixed(0)})</p>
       </div>
       <div id="sparkline-hoy" class="kpi-sparkline-canvas"></div>
     </div>
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
         <span class="lbl" style="margin-bottom:0;">Ingresos del Mes</span>
         <div class="kpi-icon-wrapper text-green-600 bg-green-50 border-green-100">
-          ${getIconHTML('EXPORTAR', 12, 2.2)}
+          ${getIconHTML('EXPORTAR', 15, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6207,15 +6229,15 @@ function renderDashboard(){
           <span class="val" id="kpi-mes-val" style="color:var(--green)">S/ 0.00</span>
           ${monthGrowthBadge}
         </div>
-        <p class="sub" style="margin-top:0.15rem;">vs mes anterior (S/ ${sumPastMes.toFixed(0)})</p>
+        <p class="sub" style="margin-top:0.25rem;">vs mes anterior (S/ ${sumPastMes.toFixed(0)})</p>
       </div>
       <div id="sparkline-mes" class="kpi-sparkline-canvas"></div>
     </div>
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
         <span class="lbl" style="margin-bottom:0;">Ingresos del Año</span>
         <div class="kpi-icon-wrapper text-amber-600 bg-amber-50 border-amber-100">
-          ${getIconHTML('CALENDAR', 12, 2.2)}
+          ${getIconHTML('CALENDAR', 15, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6223,15 +6245,15 @@ function renderDashboard(){
           <span class="val" id="kpi-anio-val" style="color:var(--amber)">S/ 0.00</span>
           ${yearGrowthBadge}
         </div>
-        <p class="sub" style="margin-top:0.15rem;">vs año anterior (S/ ${sumPastAnio.toFixed(0)})</p>
+        <p class="sub" style="margin-top:0.25rem;">vs año anterior (S/ ${sumPastAnio.toFixed(0)})</p>
       </div>
       <div id="sparkline-anio" class="kpi-sparkline-canvas"></div>
     </div>
     <div class="stat-card premium-kpi-card">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.15rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 0.25rem;">
         <span class="lbl" style="margin-bottom:0;">Miembros Activos</span>
         <div class="kpi-icon-wrapper text-blue-600 bg-blue-50 border-blue-100">
-          ${getIconHTML('MEMBRESIA', 12, 2.2)}
+          ${getIconHTML('MEMBRESIA', 15, 2.2)}
         </div>
       </div>
       <div style="position:relative; z-index:10;">
@@ -6239,7 +6261,7 @@ function renderDashboard(){
           <span class="val" id="kpi-activos-val" style="color:var(--blue)">0</span>
           ${activeDiffBadge}
         </div>
-        <p class="sub" style="margin-top:0.15rem;">vs fin mes anterior (${activePast})</p>
+        <p class="sub" style="margin-top:0.25rem;">vs fin mes anterior (${activePast})</p>
       </div>
       <div id="sparkline-activos" class="kpi-sparkline-canvas"></div>
     </div>
@@ -6726,7 +6748,7 @@ function renderDashboard(){
     const options = {
       chart: {
         type: 'donut',
-        height: 210,
+        height: 170,
         fontFamily: 'Inter, sans-serif'
       },
       labels: ['Membresías', 'Suplementos', 'Bebidas', 'Pre-entrenos', 'Otros'],
@@ -6788,7 +6810,7 @@ function renderDashboard(){
     const options = {
       chart: {
         type: 'donut',
-        height: 210,
+        height: 170,
         fontFamily: 'Inter, sans-serif'
       },
       labels: ['Efectivo', 'Yape', 'Plin', 'Transf.'],
@@ -6850,7 +6872,7 @@ function renderDashboard(){
     const options = {
       chart: {
         type: 'area',
-        height: 180,
+        height: 140,
         background: 'transparent',
         toolbar: { show: false },
         zoom: { enabled: false },

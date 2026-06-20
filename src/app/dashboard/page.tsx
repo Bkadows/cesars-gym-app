@@ -250,9 +250,9 @@ export default function DashboardPage() {
     return (
       <div className="space-y-8 animate-pulse">
         <div className="h-36 bg-white border border-slate-200 rounded-lg" />
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-[102px] bg-white border border-slate-200 rounded-lg" />
+            <div key={i} className="h-32 bg-white border border-slate-200 rounded-lg" />
           ))}
         </div>
       </div>
@@ -264,47 +264,47 @@ export default function DashboardPage() {
       initial={{ opacity: 0, y: 20 }} 
       animate={{ opacity: 1, y: 0 }} 
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="space-y-8"
+      className="space-y-6"
     >
       {/* ── 1. EFECTO WOW: RESUMEN EJECUTIVO (TARJETA DESTACADA) ── */}
       <motion.div 
         whileHover={{ scale: 1.01 }}
         transition={{ duration: 0.2 }}
-        className="relative overflow-hidden bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-800 text-white rounded-lg p-6 lg:p-8 shadow-premium"
+        className="relative overflow-hidden bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-800 text-white rounded-lg p-4 shadow-premium"
       >
         {/* Glow absolute elements */}
-        <div className="absolute right-0 top-0 w-80 h-80 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute left-1/3 bottom-0 w-60 h-60 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute right-0 top-0 w-60 h-60 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute left-1/3 bottom-0 w-44 h-44 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-          <div className="space-y-2">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
+          <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Resumen Ejecutivo</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Resumen Ejecutivo</span>
             </div>
-            <h2 className="text-3xl font-extrabold tracking-tight">Rendimiento Comercial del Mes</h2>
-            <p className="text-xs text-slate-400 font-medium">Análisis consolidado de metas, captaciones y rentabilidad para el período en curso.</p>
+            <h2 className="text-xl font-bold tracking-tight">Rendimiento Comercial del Mes</h2>
+            <p className="text-[11px] text-slate-400 font-medium">Análisis consolidado de metas, captaciones y rentabilidad para el período en curso.</p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 lg:min-w-[400px]">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 lg:min-w-[360px]">
             {/* Meta values */}
-            <div className="space-y-1">
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Ingreso Recaudado</span>
-              <span className="text-2xl font-black text-white block">
+            <div className="space-y-0.5">
+              <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">Ingreso Recaudado</span>
+              <span className="text-xl font-black text-white block">
                 <AnimatedCounter value={6557.90} decimals={2} prefix="S/ " />
               </span>
-              <span className="text-[10px] font-bold text-slate-500">Meta Mensual: S/ 8,000</span>
+              <span className="text-[9px] font-bold text-slate-500">Meta Mensual: S/ 8,000</span>
             </div>
 
             {/* Progress bar */}
             <div className="flex-1 w-full space-y-1">
-              <div className="flex justify-between items-baseline text-[10px] font-bold text-slate-400">
+              <div className="flex justify-between items-baseline text-[9px] font-bold text-slate-400">
                 <span>Meta Alcanzada</span>
-                <span className="text-green-400 text-xs font-black">
+                <span className="text-green-400 text-[11px] font-black">
                   <AnimatedCounter value={82} suffix="%" />
                 </span>
               </div>
-              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden border border-slate-700/50">
+              <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-slate-700/50">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: '82%' }}
@@ -318,24 +318,24 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* ── 2. KPI CARDS PREMIUM CON SPARKLINES ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {kpis.map((kpi) => (
           <motion.div
             key={kpi.title}
-            whileHover={{ scale: 1.02, y: -2 }}
+            whileHover={{ scale: 1.02, y: -4 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-4 shadow-premium hover:shadow-premium-hover flex flex-col justify-between h-[102px] transition-all duration-300 relative overflow-hidden group"
+            className="bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-6 shadow-premium hover:shadow-premium-hover flex flex-col justify-between h-36 transition-all duration-300 relative overflow-hidden group"
           >
             {/* KPI Header */}
             <div className="flex justify-between items-start">
               <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">{kpi.title}</span>
-              <div className={`w-[26px] h-[26px] rounded-md border flex items-center justify-center ${kpi.color}`}>
-                <kpi.icon className="w-3.5 h-3.5 mx-auto" />
+              <div className={`w-8 h-8 rounded-lg border flex items-center justify-center ${kpi.color}`}>
+                <kpi.icon className="w-4 h-4 mx-auto" />
               </div>
             </div>
 
             {/* Sparkline chart embedded as card background */}
-            <div className="absolute bottom-0 left-0 right-0 h-[30px] overflow-hidden pointer-events-none opacity-40 group-hover:opacity-75 transition-opacity">
+            <div className="absolute bottom-0 left-0 right-0 h-11 overflow-hidden pointer-events-none opacity-40 group-hover:opacity-75 transition-opacity">
               <Chart
                 options={getSparkOptions(kpi.isPositive ? '#16A34A' : '#EF4444')}
                 series={[{ data: kpi.sparkData }]}
@@ -346,9 +346,9 @@ export default function DashboardPage() {
             </div>
 
             {/* KPI Value & Growth */}
-            <div className="mt-0.5 z-10">
+            <div className="mt-1 z-10">
               <div className="flex items-baseline gap-2">
-                <span className="text-[1.45rem] font-black text-slate-900 leading-none tracking-tight">
+                <span className="text-2xl font-black text-slate-900 leading-none tracking-tight">
                   <AnimatedCounter 
                     value={kpi.val} 
                     decimals={kpi.title.includes('Miembros') ? 0 : 2} 
@@ -360,19 +360,19 @@ export default function DashboardPage() {
                   {kpi.pct}
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 font-semibold mt-1 leading-none">{kpi.sub}</p>
+              <p className="text-[10px] text-slate-400 font-semibold mt-1.5 leading-none">{kpi.sub}</p>
             </div>
           </motion.div>
         ))}
       </div>
 
       {/* ── 3. PANEL DE ALERTAS INTELIGENTES ── */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-3 bg-green-600 rounded-full" />
-          <h3 className="text-xs font-bold text-slate-400 tracking-widest uppercase">Alertas Inteligentes</h3>
+          <span className="w-1 h-2.5 bg-green-600 rounded-full" />
+          <h3 className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Alertas Inteligentes</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {[
             { type: 'danger', icon: UserX, priority: 'Prioridad Alta', msg: 'Frank Samame: Membresía vence hoy', action: 'Ver socio', color: 'bg-red-50/50 border-red-100 text-red-700 btn-red' },
             { type: 'warning', icon: Clock, priority: 'Prioridad Media', msg: '3 membresías vencen mañana', action: 'Ver miembros', color: 'bg-amber-50/50 border-amber-100 text-amber-700 btn-amber' },
@@ -381,19 +381,19 @@ export default function DashboardPage() {
             { type: 'info', icon: Users, priority: 'Prioridad Baja', msg: '5 clientes inactivos hace 15 días', action: 'Enviar alerta', color: 'bg-slate-50 border-slate-200 text-slate-600 btn-slate' },
             { type: 'info', icon: Calendar, priority: 'Prioridad Baja', msg: '8 renovaciones este mes', action: 'Ver reporte', color: 'bg-slate-50 border-slate-200 text-slate-600 btn-slate' }
           ].map((alert, i) => (
-            <div key={i} className={`flex items-center justify-between p-4 rounded-lg border shadow-premium group hover:scale-[1.02] transition-premium duration-200 ${alert.color}`}>
-              <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+            <div key={i} className={`flex items-center justify-between p-2.5 px-3 rounded-lg border shadow-premium group hover:scale-[1.02] transition-premium duration-200 ${alert.color}`}>
+              <div className="flex items-center gap-2">
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
                   alert.type === 'danger' ? 'bg-red-100 text-red-600' : alert.type === 'warning' ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-500'
                 }`}>
-                  <alert.icon className="w-4 h-4 mx-auto" />
+                  <alert.icon className="w-3.5 h-3.5 mx-auto" />
                 </div>
                 <div>
-                  <span className="text-[9px] font-extrabold tracking-wider uppercase block">{alert.priority}</span>
-                  <p className="text-xs font-bold text-slate-800 mt-0.5">{alert.msg}</p>
+                  <span className="text-[8px] font-extrabold tracking-wider uppercase block">{alert.priority}</span>
+                  <p className="text-[11px] font-bold text-slate-800 mt-0.5 leading-tight">{alert.msg}</p>
                 </div>
               </div>
-              <button className={`text-[10px] font-extrabold px-3 py-1.5 rounded-lg transition-premium cursor-pointer ${
+              <button className={`text-[9px] font-extrabold px-2 py-1 rounded-lg transition-premium cursor-pointer ${
                 alert.type === 'danger' ? 'bg-red-100 hover:bg-red-200 text-red-800' : alert.type === 'warning' ? 'bg-amber-100 hover:bg-amber-200 text-amber-800' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
               }`}>
                 {alert.action}
@@ -404,20 +404,20 @@ export default function DashboardPage() {
       </div>
 
       {/* ── 4. CHARTS SECTION ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Main Area Chart */}
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-lg p-6 shadow-premium flex flex-col justify-between hover:border-slate-300 transition-premium duration-200">
-          <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-lg p-4 shadow-premium flex flex-col justify-between hover:border-slate-300 transition-premium duration-200">
+          <div className="flex justify-between items-center flex-wrap gap-4 mb-3">
             <div>
               <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase block">Evolución de Ingresos</span>
-              <span className="text-xl font-extrabold text-slate-900 mt-0.5 block">Resumen de Ventas MTD</span>
+              <span className="text-lg font-extrabold text-slate-900 mt-0.5 block">Resumen de Ventas MTD</span>
             </div>
             <div className="flex border border-slate-200 rounded-lg p-1 bg-slate-50 gap-0.5 shadow-sm">
               {(['7d', '30d', '90d', '1y'] as const).map((r) => (
                 <button
                   key={r}
                   onClick={() => setChartRange(r)}
-                  className={`text-[10px] font-bold px-2.5 py-1.5 rounded-md uppercase tracking-wider transition-premium cursor-pointer ${
+                  className={`text-[9px] font-bold px-2 py-1 rounded-md uppercase tracking-wider transition-premium cursor-pointer ${
                     chartRange === r ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-700'
                   }`}
                 >
@@ -426,7 +426,7 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
-          <div className="h-72">
+          <div className="h-48">
             <Chart
               options={mainChartData.options}
               series={mainChartData.series}
@@ -437,34 +437,34 @@ export default function DashboardPage() {
         </div>
 
         {/* Categories Donut Chart */}
-        <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-premium flex flex-col justify-between hover:border-slate-300 transition-premium duration-200">
+        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-premium flex flex-col justify-between hover:border-slate-300 transition-premium duration-200">
           <div>
             <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase block">Distribución de Ingresos</span>
-            <span className="text-xl font-extrabold text-slate-900 mt-0.5 block">Fuentes del Mes</span>
+            <span className="text-lg font-extrabold text-slate-900 mt-0.5 block">Fuentes del Mes</span>
           </div>
-          <div className="h-64 my-auto flex items-center justify-center">
+          <div className="h-44 my-auto flex items-center justify-center">
             <Chart
               options={donutChartData.options}
               series={donutChartData.series}
               type="donut"
               width="100%"
-              height="240px"
+              height="180px"
             />
           </div>
         </div>
       </div>
 
       {/* ── 5. DETAILED ANALYTICS AND ACTIVITY ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Recent Activity Feed */}
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-lg p-6 shadow-premium space-y-4 hover:border-slate-300 transition-premium duration-200">
-          <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-lg p-4 shadow-premium space-y-3 hover:border-slate-300 transition-premium duration-200">
+          <div className="flex justify-between items-center border-b border-slate-100 pb-2">
             <span className="text-sm font-extrabold text-slate-900">Actividad Reciente</span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-              <Activity className="w-3.5 h-3.5 text-green-500 animate-pulse" /> En tiempo real
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              <Activity className="w-3 h-3 text-green-500 animate-pulse" /> En tiempo real
             </span>
           </div>
-          <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1">
+          <div className="space-y-3 max-h-[260px] overflow-y-auto pr-1">
             {[
               { time: 'Hace 5 minutos', user: 'Juan Pérez', desc: 'renovó membresía mensual (S/ 80.00)', method: 'Yape', icon: UserCheck, color: 'bg-indigo-100 text-indigo-700' },
               { time: 'Hace 15 minutos', user: 'MAX', desc: 'registró ingreso diario (S/ 5.00) por Entrada Menor', method: 'Plin', icon: DollarSign, color: 'bg-emerald-100 text-emerald-700' },
@@ -472,20 +472,20 @@ export default function DashboardPage() {
               { time: 'Hace 1 hora', user: 'ANALY', desc: 'registró Entrada (S/ 7.00) en Efectivo', method: 'Efectivo', icon: DollarSign, color: 'bg-green-100 text-green-700' },
               { time: 'Hace 2 horas', user: 'Frank Samame', desc: 'venció membresía mensual', method: 'Sistema', icon: UserX, color: 'bg-red-100 text-red-700' }
             ].map((act, i) => (
-              <div key={i} className="flex justify-between items-center text-xs border-b border-slate-50 pb-3 last:border-0 last:pb-0">
-                <div className="flex items-center gap-3">
+              <div key={i} className="flex justify-between items-center text-xs border-b border-slate-50 pb-2 last:border-0 last:pb-0">
+                <div className="flex items-center gap-2.5">
                   {/* Event Avatar Icon */}
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${act.color} font-bold text-xs`}>
-                    <act.icon className="w-4 h-4 mx-auto" />
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center ${act.color} font-bold text-xs`}>
+                    <act.icon className="w-3.5 h-3.5 mx-auto" />
                   </div>
                   <div>
-                    <p className="font-bold text-slate-800 tracking-tight">
+                    <p className="font-bold text-slate-800 tracking-tight text-[11px]">
                       {act.user} <span className="text-slate-500 font-medium">{act.desc}</span>
                     </p>
-                    <span className="text-[10px] text-slate-400 font-semibold mt-0.5 block">{act.time}</span>
+                    <span className="text-[9px] text-slate-400 font-semibold mt-0.5 block">{act.time}</span>
                   </div>
                 </div>
-                <span className={`text-[9px] font-extrabold px-2.5 py-0.5 rounded-full ${
+                <span className={`text-[8px] font-extrabold px-2 py-0.5 rounded-full ${
                   act.method === 'Sistema' 
                     ? 'bg-red-50 text-red-700 border border-red-100' 
                     : act.method === 'QR'
@@ -500,19 +500,19 @@ export default function DashboardPage() {
         </div>
 
         {/* Advanced Metrics with Animated Numbers */}
-        <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-premium space-y-4 hover:border-slate-300 transition-premium duration-200">
-          <span className="text-sm font-extrabold text-slate-900 block border-b border-slate-100 pb-3">Métricas Avanzadas</span>
-          <div className="space-y-4">
+        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-premium space-y-3 hover:border-slate-300 transition-premium duration-200">
+          <span className="text-sm font-extrabold text-slate-900 block border-b border-slate-100 pb-2">Métricas Avanzadas</span>
+          <div className="space-y-2.5">
             {[
               { name: 'Ticket Promedio', val: 11.20, trend: '▲ +2.3%', isCurrency: true },
               { name: 'ARPU (Ingreso Usuario)', val: 141.50, trend: '▲ +5.1%', isCurrency: true },
               { name: 'Retención de Clientes', val: 92.4, trend: '▲ +1.2%', isCurrency: false, isPercent: true },
               { name: 'Tasa de Churn', val: 2.1, trend: '▼ -0.4%', isCurrency: false, isPercent: true }
             ].map((met, i) => (
-              <div key={i} className="p-3.5 rounded-lg bg-slate-50 border border-slate-100 flex justify-between items-center group hover:bg-slate-100/70 hover:border-slate-200 transition-premium">
+              <div key={i} className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 flex justify-between items-center group hover:bg-slate-100/70 hover:border-slate-200 transition-premium">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{met.name}</span>
-                  <span className="text-lg font-black text-slate-900 mt-1 block">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{met.name}</span>
+                  <span className="text-base font-black text-slate-900 mt-0.5 block">
                     <AnimatedCounter 
                       value={met.val} 
                       decimals={met.isPercent ? 1 : 2} 
@@ -521,7 +521,7 @@ export default function DashboardPage() {
                     />
                   </span>
                 </div>
-                <span className={`text-[10px] font-extrabold rounded-full px-2.5 py-0.5 border ${
+                <span className={`text-[9px] font-extrabold rounded-full px-2 py-0.5 border ${
                   met.trend.includes('▼') 
                     ? 'text-red-600 bg-red-50 border-red-100' 
                     : 'text-green-600 bg-green-50 border-green-100'
