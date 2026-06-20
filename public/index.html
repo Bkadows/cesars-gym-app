@@ -3883,6 +3883,19 @@ function renderMemberSuggestions(){
 function selectMemberSuggestion(name){
   document.getElementById('ticket-customer').value=name;
   document.getElementById('member-suggestions').classList.remove('open');
+  
+  const members = LS.get(K_MEMBERS) || [];
+  const m = members.find(mb => mb.name === name);
+  if (m) {
+    const st = memberStatus(m);
+    if (st === 'active' || st === 'expiring') {
+      if (!ticket.some(t => t.prod.id === 'entrada-socio')) {
+        addToTicket('entrada-socio');
+      }
+    } else if (st === 'expired') {
+      toast('Este miembro tiene la membresía vencida.', 'err');
+    }
+  }
 }
 
 // ── CHECK-IN (ASISTENCIA) ──
