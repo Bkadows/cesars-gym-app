@@ -3955,11 +3955,11 @@ function updateCobrarBtnColor(method){
   else if(method === 'Transferencia') btn.classList.add('method-transferencia');
 }
 function selectPayMethod(btn){
-  document.querySelectorAll('#pay-methods .pay-method-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#pay-methods .pay-method-btn, .caja-right [data-method="Pendiente"]').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   updateCobrarBtnColor(btn.dataset.method);
 }
-function getPayMethod(){ const a=document.querySelector('#pay-methods .pay-method-btn.active'); return a?a.dataset.method:'Efectivo'; }
+function getPayMethod(){ const a=document.querySelector('#pay-methods .pay-method-btn.active, .caja-right [data-method="Pendiente"].active'); return a?a.dataset.method:'Efectivo'; }
 function selectQrMethod(btn){
   document.querySelectorAll('#qr-pay-methods .pay-method-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
@@ -4113,7 +4113,7 @@ function loadVentaToTicket(id){
   editingVentaId=id;
   ticket=(venta.items||[]).map(it=>{ const prod=(LS.get(K_CATALOG)||[]).find(p=>p.id===it.id)||{id:it.id,name:it.name,cat:it.cat,price:Number(it.price)||0}; return {prod,qty:Number(it.qty)||1}; });
   document.getElementById('ticket-customer').value=venta.customer||'';
-  document.querySelectorAll('#pay-methods .pay-method-btn').forEach(b=>b.classList.toggle('active',b.dataset.method===venta.method));
+  document.querySelectorAll('#pay-methods .pay-method-btn, .caja-right [data-method="Pendiente"]').forEach(b=>b.classList.toggle('active',b.dataset.method===venta.method));
   renderTicket();
   document.querySelector('.caja-right')?.scrollIntoView({behavior:'smooth',block:'start'});
   toast('Venta cargada para editar.');
