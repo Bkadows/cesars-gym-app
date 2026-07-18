@@ -1,0 +1,449 @@
+[
+  {
+    "id": "1782229238407",
+    "date": "2026-06-23",
+    "total": 0,
+    "items": [
+      {
+        "name": "ENTRADA SOCIO",
+        "qty": 1,
+        "id": "entrada-socio",
+        "price": 0,
+        "cat": "ENTRADA"
+      }
+    ],
+    "method": "Efectivo",
+    "customer": "JHON CENA",
+    "datetime": "2026-06-23T15:40:38.407Z",
+    "payDate": "2026-06-23",
+    "status": "paid"
+  },
+  {
+    "items": [
+      {
+        "id": "entrada",
+        "cat": "ENTRADA",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1
+      },
+      {
+        "qty": 1,
+        "name": "AGUA",
+        "price": 1.5,
+        "cat": "BEBIDA",
+        "id": "h2o"
+      }
+    ],
+    "method": "Efectivo",
+    "datetime": "2026-06-23T15:41:02.782Z",
+    "customer": "JOSE NICO",
+    "payDate": "2026-06-23",
+    "status": "paid",
+    "id": "1782229262781",
+    "total": 8.5,
+    "date": "2026-06-23"
+  },
+  {
+    "status": "paid",
+    "payDate": "2026-06-23",
+    "customer": "JOSEP",
+    "datetime": "2026-06-23T15:41:11.957Z",
+    "method": "Yape",
+    "items": [
+      {
+        "id": "entrada",
+        "price": 7,
+        "cat": "ENTRADA",
+        "name": "ENTRADA",
+        "qty": 1
+      }
+    ],
+    "date": "2026-06-23",
+    "total": 7,
+    "id": "1782229271957"
+  },
+  {
+    "id": "1782229284916",
+    "updatedAt": "2026-06-23T15:41:33.037Z",
+    "total": 10,
+    "date": "2026-06-23",
+    "method": "Efectivo",
+    "items": [
+      {
+        "id": "entrada",
+        "cat": "ENTRADA",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1
+      },
+      {
+        "name": "AGUA",
+        "qty": 1,
+        "id": "h2o",
+        "price": 1.5,
+        "cat": "BEBIDA"
+      },
+      {
+        "price": 1.5,
+        "cat": "ADICIONAL",
+        "id": "gomitas",
+        "qty": 1,
+        "name": "GOMITAS"
+      }
+    ],
+    "status": "paid",
+    "payDate": "2026-06-23",
+    "datetime": "2026-06-23T15:41:24.916Z",
+    "customer": "SAMAME"
+  },
+  {
+    "total": 5.6,
+    "date": "2026-06-23",
+    "id": "1782229786618",
+    "status": "paid",
+    "datetime": "2026-06-23T15:49:46.619Z",
+    "customer": "OLGA",
+    "payDate": "2026-06-23",
+    "items": [
+      {
+        "qty": 1,
+        "name": "ENTRADA MENOR",
+        "price": 5,
+        "cat": "ENTRADA",
+        "id": "entrada-men"
+      },
+      {
+        "price": 0.2,
+        "cat": "ADICIONAL",
+        "id": "chiclesund",
+        "qty": 3,
+        "name": "CHICLES UND."
+      }
+    ],
+    "method": "Efectivo"
+  },
+  {
+    "status": "paid",
+    "datetime": "2026-06-23T15:49:54.043Z",
+    "customer": "LAURA",
+    "payDate": "2026-06-23",
+    "method": "Efectivo",
+    "items": [
+      {
+        "name": "ENTRADA",
+        "qty": 1,
+        "id": "entrada",
+        "price": 7,
+        "cat": "ENTRADA"
+      },
+      {
+        "name": "H2OM",
+        "qty": 1,
+        "id": "h2om",
+        "cat": "BEBIDA",
+        "price": 2.5
+      }
+    ],
+    "date": "2026-06-23",
+    "total": 9.5,
+    "id": "1782229794042"
+  },
+  {
+    "payDate": "2026-06-23",
+    "datetime": "2026-06-23T15:50:56.186Z",
+    "customer": "FIORELLA",
+    "status": "paid",
+    "items": [
+      {
+        "price": 7,
+        "cat": "ENTRADA",
+        "id": "entrada",
+        "qty": 1,
+        "name": "ENTRADA"
+      }
+    ],
+    "method": "Yape",
+    "total": 7,
+    "date": "2026-06-23",
+    "id": "1782229856186"
+  },
+  {
+    "payDate": "2026-06-23",
+    "datetime": "2026-06-23T15:51:35.771Z",
+    "customer": "CYNTIA",
+    "status": "paid",
+    "method": "Yape",
+    "items": [
+      {
+        "id": "entrada",
+        "cat": "ENTRADA",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1
+      }
+    ],
+    "date": "2026-06-23",
+    "total": 7,
+    "id": "1782229895771"
+  },
+  {
+    "items": [
+      {
+        "id": "entrada-socio",
+        "price": 0,
+        "cat": "ENTRADA",
+        "name": "ENTRADA SOCIO",
+        "qty": 1
+      }
+    ],
+    "method": "Efectivo",
+    "payDate": "2026-06-23",
+    "datetime": "2026-06-23T15:52:05.770Z",
+    "customer": "JANETH JAIMES",
+    "status": "paid",
+    "id": "1782229925770",
+    "date": "2026-06-23",
+    "total": 0
+  },
+  {
+    "items": [
+      {
+        "qty": 1,
+        "name": "ENTRADA SOCIO",
+        "price": 0,
+        "cat": "ENTRADA",
+        "id": "entrada-socio"
+      }
+    ],
+    "method": "Efectivo",
+    "customer": "RAYDER",
+    "datetime": "2026-06-23T15:52:15.587Z",
+    "payDate": "2026-06-23",
+    "status": "paid",
+    "id": "1782229935587",
+    "date": "2026-06-23",
+    "total": 0
+  },
+  {
+    "date": "2026-06-23",
+    "total": 10,
+    "id": "1782229978035",
+    "status": "paid",
+    "payDate": "2026-06-23",
+    "datetime": "2026-06-23T15:52:58.035Z",
+    "customer": "SANDRA",
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "price": 5,
+        "id": "entrada-men",
+        "qty": 1,
+        "name": "ENTRADA MENOR"
+      },
+      {
+        "cat": "SUPLEMENTO",
+        "price": 5,
+        "id": "creatinafem",
+        "qty": 1,
+        "name": "CREATINA FEM"
+      }
+    ],
+    "method": "Yape"
+  },
+  {
+    "status": "paid",
+    "customer": "MELANY",
+    "datetime": "2026-06-23T15:53:03.011Z",
+    "payDate": "2026-06-23",
+    "items": [
+      {
+        "qty": 1,
+        "name": "ENTRADA MENOR",
+        "cat": "ENTRADA",
+        "price": 5,
+        "id": "entrada-men"
+      }
+    ],
+    "method": "Efectivo",
+    "total": 5,
+    "date": "2026-06-23",
+    "id": "1782229983011"
+  },
+  {
+    "date": "2026-06-23",
+    "total": 10,
+    "id": "1782229993810",
+    "status": "paid",
+    "datetime": "2026-06-23T15:53:13.810Z",
+    "customer": "EMERSON",
+    "payDate": "2026-06-23",
+    "method": "Efectivo",
+    "items": [
+      {
+        "id": "entrada-men",
+        "cat": "ENTRADA",
+        "price": 5,
+        "name": "ENTRADA MENOR",
+        "qty": 1
+      },
+      {
+        "id": "mitadcbum",
+        "price": 5,
+        "cat": "PRE-ENTRENO",
+        "name": "MITAD CBUM",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "total": 5,
+    "date": "2026-06-23",
+    "id": "1782230001104",
+    "status": "paid",
+    "datetime": "2026-06-23T15:53:21.104Z",
+    "customer": "VANESSA",
+    "payDate": "2026-06-23",
+    "method": "Efectivo",
+    "items": [
+      {
+        "price": 5,
+        "cat": "ENTRADA",
+        "id": "entrada-men",
+        "qty": 1,
+        "name": "ENTRADA MENOR"
+      }
+    ]
+  },
+  {
+    "method": "Yape",
+    "items": [
+      {
+        "id": "entrada",
+        "cat": "ENTRADA",
+        "price": 7,
+        "name": "ENTRADA",
+        "qty": 1
+      },
+      {
+        "price": 2.5,
+        "cat": "PRE-ENTRENO",
+        "id": "nox",
+        "qty": 1,
+        "name": "NOX"
+      },
+      {
+        "id": "cbum",
+        "price": 10,
+        "cat": "PRE-ENTRENO",
+        "name": "CBUM",
+        "qty": 2
+      },
+      {
+        "id": "gomitas",
+        "price": 1.5,
+        "cat": "ADICIONAL",
+        "name": "GOMITAS",
+        "qty": 1
+      }
+    ],
+    "status": "paid",
+    "datetime": "2026-06-23T15:53:48.314Z",
+    "customer": "Cliente",
+    "payDate": "2026-06-23",
+    "id": "1782230028314",
+    "date": "2026-06-23",
+    "updatedAt": "2026-06-23T15:53:58.402Z",
+    "total": 31
+  },
+  {
+    "id": "1782230033905",
+    "date": "2026-06-23",
+    "total": 7,
+    "items": [
+      {
+        "cat": "ENTRADA",
+        "price": 7,
+        "id": "entrada",
+        "qty": 1,
+        "name": "ENTRADA"
+      }
+    ],
+    "method": "Yape",
+    "payDate": "2026-06-23",
+    "customer": "JC",
+    "datetime": "2026-06-23T15:53:53.905Z",
+    "status": "paid"
+  },
+  {
+    "items": [
+      {
+        "id": "entrada-men",
+        "price": 5,
+        "cat": "ENTRADA",
+        "name": "ENTRADA MENOR",
+        "qty": 1
+      }
+    ],
+    "method": "Efectivo",
+    "status": "paid",
+    "payDate": "2026-06-23",
+    "customer": "HERMANO YEN",
+    "datetime": "2026-06-23T15:57:45.330Z",
+    "id": "1782230265329",
+    "date": "2026-06-23",
+    "total": 5
+  },
+  {
+    "method": "Yape",
+    "items": [
+      {
+        "id": "interdiario",
+        "cat": "ADICIONAL",
+        "price": 65,
+        "name": "1 MES INTERDIARIO",
+        "qty": 1
+      },
+      {
+        "id": "entrada-socio",
+        "cat": "ENTRADA",
+        "price": 0,
+        "name": "ENTRADA SOCIO",
+        "qty": 1
+      }
+    ],
+    "customer": "NOA PEREZ",
+    "datetime": "2026-06-23T15:57:56.073Z",
+    "payDate": "2026-06-23",
+    "status": "paid",
+    "id": "1782230276073",
+    "total": 65,
+    "date": "2026-06-23"
+  },
+  {
+    "payDate": "2026-06-23",
+    "customer": "JUDITH",
+    "datetime": "2026-06-23T15:58:17.081Z",
+    "status": "paid",
+    "method": "Yape",
+    "items": [
+      {
+        "qty": 1,
+        "name": "ENTRADA MENOR",
+        "price": 5,
+        "cat": "ENTRADA",
+        "id": "entrada-men"
+      },
+      {
+        "price": 2.5,
+        "cat": "PRE-ENTRENO",
+        "id": "nox",
+        "qty": 1,
+        "name": "NOX"
+      }
+    ],
+    "total": 7.5,
+    "date": "2026-06-23",
+    "id": "1782230297081"
+  }
+]

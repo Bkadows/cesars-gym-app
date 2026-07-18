@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔄 Recuperación de Datos – Cesar's Gym</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background:#0f0f1a; color:#e2e8f0; min-height:100vh; padding:24px; }
+  h1 { font-size:1.5rem; font-weight:800; color:#16C76A; margin-bottom:4px; }
+  .sub { color:#64748b; font-size:0.85rem; margin-bottom:24px; }
+  .card { background:#1a1f2e; border:1px solid #2d3748; border-radius:16px; padding:20px; margin-bottom:16px; }
+  .card h2 { font-size:1rem; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .log { background:#0a0a14; border-radius:10px; padding:14px; font-family:monospace; font-size:0.8rem; max-height:320px; overflow-y:auto; line-height:1.8; }
+  .log .ok  { color:#16C76A; }
+  .log .err { color:#ef4444; }
+  .log .warn{ color:#f59e0b; }
+  .log .info{ color:#60a5fa; }
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:10px 20px; border-radius:10px; border:none; cursor:pointer; font-size:0.9rem; font-weight:700; transition:.15s; }
+  .btn-green { background:#16C76A; color:#fff; }
+  .btn-green:hover { background:#13b35f; }
+  .btn-blue  { background:#3b82f6; color:#fff; }
+  .btn-blue:hover  { background:#2563eb; }
+  .btn-red   { background:#ef4444; color:#fff; }
+  .btn-red:hover   { background:#dc2626; }
+  .btn-ghost { background:rgba(255,255,255,0.06); color:#e2e8f0; border:1px solid #2d3748; }
+  .btn-ghost:hover { background:rgba(255,255,255,0.1); }
+  .btns { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  table { width:100%; border-collapse:collapse; font-size:0.8rem; margin-top:10px; }
+  th { background:#0f0f1a; padding:8px 10px; text-align:left; color:#64748b; font-weight:600; border-bottom:1px solid #2d3748; }
+  td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.04); }
+  tr:last-child td { border:none; }
+  .badge { display:inline-block; border-radius:6px; padding:2px 8px; font-size:0.72rem; font-weight:700; }
+  .badge-green { background:rgba(22,199,106,.15); color:#16C76A; }
+  .badge-amber { background:rgba(245,158,11,.15); color:#f59e0b; }
+  #result-table { display:none; }
+  #restore-btn  { display:none; }
+  .spinner { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.2); border-top-color:#16C76A; border-radius:50%; animation:spin .6s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .step { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid #2d3748; }
+  .step:last-child { border:none; }
+  .step-num { width:28px; height:28px; border-radius:50%; background:#16C76A; color:#fff; font-weight:800; font-size:0.85rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .step-text { font-size:0.85rem; color:#94a3b8; line-height:1.5; }
+  .step-text strong { color:#e2e8f0; }
+  code { background:#0a0a14; border:1px solid #2d3748; border-radius:6px; padding:8px 12px; display:block; font-family:monospace; font-size:0.78rem; color:#16C76A; margin-top:8px; white-space:pre-wrap; word-break:break-all; cursor:pointer; }
+  code:hover { border-color:#16C76A; }
+  .copied { color:#f59e0b !important; }
+  #progress-bar { height:4px; background:#16C76A; width:0%; border-radius:2px; transition:width .3s; margin-bottom:12px; }
+</style>
+</head>
+<body>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<h1>🔄 Herramienta de Recuperación</h1>
+<p class="sub">Cesar's Gym · Recuperación de datos de Caja Diaria</p>
+
+<!-- PASO 1: Escanear memoria / IndexedDB -->
+<div class="card">
+  <h2>📡 Paso 1 — Escanear fuentes de datos</h2>
+  <div id="progress-bar"></div>
+  <div class="log" id="log">
+    <span class="info">Listo para escanear. Presiona "Iniciar Recuperación"...</span>
+  </div>
+  <div class="btns">
+    <button class="btn btn-green" onclick="startRecovery()">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.61"/></svg>
+      Iniciar Recuperación
+    </button>
+  </div>
+</div>
+
+<!-- Resultados -->
+<div class="card" id="result-table">
+  <h2>✅ Registros Encontrados para Restaurar</h2>
+  <div id="found-summary" style="margin-bottom:12px; font-size:0.88rem; color:#94a3b8;"></div>
+  <div style="overflow-x:auto;">
+    <table id="ventas-table">
+      <thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Items</th><th>Total</th><th>Estado</th></tr></thead>
+      <tbody id="ventas-body"></tbody>
+    </table>
+  </div>
+  <div class="btns">
+    <button class="btn btn-green" id="restore-btn" onclick="doRestore()">
+      💾 Restaurar en Firestore
+    </button>
+    <button class="btn btn-ghost" onclick="downloadBackup()">
+      ⬇ Descargar JSON
+    </button>
+  </div>
+  <div id="raw-data-section" style="display:none; margin-top:20px;">
+    <h3 style="font-size:0.9rem; margin-bottom:8px; color:#f59e0b;">📦 Datos Crudos Encontrados (IndexedDB)</h3>
+    <textarea id="raw-data-area" readonly style="width:100%; height:160px; background:#0a0a14; border:1px solid #2d3748; color:#a3e635; font-family:monospace; font-size:0.75rem; border-radius:8px; padding:8px; resize:vertical;"></textarea>
+    <div style="margin-top:6px; font-size:0.75rem; color:#64748b;">Si ves tus datos aquí, puedes copiarlos y enviármelos si la restauración automática falla.</div>
+  </div>
+</div>
+
+<!-- PASO 2: Consola manual -->
+<div class="card">
+  <h2>🔧 Paso 2 — Si tienes la pestaña original abierta</h2>
+  <p style="font-size:0.83rem; color:#94a3b8; margin-bottom:14px;">
+    Si la pestaña del gym sigue abierta en tu navegador, los datos pueden estar en memoria. 
+    Sigue estos pasos:
+  </p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-text">
+      <strong>Abre la consola del navegador</strong> en la pestaña del gym<br>
+      En Mac: <strong>Cmd + Opción + J</strong> · En Windows: <strong>F12 → Console</strong>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-text">
+      <strong>Pega este código</strong> para ver los datos de hoy en memoria:
+      <code id="console-check" onclick="copyCode(this)">
+// Verificar ventas de hoy en memoria
+const hoy = new Date().toISOString().slice(0,10);
+const enMemoria = typeof FIREBASE_DATA !== 'undefined' ? FIREBASE_DATA.cg_ventas.filter(v => (v.date||v.payDate||'').startsWith(hoy)) : [];
+console.log('✅ Ventas de HOY en memoria:', enMemoria.length, enMemoria);
+enMemoria.length > 0 ? alert('✅ ENCONTRADAS: ' + enMemoria.length + ' ventas de hoy. Ve al paso 3.') : alert('⚠️ No hay ventas de hoy en memoria. Intenta IndexedDB.');
+      </code>
+      <small style="color:#64748b;">👆 Haz clic para copiar</small>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-text">
+      <strong>Si el paso 2 encontró datos</strong>, pega esto para restaurarlos en Firestore:
+      <code id="console-restore" onclick="copyCode(this)">
+// Restaurar ventas de hoy a Firestore (ejecutar solo si el paso 2 encontró datos)
+db.collection('store').doc('cg_ventas').set({ data: FIREBASE_DATA.cg_ventas })
+  .then(() => alert('✅ Datos restaurados en Firestore exitosamente!'))
+  .catch(e => alert('❌ Error: ' + e.message));
+      </code>
+      <small style="color:#64748b;">👆 Haz clic para copiar</small>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-text">
+      <strong>Si el paso 2 NO encontró datos</strong>, pega esto para escanear IndexedDB:
+      <code id="console-idb" onclick="copyCode(this)">
+// Escanear IndexedDB de Firebase
+(async () => {
+  const dbs = await indexedDB.databases();
+  console.log('IndexedDB disponibles:', dbs.map(d=>d.name));
+  const fbDb = dbs.find(d => d.name && d.name.includes('firestore'));
+  if(!fbDb) { alert('No se encontró cache de Firebase en IndexedDB'); return; }
+  const req = indexedDB.open(fbDb.name, fbDb.version);
+  req.onsuccess = e => {
+    const db2 = e.target.result;
+    console.log('Stores:', [...db2.objectStoreNames]);
+    const tx = db2.transaction(['remoteDocumentsV14','remoteDocuments'].filter(s=>db2.objectStoreNames.contains(s)), 'readonly');
+    const stores = [...db2.objectStoreNames];
+    console.log('Object stores:', stores);
+    alert('Cache encontrado: ' + fbDb.name + '\nStores: ' + stores.join(', ') + '\nRevisa la consola para más info.');
+  };
+})();
+      </code>
+      <small style="color:#64748b;">👆 Haz clic para copiar</small>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 3: Restauración manual -->
+<div class="card" id="manual-restore-card">
+  <h2>✍️ Paso 3 — Restauración Manual de Emergencia</h2>
+  <p style="font-size:0.83rem; color:#94a3b8; margin-bottom:14px;">
+    Si no se pueden recuperar los datos automáticamente, ingresa los datos manualmente y los inyectaremos directo en Firestore.
+  </p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+    <div>
+      <label style="font-size:0.8rem; color:#64748b; display:block; margin-bottom:6px;">Entradas normales (S/7)</label>
+      <input type="number" id="m-entrada" value="12" min="0" style="width:100%; background:#0a0a14; border:1px solid #2d3748; color:#e2e8f0; border-radius:8px; padding:8px 12px; font-size:0.9rem;">
+    </div>
+    <div>
+      <label style="font-size:0.8rem; color:#64748b; display:block; margin-bottom:6px;">Entradas menores (S/5)</label>
+      <input type="number" id="m-menor" value="12" min="0" style="width:100%; background:#0a0a14; border:1px solid #2d3748; color:#e2e8f0; border-radius:8px; padding:8px 12px; font-size:0.9rem;">
+    </div>
+    <div>
+      <label style="font-size:0.8rem; color:#64748b; display:block; margin-bottom:6px;">Entradas socios (S/0)</label>
+      <input type="number" id="m-socio" value="0" min="0" style="width:100%; background:#0a0a14; border:1px solid #2d3748; color:#e2e8f0; border-radius:8px; padding:8px 12px; font-size:0.9rem;">
+    </div>
+    <div>
+      <label style="font-size:0.8rem; color:#64748b; display:block; margin-bottom:6px;">Hora inicial de registros</label>
+      <input type="time" id="m-hora" value="07:00" style="width:100%; background:#0a0a14; border:1px solid #2d3748; color:#e2e8f0; border-radius:8px; padding:8px 12px; font-size:0.9rem;">
+    </div>
+  </div>
+  <div id="manual-preview" style="font-size:0.85rem; color:#94a3b8; padding:10px; background:#0a0a14; border-radius:8px; margin-bottom:12px;"></div>
+  <div class="btns">
+    <button class="btn btn-blue" onclick="previewManual()">👁 Ver Preview</button>
+    <button class="btn btn-green" id="manual-restore-btn" onclick="doManualRestore()" style="display:none;">💾 Restaurar Manualmente</button>
+  </div>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCvu1CdI0MP1_FirIHUyOXgh3yaYUgdK8w",
+  authDomain: "cesarsgym-60653.firebaseapp.com",
+  projectId: "cesarsgym-60653",
+  storageBucket: "cesarsgym-60653.firebasestorage.app",
+  messagingSenderId: "1095941727646",
+  appId: "1:1095941727646:web:2d4eda00f05e0c2d53e28f"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const TODAY = new Date().toISOString().slice(0,10); // 2026-06-18
+let foundVentas = [];
+let allVentas   = [];
+
+function log(msg, type='info') {
+  const el = document.getElementById('log');
+  const line = document.createElement('div');
+  line.className = type;
+  line.textContent = (type==='ok'?'✅ ':type==='err'?'❌ ':type==='warn'?'⚠️ ':'ℹ️ ') + msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setProgress(pct) {
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+async function startRecovery() {
+  const logEl = document.getElementById('log');
+  logEl.innerHTML = '';
+  setProgress(10);
+  log('Iniciando escaneo de fuentes de datos...', 'info');
+  log(`Fecha objetivo: ${TODAY}`, 'info');
+
+  // 1. Intentar leer de Firestore actual
+  setProgress(30);
+  log('Leyendo Firestore (datos actuales)...', 'info');
+  try {
+    const docSnap = await db.collection('store').doc('cg_ventas').get();
+    if (docSnap.exists) {
+      const data = docSnap.data().data || [];
+      allVentas = data;
+      const hoy = data.filter(v => (v.date||v.payDate||'').startsWith(TODAY));
+      log(`Firestore: ${data.length} ventas totales, ${hoy.length} de hoy`, hoy.length > 0 ? 'ok' : 'warn');
+      if (hoy.length > 0) {
+        foundVentas = hoy;
+        showResults('Firestore (datos actuales)', foundVentas);
+        setProgress(100);
+        return;
+      }
+    } else {
+      log('El documento cg_ventas no existe en Firestore', 'warn');
+    }
+  } catch(e) {
+    log('Error leyendo Firestore: ' + e.message, 'err');
+  }
+
+  // 2. Intentar leer del cache offline de Firebase (IndexedDB)
+  setProgress(50);
+  log('Buscando en caché offline de Firebase (IndexedDB)...', 'info');
+  try {
+    const cached = await readFromIndexedDB();
+    if (cached && cached.length > 0) {
+      const hoy = cached.filter(v => (v.date||v.payDate||'').startsWith(TODAY));
+      log(`Cache IndexedDB: ${cached.length} ventas totales, ${hoy.length} de hoy`, hoy.length > 0 ? 'ok' : 'warn');
+      if (hoy.length > 0) {
+        allVentas = cached;
+        foundVentas = hoy;
+        showResults('Cache IndexedDB de Firebase', foundVentas);
+        setProgress(100);
+        return;
+      }
+    } else {
+      log('No se encontraron datos útiles en IndexedDB', 'warn');
+    }
+  } catch(e) {
+    log('Error leyendo IndexedDB: ' + e.message, 'warn');
+  }
+
+  // 3. Intentar última venta disponible de ayer para calcular el patrón
+  setProgress(80);
+  log('Analizando historial para estimar patrón de ventas...', 'info');
+  const ayer = new Date(TODAY);
+  ayer.setDate(ayer.getDate() - 1);
+  const ayerStr = ayer.toISOString().slice(0,10);
+  const ventasAyer = allVentas.filter(v => (v.date||v.payDate||'').startsWith(ayerStr));
+  log(`Ventas de ayer (${ayerStr}): ${ventasAyer.length}`, 'info');
+
+  setProgress(100);
+  log('Escaneo completo. No se encontraron ventas de hoy en fuentes automáticas.', 'warn');
+  log('Usa la sección "Restauración Manual" más abajo para ingresar los datos.', 'warn');
+  previewManual();
+}
+
+function findVentasArray(obj) {
+  if (!obj || typeof obj !== 'object') return null;
+  
+  if (Array.isArray(obj)) {
+    const isVentas = obj.some(item => item && typeof item === 'object' && ('customer' in item || 'payMethod' in item || 'total' in item));
+    if (isVentas) {
+      return obj;
+    }
+    for (const item of obj) {
+      const found = findVentasArray(item);
+      if (found) return found;
+    }
+  } else {
+    for (const key of Object.keys(obj)) {
+      const found = findVentasArray(obj[key]);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+function parseFirestoreVal(val) {
+  if (!val) return null;
+  if ('stringValue'  in val) return val.stringValue;
+  if ('integerValue' in val) return parseInt(val.integerValue);
+  if ('doubleValue'  in val) return parseFloat(val.doubleValue);
+  if ('booleanValue' in val) return val.booleanValue;
+  if ('arrayValue'   in val) return (val.arrayValue.values||[]).map(parseFirestoreVal);
+  if ('mapValue'     in val) {
+    const o = {};
+    for(const [k,v] of Object.entries(val.mapValue.fields||{})) o[k]=parseFirestoreVal(v);
+    return o;
+  }
+  return null;
+}
+
+function deepParseAndSearch(obj) {
+  if (!obj || typeof obj !== 'object') return null;
+  
+  if ('mapValue' in obj || 'arrayValue' in obj || 'stringValue' in obj || 'integerValue' in obj || 'doubleValue' in obj) {
+    const parsed = parseFirestoreVal(obj);
+    const found = findVentasArray(parsed);
+    if (found) return found;
+  }
+
+  if (Array.isArray(obj)) {
+    const foundDirect = findVentasArray(obj);
+    if (foundDirect) return foundDirect;
+    for (const item of obj) {
+      const found = deepParseAndSearch(item);
+      if (found) return found;
+    }
+  } else {
+    for (const key of Object.keys(obj)) {
+      const val = obj[key];
+      const foundDirect = findVentasArray(val);
+      if (foundDirect) return foundDirect;
+      
+      const found = deepParseAndSearch(val);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+async function readFromIndexedDB() {
+  return new Promise(async (resolve) => {
+    try {
+      const dbNames = ['firestore/[DEFAULT]/cesarsgym-60653/main'];
+      
+      if ('databases' in indexedDB) {
+        try {
+          const dbs = await indexedDB.databases();
+          log(`Bases de datos encontradas por el navegador: ${dbs.map(d=>d.name).join(', ')}`, 'info');
+          dbs.forEach(d => {
+            if (d.name && !dbNames.includes(d.name) && d.name.toLowerCase().includes('firestore')) {
+              dbNames.push(d.name);
+            }
+          });
+        } catch(e) {
+          log('No se pudieron listar las bases de datos: ' + e.message, 'info');
+        }
+      }
+
+      log(`Bases de datos a escanear: ${dbNames.join(', ')}`, 'info');
+
+      for (const dbName of dbNames) {
+        log(`Intentando abrir: ${dbName}`, 'info');
+        try {
+          const arr = await scanDatabase(dbName);
+          if (arr && arr.length > 0) {
+            resolve(arr);
+            return;
+          }
+        } catch(err) {
+          log(`Error escaneando ${dbName}: ${err.message}`, 'warn');
+        }
+      }
+      resolve(null);
+    } catch(err) {
+      log('Error en readFromIndexedDB: ' + err.message, 'err');
+      resolve(null);
+    }
+  });
+}
+
+function scanDatabase(dbName) {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(dbName);
+    req.onerror = () => { reject(new Error('No se pudo abrir la base de datos')); };
+    req.onsuccess = (e) => {
+      const idb = e.target.result;
+      const stores = [...idb.objectStoreNames];
+      log(`Stores disponibles en ${dbName}: ${stores.join(', ')}`, 'info');
+      
+      const targetStores = stores.filter(s => {
+        const name = s.toLowerCase();
+        return name.includes('remotedoc') || name.includes('mutat') || name.includes('overlay') || name.includes('document');
+      });
+
+      if (targetStores.length === 0) {
+        log('No se encontraron stores interesantes para escanear', 'warn');
+        idb.close();
+        resolve(null);
+        return;
+      }
+
+      let scannedCount = 0;
+      let allFoundVentas = [];
+
+      const onStoreScanned = () => {
+        scannedCount++;
+        if (scannedCount === targetStores.length) {
+          idb.close();
+          resolve(allFoundVentas.length > 0 ? allFoundVentas : null);
+        }
+      };
+
+      targetStores.forEach(storeName => {
+        try {
+          const tx = idb.transaction([storeName], 'readonly');
+          const store = tx.objectStore(storeName);
+          const allReq = store.getAll();
+          
+          allReq.onsuccess = () => {
+            const records = allReq.result || [];
+            log(`Escaneando store "${storeName}": ${records.length} registros`, 'info');
+            
+            for (const record of records) {
+              const ventasArray = deepParseAndSearch(record);
+              if (ventasArray && ventasArray.length > 0) {
+                log(`¡Encontrado set de ventas en store "${storeName}"! (${ventasArray.length} registros)`, 'ok');
+                
+                document.getElementById('raw-data-section').style.display = 'block';
+                document.getElementById('raw-data-area').value = JSON.stringify(record, null, 2);
+                
+                allFoundVentas = ventasArray;
+                const hoy = ventasArray.filter(v => (v.date||v.payDate||'').startsWith(TODAY));
+                if (hoy.length > 0) {
+                  log(`Encontradas ${hoy.length} ventas de hoy en store "${storeName}"!`, 'ok');
+                  allFoundVentas = ventasArray;
+                  break; 
+                }
+              }
+            }
+            onStoreScanned();
+          };
+          
+          allReq.onerror = () => {
+            log(`Error leyendo store "${storeName}"`, 'warn');
+            onStoreScanned();
+          };
+        } catch(err) {
+          log(`Error al iniciar transacción para store "${storeName}": ${err.message}`, 'warn');
+          onStoreScanned();
+        }
+      });
+    };
+  });
+}
+
+function showResults(source, ventas) {
+  const card = document.getElementById('result-table');
+  card.style.display = 'block';
+  
+  let total = 0;
+  ventas.forEach(v => total += parseFloat(v.total)||0);
+
+  document.getElementById('found-summary').innerHTML = `
+    <strong style="color:#16C76A;">${ventas.length} registros encontrados</strong> en <em>${source}</em> · 
+    Total: <strong style="color:#16C76A;">S/ ${total.toFixed(2)}</strong>
+  `;
+
+  const tbody = document.getElementById('ventas-body');
+  tbody.innerHTML = '';
+  ventas.forEach((v, i) => {
+    const items = (v.items||[]).map(it=>`${it.name||it.cat}×${it.qty||1}`).join(', ');
+    tbody.innerHTML += `<tr>
+      <td>${i+1}</td>
+      <td>${v.date||v.payDate||'?'}</td>
+      <td>${v.customer||'—'}</td>
+      <td style="color:#94a3b8;">${items||'—'}</td>
+      <td><span class="badge badge-green">S/ ${v.total||0}</span></td>
+      <td><span class="badge badge-amber">Pendiente</span></td>
+    </tr>`;
+  });
+
+  document.getElementById('restore-btn').style.display = 'inline-flex';
+  log(`Encontrados ${ventas.length} registros de hoy. Presiona "Restaurar" para guardarlos.`, 'ok');
+}
+
+async function doRestore() {
+  if (foundVentas.length === 0) { alert('No hay datos que restaurar'); return; }
+  log('Restaurando datos en Firestore...', 'info');
+  
+  try {
+    // Leer ventas actuales y agregar las de hoy
+    const docSnap = await db.collection('store').doc('cg_ventas').get();
+    let actual = docSnap.exists ? (docSnap.data().data||[]) : [];
+    
+    // Quitar las de hoy si hay alguna duplicada
+    actual = actual.filter(v => !(v.date||v.payDate||'').startsWith(TODAY));
+    
+    // Agregar las recuperadas
+    const final = [...actual, ...foundVentas];
+    await db.collection('store').doc('cg_ventas').set({ data: final });
+    
+    log(`¡Restaurados ${foundVentas.length} registros! Total en Firestore: ${final.length}`, 'ok');
+    alert(`✅ Restaurados exitosamente ${foundVentas.length} registros de hoy.\n\nRecarga la app del gym para verlos.`);
+  } catch(e) {
+    log('Error restaurando: ' + e.message, 'err');
+    alert('❌ Error: ' + e.message);
+  }
+}
+
+function downloadBackup() {
+  const blob = new Blob([JSON.stringify(foundVentas, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `ventas_recuperadas_${TODAY}.json`;
+  a.click();
+}
+
+// ── RESTAURACIÓN MANUAL ──
+let manualVentas = [];
+
+function previewManual() {
+  const entrada = parseInt(document.getElementById('m-entrada').value)||0;
+  const menor   = parseInt(document.getElementById('m-menor').value)||0;
+  const socio   = parseInt(document.getElementById('m-socio').value)||0;
+  const hora    = document.getElementById('m-hora').value||'07:00';
+
+  const total = entrada*7 + menor*5 + socio*0;
+  const totalPersonas = entrada + menor + socio;
+
+  document.getElementById('manual-preview').innerHTML = `
+    <strong>${totalPersonas} personas · S/ ${total.toFixed(2)} total</strong><br>
+    <span style="color:#64748b;">
+      ${entrada} Entradas normales (S/7 c/u = S/${entrada*7}) · 
+      ${menor} Entradas menores (S/5 c/u = S/${menor*5}) · 
+      ${socio} Socios (S/0)
+    </span>
+  `;
+
+  // Generar registros con timestamps distribuidos
+  manualVentas = [];
+  const [h, m] = hora.split(':').map(Number);
+  let baseTs = new Date(`${TODAY}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00`).getTime();
+
+  const addEntry = (name, cat, price, qty) => {
+    for (let i=0; i<qty; i++) {
+      manualVentas.push({
+        id: 'rec_' + baseTs + '_' + Math.random().toString(36).substr(2,5),
+        date: TODAY,
+        customer: name === 'ENTRADA' ? 'ENTRADA' : name === 'ENTRADA MENOR' ? 'ENTRADA MENOR' : 'SOCIO',
+        total: price,
+        paid: true,
+        payMethod: 'Efectivo',
+        items: [{ cat:'ENTRADA', name, price, qty:1 }],
+        ts: baseTs,
+        _recovered: true
+      });
+      baseTs += 2 * 60 * 1000; // +2 min entre cada entrada
+    }
+  };
+
+  if (entrada > 0) addEntry('ENTRADA', 'ENTRADA', 7, entrada);
+  if (menor  > 0) addEntry('ENTRADA MENOR', 'ENTRADA', 5, menor);
+  if (socio  > 0) addEntry('ENTRADA SOCIO', 'ENTRADA', 0, socio);
+
+  document.getElementById('manual-restore-btn').style.display = 'inline-flex';
+}
+
+async function doManualRestore() {
+  if (manualVentas.length === 0) { previewManual(); }
+  if (manualVentas.length === 0) { alert('Ingresa al menos 1 entrada'); return; }
+
+  const conf = confirm(`¿Restaurar ${manualVentas.length} registros manuales (S/ ${manualVentas.reduce((a,v)=>a+(v.total||0),0)}) en Firestore?\n\nEsto los agregará a los datos actuales.`);
+  if (!conf) return;
+
+  log('Guardando restauración manual en Firestore...', 'info');
+  try {
+    const docSnap = await db.collection('store').doc('cg_ventas').get();
+    let actual = docSnap.exists ? (docSnap.data().data||[]) : [];
+    const final = [...actual, ...manualVentas];
+    await db.collection('store').doc('cg_ventas').set({ data: final });
+    log(`¡${manualVentas.length} registros restaurados manualmente!`, 'ok');
+    alert(`✅ ${manualVentas.length} registros agregados a Firestore.\n\nRecarga la app del gym para verlos.`);
+  } catch(e) {
+    log('Error: ' + e.message, 'err');
+    alert('❌ Error: ' + e.message);
+  }
+}
+
+// Copiar código al portapapeles
+function copyCode(el) {
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    el.classList.add('copied');
+    const orig = el.style.color;
+    el.style.color = '#f59e0b';
+    setTimeout(() => { el.style.color = orig; el.classList.remove('copied'); }, 1200);
+  });
+}
+
+// Preview al cargar
+window.onload = () => previewManual();
+</script>
+</body>
+</html>
